@@ -8,7 +8,7 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+    ('admin', '123')
 )
 
 MANAGERS = ADMINS
@@ -58,7 +58,9 @@ WSGI_APPLICATION = 'main.wsgi.application'
 DATABASES = {
     'default' : {
       'ENGINE' : 'django_mongodb_engine',
-      'NAME' : 'moevm'
+      'NAME' : 'moevm',
+      'USER' : 'python',
+      'PASSWORD' : 'python'
    }
 }
 
