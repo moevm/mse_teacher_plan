@@ -47,9 +47,9 @@ class Command(BaseCommand):
 
       user = User.objects.create(
         first_name = fnametmp,
-        last_name = lnametmp,
-        email = emailtmp,
-        username = usernametmp,
+        last_name=lnametmp,
+        email=emailtmp,
+        username=usernametmp,
         password=passwordtmp,
         is_active=random.choice([True, False]),
         is_staff=random.choice([True, False]),

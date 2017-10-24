@@ -1,11 +1,12 @@
 {% extends 'pages/mainTemplate.html' %}
-{% block title %}Список индивидуальных планов Иванова Ивана Ивановича{% endblock %}
-{% block pagename %}Список индивидуальных планов Иванова Ивана Ивановича{% endblock %}
+
+{% block title %}Список индивидуальных планов {{user.first_name}}{% endblock %}
+{% block pagename %}Список индивидуальных планов {{user.first_name}}{% endblock %}
 {% block content %}
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>Год</th>
+          <th>Год  {{user.first_name}} </th>
           <th>Ссылка на план</th>
         </tr>
       </thead>

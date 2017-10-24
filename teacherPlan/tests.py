@@ -9,7 +9,6 @@ from django.contrib.auth.models import User
 
 c = Client()
 
-
 class GetPagesTest(TestCase):
   """
     Тесты на получение страниц

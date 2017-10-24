@@ -1,0 +1,32 @@
+{% extends 'pages/mainTemplate.html' %}
+{% block title %}Профиль{% endblock %}
+{% block pagename %}Профиль{% endblock %}
+{% block content %}
+        <form role="form">
+            <div class="controls new-plan">
+              <label>Факультет</label>
+              <input class="form-control" placeholder="ФКТИ" type="text">
+              <label>Кафедра</label>
+              <input class="form-control" placeholder="МОЭВМ" type="text">
+                <label>Должность</label>
+              <input class="form-control" placeholder="Преподаватель" type="text">
+                <label>Фамилия</label>
+              <input class="form-control" placeholder="{{ user.last_name }}" type="text">
+                <label>Имя</label>
+              <input class="form-control" placeholder="{{ user.first_name }}" type="text">
+                <label>Отчество</label>
+              <input class="form-control" placeholder="Иванович" type="text">
+                <label>Год рождения</label>
+              <input class="form-control" placeholder="{{ profile.birth_date }}" type="text">
+                <label>Год вступления в должность</label>
+              <input class="form-control" placeholder="22.12.13" type="text">
+                <label>Ученая степень и год присуждения</label>
+              <input class="form-control" placeholder="Ученая степень и год присуждения" type="text">
+                <label>Ученое звание и год присуждения</label>
+              <input class="form-control" placeholder="Ученое звание и год присуждения" type="text">
+                <label>Дата переизбрания(окончание трудового договора)</label>
+              <input class="form-control" placeholder="Дата переизбрания(окончание трудового договора)" type="text">
+              <input class="btn btn-primary" type="submit" value="Сохранить">
+            </div>
+        </form>
+{% endblock %}

@@ -58,7 +58,7 @@ WSGI_APPLICATION = 'main.wsgi.application'
 DATABASES = {
     'default' : {
       'ENGINE' : 'django_mongodb_engine',
-      'NAME' : 'moevm',
+      'NAME': 'moevm',
       'USER' : 'python',
       'PASSWORD' : 'python'
    }

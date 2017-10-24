@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
-from django.contrib.auth import logout
-from django.shortcuts import render,redirect
-from django.contrib.auth import authenticate, login
-from django.http import HttpResponseRedirect, HttpResponse
-from django.views.generic.edit import FormView
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.decorators import login_required
 from django.contrib import auth
+from django.contrib.auth import login
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
+from django.http import HttpResponse
+from django.shortcuts import render
+from django.template import loader
+from  moevmCommon.models.userProfile import UserProfile
 
 @login_required(login_url="/login")
 def index(request):
-    return render(request,'index.html')
-
+    return render(request, 'index.html')
 
 def loginTeacher(request):
     if request.method == 'POST':
@@ -44,8 +44,19 @@ def logoutTeacher(request):
 
 @login_required(login_url="/login")
 def makeNewPlan(request):
-    return render(request,'makeNewPlan.html')
+    return render(request, 'makeNewPlan.html')
 
+@login_required(login_url="/login")
+def profileOpen(request):
+    # userProfile.UserProfile.objects.
+    template = loader.get_template("profileOpen.html")
+    profile = UserProfile.objects.get(user_id=request.user.id)
+    context = {
+        'profile': profile,
+        'user': request.user,
+    }
+    return render(request, 'profileOpen.html', context)
+    # return HttpResponse(template.render(context, request))
 
 @login_required(login_url="/login")
 def plan(request):

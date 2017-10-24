@@ -17,7 +17,7 @@ setup(
     url='none',
     author='w3prog',
     author_email='w3prog@gmail.ru',
-    classifiers=[
+    classifiers={
         'Environment :: Web Environment',
         'Framework :: Django',
         'Intended Audience :: Developers',
@@ -28,5 +28,5 @@ setup(
         'Programming Language :: Python :: 2.7',
         'Topic :: Internet :: WWW/HTTP',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
-    ],
+    },
 )

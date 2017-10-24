@@ -1,10 +1,24 @@
 {% extends 'pages/mainTemplate.html' %}
-{% block title %}Список индивидуальных планов{% endblock %}
-{% block pagename %}Список индивидуальных планов{% endblock %}
+{% block title %}Создание индивидуального плана{% endblock %}
+{% block pagename %}Создание индивидуального плана{% endblock %}
 {% block content %}
-    
-    <form role="form">
-      <div class="controls new-plan">
+
+
+      <div style="margin-bottom: 20px" class="controls new-plan">
+        <select id="sell" class="selectWork">
+            <option value='books'>Подготовка учебников</option>
+            <option value='discipline'>Постановка и модернизация дисциплин</option>
+            <option value='scienceWork'>Научная работа</option>
+            <option value='conf'>Участие в конференциях и выставках</option>
+            <option value='publ'>Список публикаций</option>
+            <option value='kval'>Повышение квалификации</option>
+            <option value='other'>Другие виды работ</option>
+            <option value='fuck'>Замечания по работе преподавателя</option>
+        </select>
+        <button class="btn btn-primary" style="margin-left: 15px"  onclick="itemsChanged()"> Выбрать </button>
+      </div>
+
+    <div class="all books controls new-plan">
           <input class="form-control" placeholder="Факультет" type="text">
           <input class="form-control" placeholder="Кафедра" type="text">
           <input class="form-control" placeholder="Должность" type="text">
@@ -16,8 +30,82 @@
           <input class="form-control" placeholder="Ученая степень и год присуждения" type="text">
           <input class="form-control" placeholder="Ученое звание и год присуждения" type="text">
           <input class="form-control" placeholder="Дата переизбрания(окончание трудового договора)" type="text">
-          <input type="submit" value="Создать">
+          <input class="btn btn-primary" type="submit" value="Создать">
+     </div>
+    <div class="all discipline controls new-plan ">
+          <input class="form-control" placeholder="Факультет" type="text">
+          <input class="form-control" placeholder="Кафедра" type="text">
+          <input class="form-control" placeholder="Должность" type="text">
+          <input class="form-control" placeholder="Фамилия" type="text">
+          <input class="btn btn-primary" type="submit" value="Создать">
+     </div>
+    <div class="all scienceWork controls new-plan ">
+          <input class="form-control" placeholder="Факультет" type="text">
+          <input class="form-control" placeholder="Кафедра" type="text">
+          <input class="form-control" placeholder="Должность" type="text">
+          <input class="form-control" placeholder="Фамилия" type="text">
+          <input class="form-control" placeholder="Должность" type="text">
+          <input class="form-control" placeholder="Фамилия" type="text">
+          <input class="btn btn-primary" type="submit" value="Создать">
+     </div>
+    <div class="all conf controls new-plan ">
+          <input class="form-control" placeholder="Факультет" type="text">
+          <input class="form-control" placeholder="Кафедра" type="text">
+          <input class="form-control" placeholder="Должность" type="text">
+          <input class="form-control" placeholder="Фамилия" type="text">
+          <input class="btn btn-primary" type="submit" value="Создать">
       </div>
-    </form>
-    
+    <div class="all publ controls new-plan ">
+          <input class="form-control" placeholder="Факультет" type="text">
+          <input class="form-control" placeholder="Кафедра" type="text">
+          <input class="form-control" placeholder="Должность" type="text">
+          <input class="form-control" placeholder="Фамилия" type="text">
+          <input class="form-control" placeholder="Должность" type="text">
+          <input class="form-control" placeholder="Фамилия" type="text">
+          <input class="form-control" placeholder="Должность" type="text">
+          <input class="form-control" placeholder="Фамилия" type="text">
+          <input class="btn btn-primary" type="submit" value="Создать">
+      </div>
+    <div class="all kval controls new-plan ">
+          <input class="form-control" placeholder="Факультет" type="text">
+          <input class="form-control" placeholder="Кафедра" type="text">
+          <input class="form-control" placeholder="Должность" type="text">
+          <input class="form-control" placeholder="Фамилия" type="text">
+          <input class="btn btn-primary" type="submit" value="Создать">
+      </div>
+     <div class="all other controls new-plan ">
+          <input class="form-control" placeholder="Факультет" type="text">
+          <input class="form-control" placeholder="Кафедра" type="text">
+          <input class="form-control" placeholder="Должность" type="text">
+          <input class="form-control" placeholder="Фамилия" type="text">
+          <input class="form-control" placeholder="Должность" type="text">
+          <input class="form-control" placeholder="Фамилия" type="text">
+          <input class="btn btn-primary" type="submit" value="Создать">
+      </div>
+    <div class="all fuck controls new-plan ">
+          <input class="form-control" placeholder="Факультет" type="text">
+          <input class="form-control" placeholder="Кафедра" type="text">
+          <input class="form-control" placeholder="Должность" type="text">
+          <input class="form-control" placeholder="Фамилия" type="text">
+          <input class="btn btn-primary" type="submit" value="Создать">
+      </div>
+
+    <script>
+    document.getElementById("sell").value = document.cookie;
+        function itemsChanged(){
+            var value = document.getElementById("sell").value;
+            var x = document.getElementsByClassName("all");
+            var i;
+            for (i = 0; i < x.length; i++) {
+                x[i].style.display = "none";
+            }
+            x = document.getElementsByClassName(value);
+            for (i = 0; i < x.length; i++) {
+                x[i].style.display = "block";
+            }
+            document.cookie = value;
+        }
+    itemsChanged();
+    </script>
+
 {% endblock %}
