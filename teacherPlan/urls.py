@@ -13,6 +13,7 @@ urlpatterns = patterns(
    url(r'^listOfPlans$', listOfPlans, name='tpplanlist', ),
    url(r'^makeNewPlan$', makeNewPlan, name='tpnewPlan', ),
    url(r'^plan$', plan, name='tpplan', ),
+   url(r'^accessNot$', accessNot, name='tpaccessNot', ),
    url(r'^managerReport$', managerReport, name='tpsimpleReport')
 )
 

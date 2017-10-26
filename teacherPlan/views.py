@@ -48,15 +48,13 @@ def makeNewPlan(request):
 
 @login_required(login_url="/login")
 def profileOpen(request):
-    # userProfile.UserProfile.objects.
-    template = loader.get_template("profileOpen.html")
+    # template = loader.get_template("profileOpen.html")
     profile = UserProfile.objects.get(user_id=request.user.id)
     context = {
         'profile': profile,
         'user': request.user,
     }
     return render(request, 'profileOpen.html', context)
-    # return HttpResponse(template.render(context, request))
 
 @login_required(login_url="/login")
 def plan(request):
@@ -69,8 +67,17 @@ def listOfPlans(request):
 
 # for managers
 
+@login_required(login_url="/login")
+def accessNot(request):
+    profile = UserProfile.objects.get(user_id=request.user.id)
+    context = {
+        'profile': profile,
+        'user': request.user,
+    }
+    return render(request, 'accessNot.html', context)
+
 def managerReport(request):
     if request.user.is_superuser:
         return render(request,'manager/report.html')
     else:
-        return HttpResponseRedirect("/login")
+        return HttpResponseRedirect("/accessNot")
