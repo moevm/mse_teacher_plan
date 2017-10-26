@@ -9,7 +9,7 @@
               <label>Кафедра</label>
               <input class="form-control" placeholder="МОЭВМ" type="text">
                 <label>Должность</label>
-              <input class="form-control" placeholder="{{ profile.type }}" type="text">
+              <input class="form-control" placeholder="{% if profile.type == 's' %}Студент {% endif %}{% if profile.type == 'h' %}Староста {% endif %}{% if profile.type == 't' %}Преподаватель {% endif %}{% if profile.type == 'a' %}Администратор {% endif %}" type="text">
                 <label>Фамилия</label>
               <input class="form-control" placeholder="{{ user.last_name }}" type="text">
                 <label>Имя</label>
@@ -21,7 +21,7 @@
                 <label>Год вступления в должность</label>
               <input class="form-control" placeholder="{{ profile.election_date.isoformat }}" type="text">
                 <label>Ученая степень</label>
-              <input class="form-control" placeholder="{{ profile.academic_status }}" type="text">
+              <input class="form-control" placeholder="{% if profile.academic_status == 'a' %}Ассистент {% endif %}{% if profile.academic_degree == 's' %}Старший преподаватель {% endif %}{% if profile.academic_degree == 'd' %}Доцент {% endif %}{% if profile.academic_degree == 'p' %}Профессор {% endif %}" type="text">
                 <label>Год присуждения</label>
               <input class="form-control" placeholder="{{ profile.year_of_academic_status.isoformat }}" type="text">
                 <label>Ученое звание</label>
