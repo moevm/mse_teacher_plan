@@ -1,12 +1,12 @@
 {% extends 'pages/mainTemplate.html' %}
 
-{% block title %}Список индивидуальных планов {{user.first_name}}{% endblock %}
-{% block pagename %}Список индивидуальных планов {{user.first_name}}{% endblock %}
+{% block title %}Список индивидуальных планов{% endblock %}
+{% block pagename %}Список индивидуальных планов: {{user.first_name}} {{user.last_name}}{% endblock %}
 {% block content %}
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>Год  {{user.first_name}} </th>
+          <th>Год</th>
           <th>Ссылка на план</th>
         </tr>
       </thead>
