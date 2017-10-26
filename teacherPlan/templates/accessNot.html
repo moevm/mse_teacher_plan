@@ -1,0 +1,6 @@
+{% extends 'pages/mainTemplate.html' %}
+{% block title %}Нет доступа{% endblock %}
+{% block pagename %}Уважаемый {{ user.first_name }} {{ user.last_name }} {% endblock %}
+{% block content %}
+    <p>У Вас нет прав доступа к данной странице!</p>
+{% endblock %}

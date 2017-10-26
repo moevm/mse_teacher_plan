@@ -9,23 +9,27 @@
               <label>Кафедра</label>
               <input class="form-control" placeholder="МОЭВМ" type="text">
                 <label>Должность</label>
-              <input class="form-control" placeholder="Преподаватель" type="text">
+              <input class="form-control" placeholder="{{ profile.type }}" type="text">
                 <label>Фамилия</label>
               <input class="form-control" placeholder="{{ user.last_name }}" type="text">
                 <label>Имя</label>
               <input class="form-control" placeholder="{{ user.first_name }}" type="text">
                 <label>Отчество</label>
-              <input class="form-control" placeholder="Иванович" type="text">
+              <input class="form-control" placeholder="{{ profile.patronymic }}" type="text">
                 <label>Год рождения</label>
-              <input class="form-control" placeholder="{{ profile.birth_date }}" type="text">
+              <input class="form-control" placeholder="{{ profile.birth_date.isoformat }}" type="text">
                 <label>Год вступления в должность</label>
-              <input class="form-control" placeholder="22.12.13" type="text">
-                <label>Ученая степень и год присуждения</label>
-              <input class="form-control" placeholder="Ученая степень и год присуждения" type="text">
-                <label>Ученое звание и год присуждения</label>
-              <input class="form-control" placeholder="Ученое звание и год присуждения" type="text">
+              <input class="form-control" placeholder="{{ profile.election_date.isoformat }}" type="text">
+                <label>Ученая степень</label>
+              <input class="form-control" placeholder="{{ profile.academic_status }}" type="text">
+                <label>Год присуждения</label>
+              <input class="form-control" placeholder="{{ profile.year_of_academic_status.isoformat }}" type="text">
+                <label>Ученое звание</label>
+              <input class="form-control" placeholder="{% if profile.academic_degree == 'n' %}Без степени {% endif %}{% if profile.academic_degree == 't' %}Кандидат Наук {% endif %}{% if profile.academic_degree == 'd' %}Доктор Наук {% endif %}" type="text">
+                <label>Год присуждения</label>
+              <input class="form-control" placeholder="{{ profile.year_of_academic_degree.isoformat }}" type="text">
                 <label>Дата переизбрания(окончание трудового договора)</label>
-              <input class="form-control" placeholder="Дата переизбрания(окончание трудового договора)" type="text">
+              <input class="form-control" placeholder="{{ profile.contract_date.isoformat }}" type="text">
               <input class="btn btn-primary" type="submit" value="Сохранить">
             </div>
         </form>
