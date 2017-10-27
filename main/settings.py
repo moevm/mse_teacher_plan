@@ -7,9 +7,7 @@ SECRET_KEY = '5yse8pkk0u-y84#x0%hrz+8f&s^u(m3*rhvb%_5*z@%hodlx#='
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-ADMINS = (
-    ('admin', '123')
-)
+ADMINS = ()
 
 MANAGERS = ADMINS
 
