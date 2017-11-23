@@ -12,7 +12,6 @@
     <link href="{% static 'lib/bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'lib/bootstrap/dist/css/bootstrap-theme.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
-
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -28,18 +27,12 @@
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a class="btn" href="{% url 'tpprofile' %}">Профиль</a></li>
-
-              {% if user.is_active %} <li>  <a class="btn" href="{% url 'tplogout' %}">Выйти</a></li> {% endif %}
-
-
+            {% if user.is_active %} <li> <a class="btn" href="{% url 'tpprofile' %}">Профиль</a></li>{% endif %}
+            {% if user.is_active %} <li>  <a class="btn" href="{% url 'tplogout' %}">Выйти</a></li> {% endif %}
           </ul>
         </div>
       </div>
     </div>
-
-
-
     <div class="container-fluid">
           <div class="row">
             <div class="col-sm-3 col-md-2 sidebar">
@@ -55,8 +48,6 @@
             </div>
           </div>
         </div>
-
-
 </body>
 <script src="{% static 'lib/jquery/dist/jquery.js' %}"></script>
 <script src="{% static 'lib/bootstrap/dist/js/bootstrap.min.js' %}"></script>
