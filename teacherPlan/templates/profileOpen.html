@@ -2,35 +2,37 @@
 {% block title %}Профиль{% endblock %}
 {% block pagename %}Профиль{% endblock %}
 {% block content %}
-        <form role="form">
+        <form role="form" method="post" action="{% url 'tpprofilesave' %}">
+{#            {% csrf_token %}#}
             <div class="controls new-plan">
-              <label>Факультет</label>
-              <input class="form-control" placeholder="ФКТИ" type="text">
-              <label>Кафедра</label>
-              <input class="form-control" placeholder="МОЭВМ" type="text">
-                <label>Должность</label>
-              <input class="form-control" placeholder="{% if profile.type == 's' %}Студент {% endif %}{% if profile.type == 'h' %}Староста {% endif %}{% if profile.type == 't' %}Преподаватель {% endif %}{% if profile.type == 'a' %}Администратор {% endif %}" type="text">
-                <label>Фамилия</label>
-              <input class="form-control" placeholder="{{ user.last_name }}" type="text">
+            <label>Фамилия</label>
+                <input class="form-control" placeholder="{{ user.last_name }}" name="lastName" type="text">
                 <label>Имя</label>
-              <input class="form-control" placeholder="{{ user.first_name }}" type="text">
+              <input class="form-control" placeholder="{{ user.first_name }}" name="firstName" type="text">
                 <label>Отчество</label>
-              <input class="form-control" placeholder="{{ profile.patronymic }}" type="text">
-                <label>Год рождения</label>
-              <input class="form-control" placeholder="{{ profile.birth_date.isoformat }}" type="text">
-                <label>Год вступления в должность</label>
-              <input class="form-control" placeholder="{{ profile.election_date.isoformat }}" type="text">
-                <label>Ученая степень</label>
-              <input class="form-control" placeholder="{% if profile.academic_status == 'a' %}Ассистент {% endif %}{% if profile.academic_degree == 's' %}Старший преподаватель {% endif %}{% if profile.academic_degree == 'd' %}Доцент {% endif %}{% if profile.academic_degree == 'p' %}Профессор {% endif %}" type="text">
-                <label>Год присуждения</label>
-              <input class="form-control" placeholder="{{ profile.year_of_academic_status.isoformat }}" type="text">
-                <label>Ученое звание</label>
-              <input class="form-control" placeholder="{% if profile.academic_degree == 'n' %}Без степени {% endif %}{% if profile.academic_degree == 't' %}Кандидат Наук {% endif %}{% if profile.academic_degree == 'd' %}Доктор Наук {% endif %}" type="text">
-                <label>Год присуждения</label>
-              <input class="form-control" placeholder="{{ profile.year_of_academic_degree.isoformat }}" type="text">
-                <label>Дата переизбрания(окончание трудового договора)</label>
-              <input class="form-control" placeholder="{{ profile.contract_date.isoformat }}" type="text">
-              <input class="btn btn-primary" type="submit" value="Сохранить">
+              <input class="form-control" placeholder="{{ profile.patronymic }}" name="patronymic" type="text">
+                <label>Должность (Администратор/Преподаватель)</label>
+              <input class="form-control" placeholder="{% if profile.type == 't' %}Преподаватель {% endif %}{% if profile.type == 'a' %}Администратор {% endif %}" name="type" type="text">
+                <label>Год рождения (в формате Год-Месяц-Число)</label>
+              <input class="form-control" placeholder="{{ profile.birth_date.isoformat }}" name="birth_date" type="text">
+                <label >Github id</label>
+            <input class="form-control" placeholder="{{ profile.github_id }}" name="github_id" type="text">
+                <label >Stepic id</label>
+            <input class="form-control" placeholder="{{ profile.stepic_id }}" name="stepic_id" type="text">
+                <label>Год вступления в должность (в формате Год-Месяц-Число)</label>
+              <input class="form-control" placeholder="{{ profile.election_date.isoformat }}" name="election_date" type="text">
+                <label>Дата переизбрания(окончание трудового договора) (в формате Год-Месяц-Число)</label>
+              <input class="form-control" placeholder="{{ profile.contract_date.isoformat }}" name="contract_date" type="text">
+                <label>Ученая степень (Ассистент/Старший преподаватель/Доцент/Профессор)</label>
+              <input class="form-control" placeholder="{% if profile.academic_status == 'a' %}Ассистент {% endif %}{% if profile.academic_status == 's' %}Старший преподаватель {% endif %}{% if profile.academic_status == 'd' %}Доцент {% endif %}{% if profile.academic_status == 'p' %}Профессор {% endif %}" name="academic_status" type="text">
+                <label>Год присуждения (в формате Год-Месяц-Число)</label>
+              <input class="form-control" placeholder="{{ profile.year_of_academic_status.isoformat }}" name="year_of_academic_status" type="text">
+                <label>Ученое звание (Без степени/Кандидат наук/Доктор наук)</label>
+              <input class="form-control" placeholder="{% if profile.academic_degree == 'n' %}Без степени {% endif %}{% if profile.academic_degree == 't' %}Кандидат Наук {% endif %}{% if profile.academic_degree == 'd' %}Доктор Наук {% endif %}" name="academic_degree" type="text">
+                <label>Год присуждения (в формате Год-Месяц-Число)</label>
+              <input class="form-control" placeholder="{{ profile.year_of_academic_degree.isoformat }}" name="year_of_academic_degree" type="text">
+              <button class="btn btn-primary" type="submit">Сохранить</button>
             </div>
         </form>
 {% endblock %}
+
