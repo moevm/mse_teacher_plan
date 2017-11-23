@@ -4,8 +4,6 @@ from django.db import models
 from django.contrib.auth.models import User
 
 PERSON_TYPE_CHOICES = (
-    ('s', 'Студент'),
-    ('h', 'Староста'),
     ('t', 'Преподаватель'),
     ('a', 'Администратор'),
 )
@@ -32,10 +30,6 @@ class UserProfile(models.Model):
   birth_date = models.DateField(
     null=True,
   )
-  study_group = models.CharField(
-    max_length=5,
-    null=True,
-  )
   github_id = models.CharField(
     max_length=100,
     null=True,
@@ -44,21 +38,16 @@ class UserProfile(models.Model):
     max_length=100,
     null=True,
   )
-
   type = models.CharField(
-    max_length=2,
+    max_length=1,
     choices=PERSON_TYPE_CHOICES,
-    default='s',
+    null=True
   )
-
   # Дата текущего избрания или зачисления на преподавательскую должность
   election_date = models.DateField(null=True)
 
-  # Должность
-  position = models.CharField(max_length=40, null=True)
-
   # Срок окончания трудового договора
-  contract_date = models.DateField(null=True)  # Возможн поменяю
+  contract_date = models.DateField(null=True)
 
   # Ученая степень
   academic_degree = models.CharField(
@@ -74,7 +63,8 @@ class UserProfile(models.Model):
   academic_status = models.CharField(
     max_length=1,
     choices=ACADEMIC_STATUS_CHOICES,
-    null=True)
+    null=True
+  )
   year_of_academic_status = models.DateField(null=True)
 
   @property
@@ -108,12 +98,10 @@ class UserProfile(models.Model):
       user=user,
       patronymic=params.get('patronymic'),
       birth_date=params.get('birth_date'),
-      study_group=params.get('study_group'),
       github_id=params.get('github_id'),
       stepic_id=params.get('stepic_id'),
-      type=params.get('type', 's'),
+      type=params.get('type'),
       election_date=params.get('election_date'),
-      position=params.get('position'),
       contract_date=params.get('contract_date'),
       academic_degree=params.get('academic_degree'),
       year_of_academic_degree=params.get('year_of_academic_degree'),
@@ -131,12 +119,10 @@ class UserProfile(models.Model):
       user=params.get('user'),
       patronymic=params.get('patronymic'),
       birth_date=params.get('birth_date'),
-      study_group=params.get('study_group'),
       github_id=params.get('github_id'),
       stepic_id=params.get('stepic_id'),
-      type=params.get('type', 's'),
+      type=params.get('type'),
       election_date=params.get('election_date'),
-      position=params.get('position'),
       contract_date=params.get('contract_date'),
       academic_degree=params.get('academic_degree'),
       year_of_academic_degree=params.get('year_of_academic_degree'),

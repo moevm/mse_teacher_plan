@@ -4,42 +4,46 @@ from django.db import models
 from moevmCommon.models.userProfile import UserProfile
 
 EVENT_TYPE_CHOISES = (
-  ('k','Конкурс'),
-  ('v','Выставка'),
-  ('с','Конференция'),
-  ('q','Семинар'),
+  ('k', 'Конкурс'),
+  ('v', 'Выставка'),
+  ('с', 'Конференция'),
+  ('q', 'Семинар')
 )
-
-reIter = (
-        ('disposable', 'одноразовый'),
-        ('repeating', 'повторяющийся')
-)
+#
+# reIter = (
+#         ('disposable', 'одноразовый'),
+#         ('repeating', 'повторяющийся')
+# )
 
 class ScientificEvent(models.Model):
+  user = models.ForeignKey(
+    UserProfile,
+    null=True
+  )
   event_name = models.CharField(max_length=255)
   level = models.CharField(
     max_length=20,
-    null=True,
+    null=True
   )
   date = models.DateField(
     "Дата проведения",
-    null=True,
-  )  # дата проведения
+    null=True
+  )
   place = models.CharField(
     "Место проведения",
     max_length="100",
-    null = True,
-  )  # дата проведения
+    null = True
+  )
   type = models.CharField(
     max_length=1,
-    choices=EVENT_TYPE_CHOISES,
-    default='c'
+    choices=EVENT_TYPE_CHOISES
   )
 
   @staticmethod
   def create(**params):
     scientificEvent = ScientificEvent.objects.create(
-      event_name=params.get('eventName'),
+      user=params.get('user'),
+      event_name=params.get('event_name'),
       level=params.get('level'),
       date=params.get('date'),
       place=params.get('place'),
@@ -55,18 +59,18 @@ class ScientificEvent(models.Model):
     return self.type + " " + self.level + " " + self.event_name
 
 
-class Participation(models.Model):
-  scientific_event = models.ForeignKey(ScientificEvent)
-  user = models.ForeignKey(UserProfile)
-  title = models.CharField(max_length=250,null=True)
-
-  @staticmethod
-  def create(**params):
-    participation = Participation.objects.create(
-      scientific_event=params.get('scientificEvent'),
-      user=params.get('user'),
-      title=params.get('title'),
-    )
-
-  def __str__(self):
-    return self.user + " на " + self.scientific_event.event_name
+# class Participation(models.Model):
+#   scientific_event = models.ForeignKey(ScientificEvent)
+#   user = models.ForeignKey(UserProfile)
+#   title = models.CharField(max_length=250,null=True)
+#
+#   @staticmethod
+#   def create(**params):
+#     participation = Participation.objects.create(
+#       scientific_event=params.get('scientificEvent'),
+#       user=params.get('user'),
+#       title=params.get('title'),
+#     )
+#
+#   def __str__(self):
+#     return self.user + " на " + self.scientific_event.event_name

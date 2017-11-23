@@ -18,7 +18,6 @@ class NIR(models.Model):
   )
   # Шифр
   cipher = models.CharField(
-    "Шифр",
     max_length="100",
     null=True
   )
@@ -27,6 +26,7 @@ class NIR(models.Model):
   def create(**params):
     nir = NIR.objects.create(
       user=params.get('user'),
+      workName=params.get('workName'),
       startDate=params.get('startDate'),
       finishDate = params.get('finishDate'),
       role = params.get('role'),
