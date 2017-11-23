@@ -3,8 +3,8 @@
 {% block pagename %}Создание индивидуального плана{% endblock %}
 {% block content %}
 
+    <div style="margin-bottom: 20px" class="controls new-plan" xmlns="http://www.w3.org/1999/html">
 
-      <div style="margin-bottom: 20px" class="controls new-plan">
         <select id="sell" class="selectWork">
             <option value='books'>Подготовка учебников</option>
             <option value='discipline'>Постановка и модернизация дисциплин</option>
@@ -13,58 +13,74 @@
             <option value='publ'>Список публикаций</option>
             <option value='kval'>Повышение квалификации</option>
             <option value='other'>Другие виды работ</option>
-            <option value='fuck'>Замечания по работе преподавателя</option>
+        </select>
+        <select id="year" class="selectWork">
+            <option value='2014'>2014</option>
+            <option value='2015'>2015</option>
+            <option value='2016'>2016</option>
+            <option value='2017'>2017</option>
+            <option value='2018'>2018</option>
         </select>
         <button class="btn btn-primary" style="margin-left: 15px"  onclick="itemsChanged()"> Выбрать </button>
+      <span id="notActive" style="display: inline-block; color: red; font-size: 12px; margin-left: 10px;">Выберите параметры</span>
       </div>
 
     <div class="all books controls new-plan">
-          <input class="form-control" placeholder="Факультет" type="text">
-          <input class="form-control" placeholder="Кафедра" type="text">
-          <input class="form-control" placeholder="Должность" type="text">
-          <input class="form-control" placeholder="Фамилия" type="text">
-          <input class="form-control" placeholder="Имя" type="text">
-          <input class="form-control" placeholder="Отчетство" type="text">
-          <input class="form-control" placeholder="Год рождения" type="text">
-          <input class="form-control" placeholder="Дата текущего избрания или зачисления на преподавательскую должность" type="text">
-          <input class="form-control" placeholder="Ученая степень и год присуждения" type="text">
-          <input class="form-control" placeholder="Ученое звание и год присуждения" type="text">
-          <input class="form-control" placeholder="Дата переизбрания(окончание трудового договора)" type="text">
-          <input class="btn btn-primary" type="submit" value="Создать">
+              <input class="form-control" placeholder="Факультет" type="text">
+              <input class="form-control" placeholder="Кафедра" type="text">
+              <input class="form-control" placeholder="Должность" type="text">
+              <input class="form-control" placeholder="Фамилия" type="text">
+              <input class="form-control" placeholder="Имя" type="text">
+              <input class="form-control" placeholder="Отчетство" type="text">
+              <input class="btn btn-primary" type="submit" value="Создать">
      </div>
     <div class="all discipline controls new-plan ">
-          <input class="form-control" placeholder="Факультет" type="text">
-          <input class="form-control" placeholder="Кафедра" type="text">
-          <input class="form-control" placeholder="Должность" type="text">
-          <input class="form-control" placeholder="Фамилия" type="text">
+        <form  role="form" method="post" action="{% url 'tpnewPlanSaveDisc' %}">
+          <input class="form-control" placeholder="Дисциплина" name="disc" type="text">
+          <input class="form-control" placeholder="Характер изменений" name="characterUpdate" type="text">
+          <input class="form-control" placeholder="Тип" name="type" type="text">
+          <input class="form-control" placeholder="Отметка о выполнении" name="completeMark" type="text">
           <input class="btn btn-primary" type="submit" value="Создать">
+            </form>
      </div>
     <div class="all scienceWork controls new-plan ">
-          <input class="form-control" placeholder="Факультет" type="text">
-          <input class="form-control" placeholder="Кафедра" type="text">
-          <input class="form-control" placeholder="Должность" type="text">
-          <input class="form-control" placeholder="Фамилия" type="text">
-          <input class="form-control" placeholder="Должность" type="text">
-          <input class="form-control" placeholder="Фамилия" type="text">
+        <form  role="form" method="post" action="{% url 'tpnewPlanSaveNIR' %}">
+          <input class="form-control" placeholder="Дата начала (в формате Год-Месяц-Число)" name="startDate" type="text">
+          <input class="form-control" placeholder="Организация" name="organisation" type="text">
+          <input class="form-control" placeholder="Название научной работы" name="workName" type="text">
+          <input class="form-control" placeholder="Дата окончания (в формате Год-Месяц-Число)" name="finishDate" type="text">
+          <input class="form-control" placeholder="Роль" name="role" type="text">
+          <input class="form-control" placeholder="Шифр" name="cipher" type="text">
           <input class="btn btn-primary" type="submit" value="Создать">
+        </form>
      </div>
     <div class="all conf controls new-plan ">
-          <input class="form-control" placeholder="Факультет" type="text">
-          <input class="form-control" placeholder="Кафедра" type="text">
-          <input class="form-control" placeholder="Должность" type="text">
-          <input class="form-control" placeholder="Фамилия" type="text">
+        <form  role="form" method="post" action="{% url 'tpnewPlanSaveScience' %}">
+          <input class="form-control" placeholder="Название события" name="event_name" type="text">
+          <input class="form-control" placeholder="Уровень" name="level" type="text">
+          <input class="form-control" placeholder="Дата проведения (в формате Год-Месяц-Число)" name="date" type="text">
+          <input class="form-control" placeholder="Место проведения" name="place" type="text">
+          <input class="form-control" placeholder="Тип (Конкурс/Выставка/Конференция/Семинар)" name="type" type="text">
           <input class="btn btn-primary" type="submit" value="Создать">
+        </form>
       </div>
     <div class="all publ controls new-plan ">
-          <input class="form-control" placeholder="Факультет" type="text">
-          <input class="form-control" placeholder="Кафедра" type="text">
-          <input class="form-control" placeholder="Должность" type="text">
-          <input class="form-control" placeholder="Фамилия" type="text">
-          <input class="form-control" placeholder="Должность" type="text">
-          <input class="form-control" placeholder="Фамилия" type="text">
-          <input class="form-control" placeholder="Должность" type="text">
-          <input class="form-control" placeholder="Фамилия" type="text">
+        <form role="form" method="post" action="{% url 'tpnewPlanSavePublication' %}">
+          <input class="form-control" placeholder="Тип (Методическое указание/Книга/Статья в журнале/Конспект лекции/сборник докладов/Сборник трудов)" name="publicationType" type="text">
+          <input class="form-control" placeholder="Вид повторения (Одноразовый/Повторяющийся)" name="reiteration" type="text">
+          <input class="form-control" placeholder="Название" name="name" type="text">
+          <input class="form-control" placeholder="Единицы объёма" name="unitVolume" type="text">
+          <input class="form-control" placeholder="Название издательства" name="publishingHouseName" type="text">
+          <input class="form-control" placeholder="Номер издания" name="number" type="text">
+          <input class="form-control" placeholder="Объем" name="volume" type="text">
+          <input class="form-control" placeholder="Тираж" name="edition" type="text">
+          <input class="form-control" placeholder="Место издания" name="place" type="text">
+          <input class="form-control" placeholder="Редактор" name="editor" type="text">
+          <input class="form-control" placeholder="Дата (в формате Год-Месяц-Число)" name="date" type="text">
+          <input class="form-control" placeholder="ISBN" name="isbn" type="text">
+          <input class="form-control" placeholder="Вид" name="type" type="text">
           <input class="btn btn-primary" type="submit" value="Создать">
+         </form>
       </div>
     <div class="all kval controls new-plan ">
           <input class="form-control" placeholder="Факультет" type="text">
@@ -82,16 +98,10 @@
           <input class="form-control" placeholder="Фамилия" type="text">
           <input class="btn btn-primary" type="submit" value="Создать">
       </div>
-    <div class="all fuck controls new-plan ">
-          <input class="form-control" placeholder="Факультет" type="text">
-          <input class="form-control" placeholder="Кафедра" type="text">
-          <input class="form-control" placeholder="Должность" type="text">
-          <input class="form-control" placeholder="Фамилия" type="text">
-          <input class="btn btn-primary" type="submit" value="Создать">
-      </div>
 
     <script>
     document.getElementById("sell").value = document.cookie;
+    document.getElementById("year").value = document.cookie;
         function itemsChanged(){
             var value = document.getElementById("sell").value;
             var x = document.getElementsByClassName("all");
@@ -100,8 +110,14 @@
                 x[i].style.display = "none";
             }
             x = document.getElementsByClassName(value);
-            for (i = 0; i < x.length; i++) {
-                x[i].style.display = "block";
+            if(document.getElementById("year").value != "") {
+                for (i = 0; i < x.length; i++) {
+                    x[i].style.display = "block";
+                }
+                document.getElementById("notActive").style.display = "none";
+            }
+            if(document.getElementById("sell").value == "") {
+                document.getElementById("notActive").style.display = "inline-block";
             }
             document.cookie = value;
         }
