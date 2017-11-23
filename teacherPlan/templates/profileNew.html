@@ -1,0 +1,36 @@
+{% extends 'pages/mainTemplate.html' %}
+{% block title %}Профиль{% endblock %}
+{% block pagename %}Создание профиля{% endblock %}
+{% block content %}
+        <form role="form" method="post" action="{% url 'tpprofileCreate' %}">
+            <div class="controls new-plan">
+            <label>Фамилия</label>
+                <input class="form-control" name="lastName" type="text">
+                <label>Имя</label>
+              <input class="form-control" name="firstName" type="text">
+                <label>Отчество</label>
+              <input class="form-control" name="patronymic" type="text">
+                <label>Должность (Администратор/Преподаватель)</label>
+              <input class="form-control" name="type" type="text">
+                <label>Год рождения (в формате Год-Месяц-Число)</label>
+              <input class="form-control" name="birth_date" type="text">
+                <label >Github id</label>
+            <input class="form-control" name="github_id" type="text">
+                <label >Stepic id</label>
+            <input class="form-control" name="stepic_id" type="text">
+                <label>Год вступления в должность (в формате Год-Месяц-Число)</label>
+              <input class="form-control" name="election_date" type="text">
+                <label>Дата переизбрания(окончание трудового договора) (в формате Год-Месяц-Число)</label>
+              <input class="form-control" name="contract_date" type="text">
+                <label>Ученая степень (Ассистент/Старший преподаватель/Доцент/Профессор)</label>
+              <input class="form-control" name="academic_status" type="text">
+                <label>Год присуждения (в формате Год-Месяц-Число)</label>
+              <input class="form-control" name="year_of_academic_status" type="text">
+                <label>Ученое звание (Без степени/Кандидат наук/Доктор наук)</label>
+              <input class="form-control" name="academic_degree" type="text">
+                <label>Год присуждения (в формате Год-Месяц-Число)</label>
+              <input class="form-control" name="year_of_academic_degree" type="text">
+              <button class="btn btn-primary" type="submit">Сохранить</button>
+            </div>
+        </form>
+{% endblock %}
