@@ -1,7 +1,6 @@
 {% extends 'pages/mainTemplate.html' %}
-
 {% block title %}Список индивидуальных планов{% endblock %}
-{% block pagename %}Список индивидуальных планов: {{user.first_name}} {{user.last_name}}{% endblock %}
+{% block pagename %}Список индивидуальных планов: {{user.last_name}} {{user.first_name}}{% endblock %}
 {% block content %}
     <table class="table table-striped">
       <thead>
@@ -21,6 +20,14 @@
         </tr>
         <tr>
           <td>2016</td>
+          <td><a href="{% url 'tpplan' %}">Перейти</a></td>
+        </tr>
+        <tr>
+          <td>2017</td>
+          <td><a href="{% url 'tpplan' %}">Перейти</a></td>
+        </tr>
+        <tr>
+          <td>2018</td>
           <td><a href="{% url 'tpplan' %}">Перейти</a></td>
         </tr>
       </tbody>
