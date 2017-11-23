@@ -2,8 +2,8 @@
 {% block title %}Вход на сайт{% endblock %}
 {% block pagename %}Вход на сайт{% endblock %}
 {% block content %}
-    <form role="form" method="post" action="{% url 'tplogin' %}">
-        {% csrf_token %}
+    <form role="form" accept-charset="us-ascii" method="post" action="{% url 'tplogin' %}">
+{#        {% csrf_token %}#}
         <span class="label label-danger">{{ error_message }}</span>
         <br>
         <br>
