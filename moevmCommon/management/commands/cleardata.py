@@ -21,8 +21,8 @@ class Command(BaseCommand):
     :return:
     """
     AcademicDisciplineOfTeacher.objects.all().delete()
-    AcademicDiscipline.objects.all().delete()
-    Participation.objects.all().delete()
+    # AcademicDiscipline.objects.all().delete()
+    # Participation.objects.all().delete()
     ScientificEvent.objects.all().delete()
     NIR.objects.all().delete()
     Publication.objects.all().delete()

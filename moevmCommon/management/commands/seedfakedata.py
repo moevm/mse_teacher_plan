@@ -57,7 +57,7 @@ class Command(BaseCommand):
 
       userProfile = UserProfile.create_of_user(
         user=user,
-        position=faker.word(),
+        # position=faker.word(),
         contract_date=faker.date(),
         academic_degree=random.choice(['n', 't','d']),
         year_of_academic_degree=faker.date(),
@@ -76,14 +76,14 @@ class Command(BaseCommand):
           cipher=faker.word()
         )
 
-      ad = AcademicDiscipline.create(
-        name=faker.word()
-      )
+      # ad = AcademicDiscipline.create(
+      #   name=faker.word()
+      # )
 
-      AcademicDisciplineOfTeacher.create(
-        teacher=userProfile,
-        disc=ad,
-      )
+      # AcademicDisciplineOfTeacher.create(
+      #   teacher=userProfile,
+      #   disc=ad,
+      # )
 
       for j in range(10):
         Publication.create(
@@ -111,14 +111,10 @@ class Command(BaseCommand):
           place=faker.word(),
           type=random.choice(['k', 'v','c','q']),
         )
-        Participation.create(
-          scientificEvent=sv,
-          user=userProfile,
-          title=faker.word()
-        )
-
-
-
-
+        # Participation.create(
+        #   scientificEvent=sv,
+        #   user=userProfile,
+        #   title=faker.word()
+        # )
 
     print("Случайные данные добавлены в базу данных")
