@@ -21,6 +21,34 @@ from django import forms
 @login_required(login_url="/login")
 def index(request):
     if list(UserProfile.objects.filter(user_id=request.user.id)) == []:
+        user = User.objects.get(id=request.user.id)
+        patronymic = ""
+        type = "t"
+        birth_date = "2017-01-01"
+        github_id = ""
+        stepic_id = ""
+        election_date = "2017-01-01"
+        contract_date = "2017-01-01"
+        academic_status = "a"
+        year_of_academic_status = "2017-01-01"
+        academic_degree = "n"
+        year_of_academic_degree = "2017-01-01"
+        user.first_name = ""
+        user.last_name = ""
+        user.save()
+        user_profile = UserProfile.objects.create(
+            user=user,
+            patronymic=patronymic,
+            birth_date=birth_date,
+            github_id=github_id,
+            stepic_id=stepic_id,
+            type=type,
+            election_date=election_date,
+            contract_date=contract_date,
+            academic_degree=academic_degree,
+            year_of_academic_degree=year_of_academic_degree,
+            academic_status=academic_status,
+            year_of_academic_status=year_of_academic_status)
         return render(request, 'profileNew.html')
     else:
         profile = UserProfile.objects.get(user_id=request.user.id)
