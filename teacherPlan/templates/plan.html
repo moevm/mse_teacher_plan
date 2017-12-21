@@ -1,256 +1,195 @@
 {% extends 'pages/mainTemplate.html' %}
 {% block title %}Индивидуальный план{% endblock %}
-{% block pagename %}Индивидуальный план: {{user.first_name}} {{user.last_name}} 2017г.{% endblock %}
+{% block pagename %}Индивидуальный план: {{ profile.first_name }} {{ profile.last_name }} {{ year }}г.{% endblock %}
 {% block content %}
-
     <h3>Подготовка учебников, учебных пособий и методических указаний, включая электронные издания</h3>
     <table class="table table-striped">
-      <thead>
+        <thead>
         <tr>
-          <th>Наименование</th>
-          <th>Вид издания</th>
-          <th>Объем</th>
-          <th>Вид грифа</th>
-          <th>Срок сдачи рукописи</th>
-          <th>Отметка  о выполнении</th>
+            <th>Название</th>
+            <th>Авторы</th>
+            <th>Дисциплина</th>
+            <th>Год выпуска</th>
+            <th>Издательство</th>
+            <th>Шифр</th>
         </tr>
-      </thead>
-      <tbody>
-        <tr>
-            <td>Имя</td>
-            <td>Вид</td>
-            <td>Объем</td>
-            <td>Вид грифа</td>
-            <td>Срок сдачи рукописи</td>
-            <td>5</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-      </tbody>
+        </thead>
+        {% for i in book %}
+            <tr>
+                <td>{{ i.bookName }}</td>
+                <td>{{ i.authors }}</td>
+                <td>{{ i.discipline }}</td>
+                <td>{{ i.date }}</td>
+                <td>{{ i.organisation }}</td>
+                <td>{{ i.cipher }}</td>
+                {% if delete == True %}
+                    <td><a href="{% url 'tpdeletePlan' %}?id={{ i.id }}&model=book&year={{ i.year }}">Del</a></td>
+                {% endif %}
+            </tr>
+        {% endfor %}
     </table>
+    <br>
     <h3>Постановка и модернизация дисциплин</h3>
     <table class="table table-striped">
         <thead>
-            <tr>
-              <th>Наименование дисциплины</th>
-              <th>Вид занятий</th>
-              <th>Характер изменения</th>
-              <th>Отметка  о выполнении</th>
-            </tr>
+        <tr>
+            <th>Дисциплина</th>
+            <th>Характер изменений</th>
+            <th>Тип</th>
+            <th>Отметка о выполнении</th>
+        </tr>
         </thead>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
+        {% for i in disc %}
+            <tr>
+                <td>{{ i.disc }}</td>
+                <td>{{ i.characterUpdate }}</td>
+                <td>{{ i.type }}</td>
+                <td>{{ i.completeMark }}</td>
+                {% if delete == True %}
+                    <td><a href="{% url 'tpdeletePlan' %}?id={{ i.id }}&model=disc&year={{ i.year }}">Del</a></td>
+                {% endif %}
+            </tr>
+        {% endfor %}
     </table>
-    <h3>Научно-исследовательская  работа в университете и вне университета</h3>
+    <br>
+    <h3>Научно-исследовательская работа в университете и вне университета</h3>
     <table class="table table-striped">
         <thead>
-            <tr>
-              <th>Наименование работы</th>
-              <th>Период</th>
-              <th>В качестве кого участвовал</th>
-              <th>Организация или предприятие</th>
-            </tr>
+        <tr>
+            <th>Название научной работы</th>
+            <th>Дата начала</th>
+            <th>Дата окончания</th>
+            <th>Организация</th>
+            <th>Роль</th>
+            <th>Шифр</th>
+        </tr>
         </thead>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
+        {% for i in nir %}
+            <tr>
+                <td>{{ i.workName }}</td>
+                <td>{{ i.startDate.isoformat }}</td>
+                <td>{{ i.finishDate.isoformat }}</td>
+                <td>{{ i.organisation }}</td>
+                <td>{{ i.role }}</td>
+                <td>{{ i.cipher }}</td>
+                {% if delete == True %}
+                    <td><a href="{% url 'tpdeletePlan' %}?id={{ i.id }}&model=nir&year={{ i.year }}">Del</a></td>
+                {% endif %}
+            </tr>
+        {% endfor %}
     </table>
+    <br>
     <h3>Участие в конференциях и выставках</h3>
     <table class="table table-striped">
         <thead>
-            <tr>
-              <th>Дата</th>
-              <th>Наименование конференции или выставки</th>
-              <th>Уровень конференции или выставки</th>
-              <th>Наименование доклада или экспоната</th>
-            </tr>
+        <tr>
+            <th>Название события</th>
+            <th>Уровень</th>
+            <th>Дата проведения</th>
+            <th>Место проведения</th>
+            <th>Тип</th>
+        </tr>
         </thead>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
+        {% for i in event %}
+            <tr>
+                <td>{{ i.event_name }}</td>
+                <td>{{ i.level }}</td>
+                <td>{{ i.date.isoformat }}</td>
+                <td>{{ i.place }}</td>
+                <td>{% if i.type == 'k' %}Конкурс {% endif %}{% if i.type == 'v' %}Выставка {% endif %}{% if i.type == 'c' %}Конференция {% endif %}{% if i.type == 'q' %}Семинар {% endif %}</td>
+                {% if delete == True %}
+                    <td><a href="{% url 'tpdeletePlan' %}?id={{ i.id }}&model=event&year={{ i.year }}">Del</a></td>
+                {% endif %}
+            </tr>
+        {% endfor %}
     </table>
+    <br>
     <h3>Список публикаций</h3>
     <table class="table table-striped">
         <thead>
-            <tr>
-              <th>Название работы</th>
-              <th>Вид публикации</th>
-              <th>Место издания</th>
-              <th>Редактор</th>
-              <th>Объем в п.л.</th>
-              <th>Название издательства</th>
-                <th>Объем в п.л.</th>
-              <th>Название издательства</th>
-                <th>Объем в п.л.</th>
-              <th>Название издательства</th>
-                <th>Объем в п.л.</th>
-              <th>Название издательства</th>
-            </tr>
+        <tr>
+            <th>Название</th>
+            <th>Тип</th>
+            <th>Вид повторения</th>
+            <th>Название издательства</th>
+            <th>Номер издания</th>
+            <th>Объем</th>
+            <th>Единицы объёма</th>
+            <th>Тираж</th>
+            <th>Место издания</th>
+            <th>Редактор</th>
+            <th>Дата</th>
+            <th>ISBN</th>
+            <th>Вид</th>
+        </tr>
         </thead>
         {% for i in publ %}
             <tr>
-            <td style="max-width: 10px">{{ i.name }}</td>
-            <td style="max-width: 10px">{{ i.publicationType }}</td>
-            <td style="max-width: 10px">{{ i.place }}</td>
-            <td style="max-width: 10px">{{ i.editor }}</td>
-            <td style="max-width: 10px">{{ i.volume }}</td>
-            <td style="max-width: 10px">{{ i.publishingHouseName }}</td>
-            <td style="max-width: 10px">{{ i.publishingHouseName }}</td>
-            <td style="max-width: 10px">{{ i.publishingHouseName }}</td>
-            <td style="max-width: 10px">{{ i.volume }}</td>
-            <td style="max-width: 10px">{{ i.publishingHouseName }}</td>
-            <td style="max-width: 10px">{{ i.volume }}</td>
-            <td style="max-width: 10px">{{ i.publishingHouseName }}</td>
-             </tr>
+                <td>{{ i.name }}</td>
+                <td>{% if i.publicationType == 'g' %}Методическое указание {% endif %}{% if i.publicationType == 'b' %}Книга {% endif %}{% if i.publicationType == 'j' %}Статья в журнале {% endif %}{% if i.publicationType == 's' %}Конспект лекции {% endif %}{% if i.publicationType == 'c' %}Сборник трудов {% endif %}</td>
+                <td>{% if i.reiteration == 'd' %}Одноразовый {% endif %}{% if i.reiteration == 'r' %}Повторяющийся {% endif %}</td>
+                <td>{{ i.publishingHouseName }}</td>
+                <td>{{ i.number }}</td>
+                <td>{{ i.volume }}</td>
+                <td>{{ i.unitVolume }}</td>
+                <td>{{ i.edition }}</td>
+                <td>{{ i.place }}</td>
+                <td>{{ i.editor }}</td>
+                <td>{{ i.date.isoformat }}</td>
+                <td>{{ i.isbn }}</td>
+                <td>{{ i.type }}</td>
+                {% if delete == True %}
+                    <td><a href="{% url 'tpdeletePlan' %}?id={{ i.id }}&model=publ&year={{ i.year }}">Del</a></td>
+                {% endif %}
+            </tr>
         {% endfor %}
     </table>
-    <h3>Повышение  квалификации</h3>
+    <br>
+    <h3>Повышение квалификации</h3>
     <table class="table table-striped">
         <thead>
-            <tr>
-              <th>Период</th>
-              <th>Форма повышения квалификации</th>
-              <th>Документ</th>
-            </tr>
+        <tr>
+            <th>Название</th>
+            <th>Дисциплина</th>
+            <th>Спикеры</th>
+            <th>Дата начала</th>
+            <th>Дата окончания</th>
+            <th>Организация</th>
+        </tr>
         </thead>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
+        {% for i in qual %}
+            <tr>
+                <td>{{ i.courseName }}</td>
+                <td>{{ i.discipline }}</td>
+                <td>{{ i.authors }}</td>
+                <td>{{ i.startDate.isoformat }}</td>
+                <td>{{ i.finishDate.isoformat }}</td>
+                <td>{{ i.organisation }}</td>
+                {% if delete == True %}
+                    <td><a href="{% url 'tpdeletePlan' %}?id={{ i.id }}&model=qual&year={{ i.year }}">Del</a></td>
+                {% endif %}
+            </tr>
+        {% endfor %}
     </table>
+    <br>
     <h3>Другие виды работ</h3>
     <table class="table table-striped">
         <thead>
-            <tr>
-              <th>Период</th>
-              <th>Вид работы</th>
-            </tr>
+        <tr>
+            <th>Начало</th>
+            <th>Конец</th>
+            <th>Вид работы</th>
+        </tr>
         </thead>
-        <tr>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-        </tr>
+        {% for i in other %}
+            <tr>
+                <td>{{ i.startDate.isoformat }}</td>
+                <td>{{ i.finishDate.isoformat }}</td>
+                <td>{{ i.kindOfWork }}</td>
+                {% if delete == True %}
+                    <td><a href="{% url 'tpdeletePlan' %}?id={{ i.id }}&model=other&year={{ i.year }}">Del</a></td>
+                {% endif %}
+            </tr>
+        {% endfor %}
     </table>
 {% endblock %}
