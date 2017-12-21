@@ -2,9 +2,7 @@
 {% block title %}Создание индивидуального плана{% endblock %}
 {% block pagename %}Создание индивидуального плана{% endblock %}
 {% block content %}
-
     <div style="margin-bottom: 20px" class="controls new-plan" xmlns="http://www.w3.org/1999/html">
-
         <select id="sell" class="selectWork">
             <option value='books'>Подготовка учебников</option>
             <option value='discipline'>Постановка и модернизация дисциплин</option>
@@ -21,107 +19,225 @@
             <option value='2017'>2017</option>
             <option value='2018'>2018</option>
         </select>
-        <button class="btn btn-primary" style="margin-left: 15px"  onclick="itemsChanged()"> Выбрать </button>
-      <span id="notActive" style="display: inline-block; color: red; font-size: 12px; margin-left: 10px;">Выберите параметры</span>
-      </div>
-
+        <button class="btn btn-primary" style="margin-left: 15px" onclick="itemsChanged()"> Выбрать</button>
+        <span id="notActive" style="display: inline-block; color: red; font-size: 12px; margin-left: 10px;">Выберите параметры</span>
+    </div>
     <div class="all books controls new-plan">
-              <input class="form-control" placeholder="Факультет" type="text">
-              <input class="form-control" placeholder="Кафедра" type="text">
-              <input class="form-control" placeholder="Должность" type="text">
-              <input class="form-control" placeholder="Фамилия" type="text">
-              <input class="form-control" placeholder="Имя" type="text">
-              <input class="form-control" placeholder="Отчетство" type="text">
-              <input class="btn btn-primary" type="submit" value="Создать">
-     </div>
+        <form role="form" method="post" action="{% url 'tpnewPlanSaveBook' %}">
+            <input class="form-control" placeholder="Авторы" name="authors" type="text">
+            <input class="form-control" placeholder="Название" name="bookName" type="text">
+            <input class="form-control" placeholder="Дисциплина" name="discipline" type="text">
+            <input class="form-control" placeholder="Год выпуска" name="yeardate" type="text">
+            <input class="form-control" placeholder="Издательство" name="organisation" type="text">
+            <input class="form-control" placeholder="Шифр" name="cipher" type="text">
+        </form>
+        <button class="btn btn-primary" onclick="checkAndSubmit()">Создать</button>
+        <span style = "display:none" class="label label-danger"> ERROR in lines: </span>
+    </div>
     <div class="all discipline controls new-plan ">
-        <form  role="form" method="post" action="{% url 'tpnewPlanSaveDisc' %}">
-          <input class="form-control" placeholder="Дисциплина" name="disc" type="text">
-          <input class="form-control" placeholder="Характер изменений" name="characterUpdate" type="text">
-          <input class="form-control" placeholder="Тип" name="type" type="text">
-          <input class="form-control" placeholder="Отметка о выполнении" name="completeMark" type="text">
-          <input class="btn btn-primary" type="submit" value="Создать">
-            </form>
-     </div>
+        <form role="form" method="post" action="{% url 'tpnewPlanSaveDisc' %}">
+            <input class="form-control" placeholder="Дисциплина" name="disc" type="text">
+            <input class="form-control" placeholder="Характер изменений" name="characterUpdate" type="text">
+            <input class="form-control" placeholder="Тип" name="type" type="text">
+            <input class="form-control" placeholder="Отметка о выполнении" name="completeMark" type="text">
+        </form>
+        <button class="btn btn-primary" onclick="checkAndSubmit()">Создать</button>
+        <span style = "display:none" class="label label-danger"> ERROR in lines: </span>
+    </div>
     <div class="all scienceWork controls new-plan ">
-        <form  role="form" method="post" action="{% url 'tpnewPlanSaveNIR' %}">
-          <input class="form-control" placeholder="Дата начала (в формате Год-Месяц-Число)" name="startDate" type="text">
-          <input class="form-control" placeholder="Организация" name="organisation" type="text">
-          <input class="form-control" placeholder="Название научной работы" name="workName" type="text">
-          <input class="form-control" placeholder="Дата окончания (в формате Год-Месяц-Число)" name="finishDate" type="text">
-          <input class="form-control" placeholder="Роль" name="role" type="text">
-          <input class="form-control" placeholder="Шифр" name="cipher" type="text">
-          <input class="btn btn-primary" type="submit" value="Создать">
+        <form role="form" method="post" action="{% url 'tpnewPlanSaveNIR' %}">
+            <input class="form-control" placeholder="Дата начала (в формате Год-Месяц-Число)" name="startDate" type="text">
+            <input class="form-control" placeholder="Организация" name="organisation" type="text">
+            <input class="form-control" placeholder="Название научной работы" name="workName" type="text">
+            <input class="form-control" placeholder="Дата окончания (в формате Год-Месяц-Число)" name="finishDate" type="text">
+            <input class="form-control" placeholder="Роль" name="role" type="text">
+            <input class="form-control" placeholder="Шифр" name="cipher" type="text">
         </form>
-     </div>
+        <button class="btn btn-primary" onclick="checkAndSubmit()">Создать</button>
+        <span style = "display:none" class="label label-danger"> ERROR in lines: </span>
+    </div>
     <div class="all conf controls new-plan ">
-        <form  role="form" method="post" action="{% url 'tpnewPlanSaveScience' %}">
-          <input class="form-control" placeholder="Название события" name="event_name" type="text">
-          <input class="form-control" placeholder="Уровень" name="level" type="text">
-          <input class="form-control" placeholder="Дата проведения (в формате Год-Месяц-Число)" name="date" type="text">
-          <input class="form-control" placeholder="Место проведения" name="place" type="text">
-          <input class="form-control" placeholder="Тип (Конкурс/Выставка/Конференция/Семинар)" name="type" type="text">
-          <input class="btn btn-primary" type="submit" value="Создать">
+        <form role="form" method="post" action="{% url 'tpnewPlanSaveScience' %}">
+            <input class="form-control" placeholder="Название события" name="event_name" type="text">
+            <input class="form-control" placeholder="Уровень" name="level" type="text">
+            <input class="form-control" placeholder="Дата проведения (в формате Год-Месяц-Число)" name="date" type="text">
+            <input class="form-control" placeholder="Место проведения" name="place" type="text">
+            <input class="form-control" placeholder="Тип (Конкурс / Выставка / Конференция / Семинар)" name="typeConf" type="text">
         </form>
-      </div>
+        <button class="btn btn-primary" onclick="checkAndSubmit()">Создать</button>
+        <span style = "display:none" class="label label-danger"> ERROR in lines: </span>
+    </div>
     <div class="all publ controls new-plan ">
         <form role="form" method="post" action="{% url 'tpnewPlanSavePublication' %}">
-          <input class="form-control" placeholder="Тип (Методическое указание/Книга/Статья в журнале/Конспект лекции/сборник докладов/Сборник трудов)" name="publicationType" type="text">
-          <input class="form-control" placeholder="Вид повторения (Одноразовый/Повторяющийся)" name="reiteration" type="text">
-          <input class="form-control" placeholder="Название" name="name" type="text">
-          <input class="form-control" placeholder="Единицы объёма" name="unitVolume" type="text">
-          <input class="form-control" placeholder="Название издательства" name="publishingHouseName" type="text">
-          <input class="form-control" placeholder="Номер издания" name="number" type="text">
-          <input class="form-control" placeholder="Объем" name="volume" type="text">
-          <input class="form-control" placeholder="Тираж" name="edition" type="text">
-          <input class="form-control" placeholder="Место издания" name="place" type="text">
-          <input class="form-control" placeholder="Редактор" name="editor" type="text">
-          <input class="form-control" placeholder="Дата (в формате Год-Месяц-Число)" name="date" type="text">
-          <input class="form-control" placeholder="ISBN" name="isbn" type="text">
-          <input class="form-control" placeholder="Вид" name="type" type="text">
-          <input class="btn btn-primary" type="submit" value="Создать">
-         </form>
-      </div>
+            <input class="form-control" placeholder="Тип (Методическое указание / Книга / Статья в журнале / Конспект лекции / Сборник трудов)" name="publicationType" type="text">
+            <input class="form-control" placeholder="Вид повторения (Одноразовый / Повторяющийся)" name="reiteration" type="text">
+            <input class="form-control" placeholder="Название" name="name" type="text">
+            <input class="form-control" placeholder="Единицы объёма" name="unitVolume" type="text">
+            <input class="form-control" placeholder="Название издательства" name="publishingHouseName" type="text">
+            <input class="form-control" placeholder="Номер издания" name="number" type="text">
+            <input class="form-control" placeholder="Объем" name="volume" type="text">
+            <input class="form-control" placeholder="Тираж" name="edition" type="text">
+            <input class="form-control" placeholder="Место издания" name="place" type="text">
+            <input class="form-control" placeholder="Редактор" name="editor" type="text">
+            <input class="form-control" placeholder="Дата (в формате Год-Месяц-Число)" name="date" type="text">
+            <input class="form-control" placeholder="ISBN" name="isbn" type="text">
+            <input class="form-control" placeholder="Вид" name="type" type="text">
+        </form>
+        <button class="btn btn-primary" onclick="checkAndSubmit()">Создать</button>
+        <span style = "display:none" class="label label-danger"> ERROR in lines: </span>
+    </div>
     <div class="all kval controls new-plan ">
-          <input class="form-control" placeholder="Факультет" type="text">
-          <input class="form-control" placeholder="Кафедра" type="text">
-          <input class="form-control" placeholder="Должность" type="text">
-          <input class="form-control" placeholder="Фамилия" type="text">
-          <input class="btn btn-primary" type="submit" value="Создать">
-      </div>
-     <div class="all other controls new-plan ">
-          <input class="form-control" placeholder="Факультет" type="text">
-          <input class="form-control" placeholder="Кафедра" type="text">
-          <input class="form-control" placeholder="Должность" type="text">
-          <input class="form-control" placeholder="Фамилия" type="text">
-          <input class="form-control" placeholder="Должность" type="text">
-          <input class="form-control" placeholder="Фамилия" type="text">
-          <input class="btn btn-primary" type="submit" value="Создать">
-      </div>
-
+        <form role="form" method="post" action="{% url 'tpnewPlanSaveQual' %}">
+            <input class="form-control" placeholder="Название" name="courseName" type="text">
+            <input class="form-control" placeholder="Дисциплина" name="discipline" type="text">
+            <input class="form-control" placeholder="Спикеры" name="authors" type="text">
+            <input class="form-control" placeholder="Дата начала (в формате Год-Месяц-Число)" name="startDate" type="text">
+            <input class="form-control" placeholder="Дата окончания (в формате Год-Месяц-Число)" name="finishDate" type="text">
+            <input class="form-control" placeholder="Организация" name="organisation" type="text">
+        </form>
+        <button class="btn btn-primary" onclick="checkAndSubmit()">Создать</button>
+        <span style = "display:none" class="label label-danger"> ERROR in lines: </span>
+    </div>
+    <div class="all other controls new-plan ">
+        <form role="form" method="post" action="{% url 'tpnewPlanSaveOther' %}">
+            <input class="form-control" placeholder="Дата начала (в формате Год-Месяц-Число)" name="startDate" type="text">
+            <input class="form-control" placeholder="Дата окончания (в формате Год-Месяц-Число)" name="finishDate" type="text">
+            <input class="form-control" placeholder="Вид работы" name="kindOfWork" type="text">
+        </form>
+        <button class="btn btn-primary" onclick="checkAndSubmit()">Создать</button>
+        <span style = "display:none" class="label label-danger"> ERROR in lines: </span>
+    </div>
     <script>
     document.getElementById("sell").value = document.cookie;
     document.getElementById("year").value = document.cookie;
-        function itemsChanged(){
-            var value = document.getElementById("sell").value;
-            var x = document.getElementsByClassName("all");
-            var i;
-            for (i = 0; i < x.length; i++) {
-                x[i].style.display = "none";
-            }
-            x = document.getElementsByClassName(value);
-            if(document.getElementById("year").value != "") {
-                for (i = 0; i < x.length; i++) {
-                    x[i].style.display = "block";
-                }
-                document.getElementById("notActive").style.display = "none";
-            }
-            if(document.getElementById("sell").value == "") {
-                document.getElementById("notActive").style.display = "inline-block";
-            }
-            document.cookie = value;
+    function itemsChanged() {
+        var value = document.getElementById("sell").value;
+        var year = document.getElementById("year").value;
+        var x = document.getElementsByClassName("all");
+        var i;
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
         }
+        x = document.getElementsByClassName(value);
+        if (document.getElementById("year").value != "") {
+            for (i = 0; i < x.length; i++) {
+                x[i].style.display = "block";
+            }
+            document.getElementById("notActive").style.display = "none";
+        }
+        if (document.getElementById("sell").value == "") {
+            document.getElementById("notActive").style.display = "inline-block";
+        }
+        document.cookie = value;
+    }
     itemsChanged();
+    function isValidDate(a) {
+        var IsoDateRe = new RegExp("^([0-9]{4})-([0-9]{2})-([0-9]{2})$");
+        var matches = IsoDateRe.exec(a);
+        if (!matches) return false;
+        var composedDate = new Date(matches[1], (matches[2] - 1), matches[3]);
+        return ((composedDate.getMonth() == (matches[2] - 1)) && (composedDate.getDate() == matches[3]) && (composedDate.getFullYear() == matches[1]));
+    }
+    function checkAndSubmit() {
+        var method = "POST"
+        var params = [];
+        var value = document.getElementById("sell").value;
+        if (value == "books") {
+            var url = "{% url 'tpnewPlanSaveBook' %}"
+        }
+        else if (value == "discipline") {
+            var url = "{% url 'tpnewPlanSaveDisc' %}"
+        }
+        else if (value == "scienceWork") {
+            var url = "{% url 'tpnewPlanSaveNIR' %}"
+        }
+        else if (value == "conf") {
+            var url = "{% url 'tpnewPlanSaveScience' %}"
+        }
+        else if (value == "publ") {
+            var url = "{% url 'tpnewPlanSavePublication' %}"
+        }
+        else if (value == "kval") {
+            var url = "{% url 'tpnewPlanSaveQual' %}"
+        }
+        else if (value == "other") {
+            var url = "{% url 'tpnewPlanSaveOther' %}"
+        }
+        var div = document.getElementsByClassName(value);
+        var form = div[0].firstElementChild;
+        var flag = true;
+        for (var i = 0; i < 7; i++) {
+            document.getElementsByClassName("label-danger")[i].style.display = "none";
+            document.getElementsByClassName("label-danger")[i].innerText = "ERROR in lines:";
+        }
+        for (var j = 0; j < form.elements.length; j++) {
+            var element = form.elements[j];
+            if ((element.name === "startDate") || (element.name === "finishDate") || (element.name === "date")) {
+                if (!isValidDate(element.value)) {
+                    for (var i = 0; i < 7; i++) {
+                        document.getElementsByClassName("label-danger")[i].style.display = "inline";
+                        document.getElementsByClassName("label-danger")[i].innerText += (' ' + (j + 1).toString());
+                        flag = false;
+                    }
+                }
+                else {
+                    params.push(element.name + "=" + element.value);
+                }
+            }
+            else if (element.name === "typeConf") {
+                if ((element.value == "Конкурс") || (element.value == "Выставка") || (element.value == "Конференция") || (element.value == "Семинар")){
+                    params.push(element.name + "=" + element.value);
+                }
+                else {
+                    for (var i = 0; i < 7; i++) {
+                        document.getElementsByClassName("label-danger")[i].style.display = "inline";
+                        document.getElementsByClassName("label-danger")[i].innerText += (' ' + (j + 1).toString());
+                        flag = false;
+                    }
+                }
+            }
+            else if (element.name === "publicationType"){
+                if ((element.value == "Методическое указание") || (element.value == "Книга") || (element.value == "Статья в журнале") || (element.value == "Конспект лекции") || (element.value == "Сборник трудов")){
+                    params.push(element.name + "=" + element.value);
+                }
+                else {
+                    for (var i = 0; i < 7; i++) {
+                        document.getElementsByClassName("label-danger")[i].style.display = "inline";
+                        document.getElementsByClassName("label-danger")[i].innerText += (' ' + (j + 1).toString());
+                        flag = false;
+                    }
+                }
+            }
+            else if (element.name === "reiteration") {
+                if ((element.value == "Одноразовый") || (element.value == "Повторяющийся")){
+                    params.push(element.name + "=" + element.value);
+                }
+                else {
+                    for (var i = 0; i < 7; i++) {
+                        document.getElementsByClassName("label-danger")[i].style.display = "inline";
+                        document.getElementsByClassName("label-danger")[i].innerText += (' ' + (j + 1).toString());
+                        flag = false;
+                    }
+                }
+            }
+            else if (element.value.toString() == "") {
+                for (var i = 0; i < 7; i++) {
+                    document.getElementsByClassName("label-danger")[i].style.display = "inline";
+                    document.getElementsByClassName("label-danger")[i].innerText += (' ' + (j + 1).toString());
+                    flag = false;
+                }
+            }
+            else params.push(element.name + "=" + element.value);
+        }
+        if (flag) {
+            params.push("year=" + document.getElementById("year").value);
+            var query = params.join("&");
+            var request = new XMLHttpRequest();
+            request.open(method, url);
+            request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+            request.send(query);
+            document.location.reload();
+        }
+    }
     </script>
-
 {% endblock %}
