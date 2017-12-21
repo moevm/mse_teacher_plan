@@ -65,7 +65,10 @@
             var element = form.elements[j];
             if ((element.name === "birth_date") || (element.name === "election_date") || (element.name === "contract_date") || (element.name === "year_of_academic_status") || (element.name === "year_of_academic_degree")) {
                 if (element.value != "") {
-                    if (!isValidDate(element.value)) {
+                    if (isValidDate(element.value)) {
+                        params.push(element.name + "=" + element.value);
+                    }
+                    else {
                         document.getElementsByClassName("label-danger")[0].style.display = "inline";
                         document.getElementsByClassName("label-danger")[0].innerText += (' ' + (j + 1).toString());
                         flag = false;
