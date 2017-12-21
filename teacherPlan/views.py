@@ -3,10 +3,7 @@ from django.contrib import auth
 from django.contrib.auth import login
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
-from django.http import HttpResponse
 from django.shortcuts import render
-from django.template import loader
 from moevmCommon.models.userProfile import UserProfile
 from django.http import HttpResponseRedirect
 import datetime
@@ -14,9 +11,10 @@ from moevmCommon.models.nir import NIR
 from moevmCommon.models.publication import Publication
 from moevmCommon.models.scientificEvent import ScientificEvent
 from moevmCommon.models.academicDiscipline import AcademicDisciplineOfTeacher
-from django.db import models
+from moevmCommon.models.books import Book
+from moevmCommon.models.other import Other
+from moevmCommon.models.qualification import Qualification
 from django.contrib.auth.models import User
-from django import forms
 
 @login_required(login_url="/login")
 def index(request):
@@ -48,7 +46,8 @@ def index(request):
             academic_degree=academic_degree,
             year_of_academic_degree=year_of_academic_degree,
             academic_status=academic_status,
-            year_of_academic_status=year_of_academic_status)
+            year_of_academic_status=year_of_academic_status
+        )
         return render(request, 'profileNew.html')
     else:
         profile = UserProfile.objects.get(user_id=request.user.id)
@@ -120,6 +119,8 @@ def makeNewPlanSaveNIR(request):
     finishDate = request.POST.get("finishDate")
     if (finishDate != "") and (validate(finishDate)): iNir += 1
 
+    year = request.POST.get('year')
+
     if iNir == 6:
         NIR.objects.create(
             user=profile,
@@ -128,7 +129,9 @@ def makeNewPlanSaveNIR(request):
             role=role,
             organisation=organisation,
             cipher=cipher,
-            finishDate=finishDate)
+            finishDate=finishDate,
+            year=year
+        )
 
     render(request, 'makeNewPlan.html')
     return HttpResponseRedirect('/makeNewPlan')
@@ -142,29 +145,29 @@ def makeNewPlanSavePublication(request):
     publicationType = request.POST.get("publicationType")
     if publicationType != "":
         if publicationType == u"Методическое указание":
-            publicationType = 'guidelines'
+            publicationType = 'g'
             iPubl+=1
         if publicationType == u"Книга":
-            publicationType = 'book'
+            publicationType = 'b'
             iPubl += 1
         if publicationType == u"Статья в журнале":
-            publicationType = 'journal'
+            publicationType = 'j'
             iPubl += 1
-        if publicationType == u"Конспект лекции/сборник докладов":
-            publicationType = 'compilation'
+        if publicationType == u"Конспект лекции":
+            publicationType = 's'
             iPubl += 1
         if publicationType == u"Сборник трудов":
-            publicationType = 'collection'
+            publicationType = 'c'
             iPubl += 1
 
     reiteration = request.POST.get("reiteration")
     if reiteration != "":
         if reiteration == u"Одноразовый":
             iPubl += 1
-            publicationType = 'disposable'
+            reiteration = 'd'
         if reiteration == u"Повторяющийся":
             iPubl += 1
-            publicationType = 'repeating'
+            reiteration = 'r'
 
     name = request.POST.get("name")
     if name != "": iPubl += 1
@@ -199,6 +202,8 @@ def makeNewPlanSavePublication(request):
     type = request.POST.get("type")
     if type != "": iPubl += 1
 
+    year = request.POST.get('year')
+
     if iPubl == 13:
         Publication.objects.create(
             user=profile,
@@ -214,10 +219,13 @@ def makeNewPlanSavePublication(request):
             edition=edition,
             type=type,
             isbn=isbn,
-            editor=editor)
+            editor=editor,
+            year=year
+        )
 
     render(request, 'makeNewPlan.html')
     return HttpResponseRedirect('/makeNewPlan')
+
 
 @login_required(login_url="/login")
 def makeNewPlanSaveScience(request):
@@ -237,7 +245,7 @@ def makeNewPlanSaveScience(request):
     place = request.POST.get("place")
     if place != "": iSci += 1
 
-    type = request.POST.get("type")
+    type = request.POST.get("typeConf")
     if type != "":
         if type == u"Конкурс":
             iSci += 1
@@ -252,6 +260,8 @@ def makeNewPlanSaveScience(request):
             iSci += 1
             type = 'q'
 
+    year = request.POST.get('year')
+
     if iSci == 5:
         ScientificEvent.objects.create(
             user=profile,
@@ -259,9 +269,11 @@ def makeNewPlanSaveScience(request):
             level=level,
             date=date,
             place=place,
-            type=type)
+            type=type,
+            year=request.POST.get('year')
+        )
 
-    render(request, 'makeNewPlan.html')
+    render(request, 'makeNewPlan.html', )
     return HttpResponseRedirect('/makeNewPlan')
 
 @login_required(login_url="/login")
@@ -284,13 +296,134 @@ def makeNewPlanSaveDisc(request):
     completeMark = request.POST.get("completeMark")
     if completeMark != "": iDisc += 1
 
+    year = request.POST.get('year')
+
     if iDisc == 4:
         AcademicDisciplineOfTeacher.objects.create(
             user=profile,
             disc=disc,
             type=type,
             characterUpdate=characterUpdate,
-            completeMark=completeMark)
+            completeMark=completeMark,
+            year=year
+        )
+
+    render(request, 'makeNewPlan.html')
+    return HttpResponseRedirect('/makeNewPlan')
+
+@login_required(login_url="/login")
+def makeNewPlanSaveBook(request):
+    userProf = request.POST.get("UserProfile")
+
+    profile = UserProfile.objects.get(user_id=request.user.id)
+
+    iBook = 0
+
+    authors = request.POST.get("authors")
+    if authors != "": iBook+=1
+
+    bookName = request.POST.get("bookName")
+    if bookName != "": iBook += 1
+
+    discipline = request.POST.get("discipline")
+    if discipline != "": iBook += 1
+
+    date = request.POST.get("yeardate")
+    if date != "": iBook += 1
+
+    organisation = request.POST.get("organisation")
+    if organisation != "": iBook += 1
+
+    cipher = request.POST.get("cipher")
+    if cipher != "": iBook += 1
+
+    year = request.POST.get('year')
+
+    if iBook == 6:
+        Book.objects.create(
+            user=profile,
+            authors=authors,
+            bookName=bookName,
+            discipline=discipline,
+            date=date,
+            organisation=organisation,
+            cipher=cipher,
+            year=year
+        )
+
+    render(request, 'makeNewPlan.html')
+    return HttpResponseRedirect('/makeNewPlan')
+
+@login_required(login_url="/login")
+def makeNewPlanSaveQual(request):
+    userProf = request.POST.get("UserProfile")
+
+    profile = UserProfile.objects.get(user_id=request.user.id)
+
+    iQual = 0
+
+    courseName = request.POST.get("courseName")
+    if courseName != "": iQual+=1
+
+    authors = request.POST.get("authors")
+    if authors != "": iQual += 1
+
+    discipline = request.POST.get("discipline")
+    if discipline != "": iQual += 1
+
+    startDate = request.POST.get("startDate")
+    if startDate != "" and (validate(startDate)): iQual += 1
+
+    finishDate = request.POST.get("finishDate")
+    if finishDate != "" and (validate(finishDate)): iQual += 1
+
+    organisation = request.POST.get("organisation")
+    if organisation != "": iQual += 1
+
+    year = request.POST.get('year')
+
+    if iQual == 6:
+        Qualification.objects.create(
+            user=profile,
+            courseName=courseName,
+            discipline=discipline,
+            authors=authors,
+            startDate=startDate,
+            finishDate=finishDate,
+            organisation=organisation,
+            year=year
+        )
+
+    render(request, 'makeNewPlan.html')
+    return HttpResponseRedirect('/makeNewPlan')
+
+@login_required(login_url="/login")
+def makeNewPlanSaveOther(request):
+    userProf = request.POST.get("UserProfile")
+
+    profile = UserProfile.objects.get(user_id=request.user.id)
+
+    iOther = 0
+
+    startDate = request.POST.get("startDate")
+    if startDate != "" and (validate(startDate)): iOther += 1
+
+    finishDate = request.POST.get("finishDate")
+    if finishDate != "" and (validate(finishDate)): iOther += 1
+
+    kindOfWork = request.POST.get("kindOfWork")
+    if kindOfWork != "": iOther += 1
+
+    year = request.POST.get('year')
+
+    if iOther == 3:
+        Other.objects.create(
+            user=profile,
+            startDate=startDate,
+            finishDate=finishDate,
+            kindOfWork=kindOfWork,
+            year=year
+        )
 
     render(request, 'makeNewPlan.html')
     return HttpResponseRedirect('/makeNewPlan')
@@ -320,10 +453,7 @@ def profileSave(request):
     if patronymic != "":
         profile.patronymic = patronymic
 
-    type = request.POST.get("type")
-    if type != "":
-        if type == u"Преподаватель": profile.type = 't'
-        if type == u"Администратор": profile.type = 'a'
+    profile.type = 't'
 
     birth_date = request.POST.get("birth_date")
     if birth_date != "" and validate(birth_date):
@@ -377,111 +507,59 @@ def profileSave(request):
     return HttpResponseRedirect('/profile')
 
 @login_required(login_url="/login")
-def profileCreate(request):
-    user = User.objects.get(id=request.user.id)
-    iProf = 0
-
-    lastName = request.POST.get("lastName")
-    if lastName != "": iProf+=1
-
-    firstName = request.POST.get("firstName")
-    if firstName != "": iProf+=1
-
-    patronymic = request.POST.get("patronymic")
-    if patronymic != "": iProf+=1
-
-    type = request.POST.get("type")
-    if type != "":
-        if type == u"Преподаватель":
-            type = 't'
-            iProf += 1
-        if type == u"Администратор":
-            type = 'a'
-            iProf += 1
-
-    birth_date = request.POST.get("birth_date")
-    if birth_date != "" and validate(birth_date): iProf+=1
-
-    github_id = request.POST.get("github_id")
-    if github_id != "": iProf+=1
-
-    stepic_id = request.POST.get("stepic_id")
-    if stepic_id != "": iProf+=1
-
-    election_date = request.POST.get("election_date")
-    if election_date != "" and validate(election_date): iProf+=1
-
-    contract_date = request.POST.get("contract_date")
-    if contract_date != "" and validate(contract_date): iProf+=1
-
-    academic_status = request.POST.get("academic_status")
-    if academic_status != "":
-        if academic_status == u"Ассистент":
-            academic_status = 'a'
-            iProf += 1
-        if academic_status == u"Старший преподаватель":
-            academic_status = 's'
-            iProf += 1
-        if academic_status == u"Доцент":
-            academic_status = 'd'
-            iProf += 1
-        if academic_status == u"Профессор":
-            academic_status = 'p'
-            iProf += 1
-
-    year_of_academic_status = request.POST.get("year_of_academic_status")
-    if year_of_academic_status != "" and validate(year_of_academic_status): iProf+=1
-
-    academic_degree = request.POST.get("academic_degree")
-    if academic_degree != "":
-        if academic_degree == u"Без степени":
-            academic_degree = 'n'
-            iProf += 1
-        if academic_degree == u"Кандидат наук":
-            academic_degree = 't'
-            iProf += 1
-        if academic_degree == u"Доктор наук":
-            academic_degree = 'd'
-            iProf += 1
-
-    year_of_academic_degree = request.POST.get("year_of_academic_degree")
-    if year_of_academic_degree != "" and validate(year_of_academic_degree): iProf+=1
-
-    if firstName!="": user.first_name = firstName
-    if lastName!="": user.last_name = lastName
-    user.save()
-
-    if iProf == 11:
-        user_profile = UserProfile.objects.create(
-            user=user,
-            patronymic=patronymic,
-            birth_date=birth_date,
-            github_id=github_id,
-            stepic_id=stepic_id,
-            type=type,
-            election_date=election_date,
-            contract_date=contract_date,
-            academic_degree=academic_degree,
-            year_of_academic_degree=year_of_academic_degree,
-            academic_status=academic_status,
-            year_of_academic_status=year_of_academic_status)
-
-    render(request, 'profileOpen.html')
-    return HttpResponseRedirect('/profile')
-
-@login_required(login_url="/login")
 def plan(request):
     profile = UserProfile.objects.get(user_id=request.user.id)
-    publ = list(Publication.objects.filter(user_id=profile.id))
-    # publ = Publication.objects.get(user_id=profile.id)
+    disc = list(AcademicDisciplineOfTeacher.objects.filter(user_id=profile.id, year=request.GET.get('year')))
+    book = list(Book.objects.filter(user_id=profile.id, year=request.GET.get('year')))
+    nir = list(NIR.objects.filter(user_id=profile.id, year=request.GET.get('year')))
+    other = list(Other.objects.filter(user_id=profile.id, year=request.GET.get('year')))
+    publ = list(Publication.objects.filter(user_id=profile.id, year=request.GET.get('year')))
+    qual = list(Qualification.objects.filter(user_id=profile.id, year=request.GET.get('year')))
+    event = list(ScientificEvent.objects.filter(user_id=profile.id, year=request.GET.get('year')))
     context = {
+        'profile' : profile,
+        'disc': disc,
+        'book': book,
+        'nir': nir,
+        'other': other,
         'publ': publ,
+        'qual': qual,
+        'event' : event,
+        'delete': True,
+        'year' : request.GET.get('year')
     }
     return render(request, 'plan.html', context)
 
 @login_required(login_url="/login")
 def listOfPlans(request):
-    return render(request, 'listOfPlans.html')
+    return render(request, 'listOfPlans.html')\
+
+@login_required(login_url="/login")
+def deletePlan(request):
+    model = request.GET.get('model')
+    id = request.GET.get('id')
+    if model == 'book':
+        o = Book.objects.get(id=id)
+        Book.delete(o)
+    if model == 'disc':
+        o = AcademicDisciplineOfTeacher.objects.get(id=id)
+        AcademicDisciplineOfTeacher.delete(o)
+    if model == 'nir':
+        o = NIR.objects.get(id=id)
+        NIR.delete(o)
+    if model == 'event':
+        o = ScientificEvent.objects.get(id=id)
+        ScientificEvent.delete(o)
+    if model == 'publ':
+        o = Publication.objects.get(id=id)
+        Publication.delete(o)
+    if model == 'qual':
+        o = Qualification.objects.get(id=id)
+        Qualification.delete(o)
+    if model == 'other':
+        o = Other.objects.get(id=id)
+        Other.delete(o)
+    return HttpResponseRedirect('/plan?year='+o.year)
 
 @login_required(login_url="/login")
 def accessNot(request):
@@ -495,6 +573,35 @@ def accessNot(request):
 def managerReport(request):
 
     if request.user.is_superuser:
-        return render(request,'manager/report.html')
+        users = UserProfile.objects.all()
+        context = {
+            'users' : users
+        }
+        return render(request,'manager/report.html', context)
     else:
         return HttpResponseRedirect("/accessNot")
+
+def userReport(request):
+    user = request.GET.get('user')
+    year = request.GET.get('year')
+    profile = UserProfile.objects.get(id=user)
+    disc = list(AcademicDisciplineOfTeacher.objects.filter(user_id=user, year=year))
+    book = list(Book.objects.filter(user_id=user, year=year))
+    nir = list(NIR.objects.filter(user_id=user, year=year))
+    other = list(Other.objects.filter(user_id=user, year=year))
+    publ = list(Publication.objects.filter(user_id=user, year=year))
+    qual = list(Qualification.objects.filter(user_id=user, year=year))
+    event = list(ScientificEvent.objects.filter(user_id=user, year=year))
+    context = {
+        'profile': profile,
+        'disc': disc,
+        'book': book,
+        'nir': nir,
+        'other': other,
+        'publ': publ,
+        'qual': qual,
+        'event': event,
+        'year': year,
+        'delete': False
+    }
+    return render(request, 'plan.html', context)
