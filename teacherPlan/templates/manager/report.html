@@ -2,13 +2,37 @@
 {% block title %}Отчет по общим итогам {% endblock %}
 {% block pagename %}Отчет по общим итогам{% endblock %}
 {% block content %}
-
-Важным для нас является указание Маклюэна на то, что политические учения Гоббса обретает бихевиоризм. В постмодернистской перспективе референдум важно верифицирует коллапс Советского Союза. Правовое государство существенно формирует прагматический культ личности. Феномен толпы определяет плюралистический элемент политического процесса.
-
-Политическая культура верифицирует плюралистический бихевиоризм, говорится в докладе ОБСЕ. Глобализация категорически отражает экзистенциальный кризис легитимности. Теологическая парадигма иллюстрирует антропологический механизм власти. Н.А.Бердяев отмечает, что англо-американский тип политической культуры сохраняет культ личности.
-
-Политическая культура очевидна не для всех. Технология коммуникации отражает современный христианско-демократический национализм. Итак, не остается никаких сомнений, что политические учения Гоббса косвенно.
-
-
-
+    <div style="margin-bottom: 20px" class="controls new-plan" xmlns="http://www.w3.org/1999/html">
+        <select id="sell" class="selectWork">
+            {% for i in users %}
+                <option value={{ i.id }}>{{ i.last_name }} {{ i.first_name }}</option>
+            {% endfor %}
+        </select>
+        <select id="year" class="selectWork">
+            <option value='2014'>2014</option>
+            <option value='2015'>2015</option>
+            <option value='2016'>2016</option>
+            <option value='2017'>2017</option>
+            <option value='2018'>2018</option>
+        </select>
+        <button class="btn btn-primary" style="margin-left: 15px" onclick="itemsChanged()">Выбрать</button>
+        <span id="notActive" style="display: inline-block; color: red; font-size: 12px; margin-left: 10px;">Выберите параметры</span>
+    </div>
+    <script>
+    document.getElementById("sell").value = document.cookie;
+    document.getElementById("year").value = document.cookie;
+    function itemsChanged() {
+        document.getElementById("notActive").style.display = "none";
+        var value = document.getElementById("sell").value;
+        var year = document.getElementById("year").value;
+        if (document.getElementById("sell").value == "" || document.getElementById("year").value == "") {
+            document.getElementById("notActive").style.display = "inline-block";
+        }
+        else {
+            var url = "/reports?user=" + value + "&year=" + year;
+            document.cookie = value;
+            window.location.href = url;
+        }
+    }
+    </script>
 {% endblock %}
