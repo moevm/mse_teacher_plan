@@ -5,9 +5,9 @@ from app import app
 @app.route('/')
 @app.route('/index')
 def index():
-    user = {'isactive': True, 'last_name': 'Korytov', 'first_name': 'Pavel'}  # TODO
+    user = {'isactive': False, 'last_name': 'Korytov', 'first_name': 'Pavel'}  # TODO
     profile = {'patronymic': 'Hmm'}
-    return render_template('index.html', title='Home', user=user, profile=profile)
+    return render_template('index.html', title='Главная', user=user, profile=profile)
 
 
 @app.route('/tpindex')  # TODO
