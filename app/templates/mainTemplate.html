@@ -2,6 +2,13 @@
 {% macro button_here(name) %}
     {% if title == name  %} btn-primary {% else %} btn-secondary {% endif %}
 {% endmacro %}
+{% macro get_value_by_name(name, list) %}
+    {% for i in list %}
+        {% if i.name == name %}
+            {{ i.value }}
+        {% endif %}
+    {% endfor %}
+{% endmacro %}
 <html lang="ru-ru">
 <head>
     <meta charset="UTF-8">
@@ -13,7 +20,7 @@
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
 </head>
 <body>
-    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-sm-3">
         <a class="navbar-brand" href="#">Индивидуальный план преподавателя</a>
          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main_collapse"
                  aria-controls="main_collapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,14 +41,14 @@
     </nav>
     <div class="container-fluid">
           <div class="row">
-              <div class="col-sm-12 col-md-3 sidebar">
+              <div class="col-sm-12 col-md-3">
                   <nav class="navbar navbar-expand-md navbar-light bg-light">
                       <div class="navbar-collapse collapse" id="main_collapse">
                           <ul class="nav nav-sidebar">
                               {% set button_params = 'btn btn-primary col-sm' %}
                               {% set item_params = 'nav-item btn-block mr-2 mt-2' %}
                               <li class="{{ item_params }}">
-                                  <a class="{{ button_params }} {{ button_here('Главная') }} " href="{{ url_for('tpindex') }}">
+                                  <a class="{{ button_params }} {{ button_here('Главная') }} " href="{{ url_for('index') }}">
                                       Главная
                                   </a>
                               </li>
@@ -64,7 +71,7 @@
                       </div>
                   </nav>
               </div>
-            <div class="col-sm-12 col-md-9 main">
+            <div class="col-sm-12 col-md-9">
                 <div class="page-header">
                   <h1>{% block pagename %}{% endblock %}</h1>
                 </div>
@@ -73,6 +80,8 @@
           </div>
         </div>
 </body>
+{% block scripts %} {% endblock %}
+{# TODO ShowErrorDialog #}
 <script src="{{ url_for('static', filename='lib/jquery/jquery-3.3.1.js')}}"></script>
 <script src="{{ url_for('static', filename='lib/popper/popper.js')}}"></script>
 <script src="{{ url_for('static', filename='lib/bootstrap/js/bootstrap.min.js')}}"></script>

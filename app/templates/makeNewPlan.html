@@ -1,0 +1,77 @@
+{% extends 'mainTemplate.html' %}
+{% block title %}Создание индивидуального плана{% endblock %}
+{% block pagename %}Создание индивидуального плана{% endblock %}
+{% block content %}
+    <form>
+        <div class="form-row">
+            <div class="col-sm-12 col-md-8">
+                <label for="selectWork">Выберите тип работы:</label>
+                <select class="form-control mb-3" id="selectWork">
+                    {% for i in range(models|length) %}
+                        <option value="{{ models[i].name }}">{{ models[i].text }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-sm-12 col-md-2">
+                <label for="selectYear">Год:</label>
+                <select class="form-control" id="selectYear">
+                    {% for i in range(2014, 2024) %}
+                        <option value={{ i }}>{{ i }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-sm-12 col-md-2 mb-3">
+                <label>&nbsp;</label>
+                <button type="button" class="form-control btn btn-primary" onclick="showReq()"> Выбрать</button>
+            </div>
+        </div>
+        {% for i in range(models|length) %}
+            {% set form_info = models[i] %}
+            {% set info = i %}
+            {% include 'includes/inputForm.html' %}
+        {% endfor %}
+    </form>
+{% endblock %}
+{% block scripts %}
+    <script>
+        const models = JSON.parse('{{ models|tojson|safe }}');
+
+        function hideForms() {
+            for (let i = 0; i < models.length; i++) {
+                document.getElementById(models[i].name + '_form').style.display = 'none';
+            }
+        }
+
+        function showReq() {
+            hideForms();
+            let option = document.getElementById('selectWork').value;
+            document.getElementById(option + '_form').style.display = 'block';
+        }
+
+        function submitInfo(ind) {
+            let model = models[ind];
+            let obj = {'type': model.name};
+            for (let i = 0; i < model.fields.length; i++){
+                let name = model.name + '_' + model.fields[i].name;
+                let elem = document.getElementById(name);
+                obj[model.fields[i].name] = elem.value;
+            }
+            const xhttp = new XMLHttpRequest();
+            const url = '/newplan';
+            xhttp.open('POST', url, true);
+            xhttp.setRequestHeader("Content-Type", "application/json");
+            xhttp.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    res = JSON.parse(this.responseText);
+                    if (res.ok)
+                        window.open('/index', '_self');
+                    else
+                        showErrorDialog(res.message);
+                }
+            };
+            const data = JSON.stringify(obj);
+            xhttp.send(data);
+        }
+        hideForms();
+    </script>
+{% endblock %}
