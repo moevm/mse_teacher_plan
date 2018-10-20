@@ -1,23 +1,32 @@
-from flask import render_template, url_for
-from app import app
+from flask import render_template, url_for, request, jsonify
+from app import app, db
+from app import models_temp
+from app.models.user import User
+
+f = models_temp.f
+
+pavel = None
+for user in User.objects(first_name='Павел'):
+    pavel = user
 
 
 @app.route('/')
 @app.route('/index')
+@app.route('/tpindex')
 def index():
-    user = {'isactive': False, 'last_name': 'Korytov', 'first_name': 'Pavel'}  # TODO
-    profile = {'patronymic': 'Hmm'}
-    return render_template('index.html', title='Главная', user=user, profile=profile)
+    return render_template('index.html', title='Главная', profile=pavel)
 
 
-@app.route('/tpindex')  # TODO
-def tpindex():
-    return 'DUMMY'
+@app.route('/newplan', methods=['POST'])
+def add_new_plan():
+    req_data = request.get_json()
+    print(req_data)
+    return jsonify({'ok': True, 'message': ''})
 
 
 @app.route('/tpprofile')  # TODO
 def tpprofile():
-    return 'DUMMY'
+    return render_template('profile.html', title='Профиль', profile=pavel)
 
 
 @app.route('/tplogout')  # TODO
@@ -27,7 +36,7 @@ def tplogout():
 
 @app.route('/tpnewplan')  #TODO
 def tpnewplan():
-    return 'DUMMY'
+    return render_template('makeNewPlan.html', title='Новый план', models=models_temp.models)
 
 
 @app.route('/tpplanlist')  #TODO
