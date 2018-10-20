@@ -9,6 +9,9 @@
         {% endif %}
     {% endfor %}
 {% endmacro %}
+{% macro get_mongo_value_by_name(name, object) %}
+    {{ object._data[name] }}
+{% endmacro %}
 <html lang="ru-ru">
 <head>
     <meta charset="UTF-8">

@@ -1,7 +1,7 @@
 {% extends "mainTemplate.html" %}
 {% block title %}Индивидуальный план преподавателя {% endblock %}
-{% block pagename %}Здравствуйте, {{get_value_by_name('last_name', profile)}} {{get_value_by_name('first_name', profile)}}
-    {{get_value_by_name('patronymic', profile)}}!{% endblock %}
+{% block pagename %}Здравствуйте, {{get_mongo_value_by_name('last_name', profile)}} {{get_mongo_value_by_name('first_name', profile)}}
+    {{get_mongo_value_by_name('patronymic', profile)}}!{% endblock %}
 {% block content %}
 
 Добро пожаловать на страницу с вашим индивидуальным планом. Здесь Вы можете добавить Ваши научные достижения, а также вести учет своих дисциплин.<br>
