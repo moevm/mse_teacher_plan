@@ -6,9 +6,10 @@ from app.models.user import User
 
 class Book(Document):
     user = ReferenceField(User)
-    authors = StringField(**default_string_params)
-    bookName = StringField(**default_string_params)
-    discipline = StringField(**default_string_params)
-    yeardate = IntField(**default_params)
-    organization = StringField(**default_string_params)
-    cipher = StringField(**default_string_params)
+    authors = StringField(**default_string_params, verbose_name='Авторы')
+    bookName = StringField(**default_string_params, verbose_name='Название')
+    discipline = StringField(**default_string_params, verbose_name='Дисциплина')
+    yeardate = IntField(**default_params, verbose_name='Год выпуска')
+    organization = StringField(**default_string_params, verbose_name='Издательство')
+    cipher = StringField(**default_string_params, verbose_name='Шифр')
+    meta = {'collection': 'Books'}

@@ -5,25 +5,27 @@
 
 <div id="{{ form_info.name + '_form' }}" class="container-fluid">
     {% for k in range(form_info.fields|length) %}
-        <div class="form-group">
-            {% set field = form_info.fields[k] %}
-            {% set name = form_info.name + '_' + field.name %}
-            <label for="{{ name }}">
-                {{ field.text }}
-            </label>
-            {% if field.opts|length != 0 %}
-                <select class="form-control" id="{{ name }}">
-                    {% for i in range(field.opts|length) %}
-                        <option value="{{ name + '_' + i|string }}"
-                                {% if field.value == field.opts[i] %} selected="selected" {% endif %}>
-                            {{ field.opts[i] }}
-                        </option>
-                    {% endfor %}
-                </select>
-            {% else %}
-                <input class="form-control" type="{{ field.type }}" id = "{{ name }}" value="{{ field.value }}">
-            {% endif %}
-        </div>
+        {% if form_info.fields[k].text != '%NO_VERBOSE_NAME%' %}
+            <div class="form-group">
+                {% set field = form_info.fields[k] %}
+                {% set name = form_info.name + '_' + field.name %}
+                <label for="{{ name }}">
+                    {{ field.text }}
+                </label>
+                {% if field.opts|length != 0 %}
+                    <select class="form-control" id="{{ name }}">
+                        {% for i in range(field.opts|length) %}
+                            <option value="{{ name + '_' + i|string }}"
+                                    {% if field.value == field.opts[i] %} selected="selected" {% endif %}>
+                                {{ field.opts[i] }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                {% else %}
+                    <input class="form-control" type="{{ field.type }}" id = "{{ name }}" value="{{ field.value }}">
+                {% endif %}
+            </div>
+        {% endif %}
     {% endfor %}
     <button type="button" class="btn btn-primary" onclick="submitInfo({{ info }})">Сохранить</button>
 </div>

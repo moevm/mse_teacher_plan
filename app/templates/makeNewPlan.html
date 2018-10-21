@@ -54,7 +54,9 @@
             for (let i = 0; i < model.fields.length; i++){
                 let name = model.name + '_' + model.fields[i].name;
                 let elem = document.getElementById(name);
-                obj[model.fields[i].name] = elem.value;
+                if (elem) {
+                    obj[model.fields[i].name] = elem.value;
+                }
             }
             const xhttp = new XMLHttpRequest();
             const url = '/newplan';
