@@ -1,0 +1,25 @@
+{% extends "mainTemplate.html" %}
+{% block title %} Логин {% endblock %}
+{% block pagename %} Вход на сайт {% endblock %}
+{% block content %}
+
+    <form class="container-fluid" novalidate="" method="POST" id="login_form">
+        <div class="form-group">
+            <label for="login_input">Логин</label>
+            <input class="form-control" type="text" id="login_input" required>
+            <div class="invalid-feedback">Введите логин</div>
+        </div>
+        <div class="form-group">
+            <label for="password_input">Логин</label>
+            <input class="form-control" type="password" id="password_input" required>
+            <div class="invalid-feedback">Введите пароль</div>
+        </div>
+        <button type="submit" class="btn btn-primary" id="login_button">Войти</button>
+        <a class="btn btn-secondary" href="/registration">Регистрация</a>
+    </form>
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='javascript/login.js')}}"></script>
+{% endblock %}

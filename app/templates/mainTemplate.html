@@ -23,69 +23,70 @@
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
 </head>
 <body>
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-sm-3">
-        <a class="navbar-brand" href="#">Индивидуальный план преподавателя</a>
-         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main_collapse"
-                 aria-controls="main_collapse" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-         <div class="navbar-collapse collapse" id="main_collapse">
-             {% set button_params = 'btn col-sm' %}
-             {% set item_params = 'nav-item mr-2 mt-2' %}
-             <ul class="navbar-nav ml-auto">
-                 <li class="{{ item_params }}">
-                     <a class="{{ button_params }} {{ button_here("Профиль") }}" href="{{ url_for('tpprofile') }}">Профиль</a>
-                 </li>
-                 <li class="{{ item_params }}">
-                     <a class="{{ button_params }} btn-danger" href="{{ url_for('tplogout') }}">Выйти</a>
-                 </li>
-             </ul>
-         </div>
-    </nav>
-    <div class="container-fluid">
-          <div class="row">
-              <div class="col-sm-12 col-md-3">
-                  <nav class="navbar navbar-expand-md navbar-light bg-light">
-                      <div class="navbar-collapse collapse" id="main_collapse">
-                          <ul class="nav nav-sidebar">
-                              {% set button_params = 'btn btn-primary col-sm' %}
-                              {% set item_params = 'nav-item btn-block mr-2 mt-2' %}
-                              <li class="{{ item_params }}">
-                                  <a class="{{ button_params }} {{ button_here('Главная') }} " href="{{ url_for('index') }}">
-                                      Главная
-                                  </a>
-                              </li>
-                              <li class="{{ item_params }}">
-                                  <a class="{{ button_params }} {{ button_here('Новый план') }}" href="{{ url_for('tpnewplan') }}">
-                                      Создать новый план
-                                  </a>
-                              </li>
-                              <li class="{{ item_params }}">
-                                  <a class="{{ button_params }} {{ button_here('Список планов') }}" href="{{ url_for('tpplanlist') }}">
-                                      Список планов
-                                  </a>
-                              </li>
-                              <li class="{{ item_params }}">
-                                  <a class="{{ button_params }} {{ button_here('Отчёт') }}" href="{{ url_for('tpsimplereport') }}%}">
-                                      Отчёт
-                                  </a>
-                              </li>
-                          </ul>
-                      </div>
-                  </nav>
-              </div>
-            <div class="col-sm-12 col-md-9">
-                <div class="page-header">
-                  <h1>{% block pagename %}{% endblock %}</h1>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-sm-3">
+    <a class="navbar-brand" href="#">Индивидуальный план преподавателя</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main_collapse"
+            aria-controls="main_collapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="navbar-collapse collapse" id="main_collapse">
+        {% set button_params = 'btn col-sm' %}
+        {% set item_params = 'nav-item mr-2 mt-2' %}
+        <ul class="navbar-nav ml-auto">
+            <li class="{{ item_params }}">
+                <a class="{{ button_params }} {{ button_here("Профиль") }}" href="{{ url_for('tpprofile') }}">Профиль</a>
+            </li>
+            <li class="{{ item_params }}">
+                <a class="{{ button_params }} btn-danger" href="{{ url_for('tplogout') }}">Выйти</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12 col-md-3" id="sidebar_block">
+            <nav class="navbar navbar-expand-md navbar-light bg-light">
+                <div class="navbar-collapse collapse" id="main_collapse">
+                    <ul class="nav nav-sidebar">
+                        {% set button_params = 'btn btn-primary col-sm' %}
+                        {% set item_params = 'nav-item btn-block mr-2 mt-2' %}
+                        <li class="{{ item_params }}">
+                            <a class="{{ button_params }} {{ button_here('Главная') }} " href="{{ url_for('index') }}">
+                                Главная
+                            </a>
+                        </li>
+                        <li class="{{ item_params }}">
+                            <a class="{{ button_params }} {{ button_here('Новый план') }}" href="{{ url_for('tpnewplan') }}">
+                                Создать новый план
+                            </a>
+                        </li>
+                        <li class="{{ item_params }}">
+                            <a class="{{ button_params }} {{ button_here('Список планов') }}" href="{{ url_for('tpplanlist') }}">
+                                Список планов
+                            </a>
+                        </li>
+                        <li class="{{ item_params }}">
+                            <a class="{{ button_params }} {{ button_here('Отчёт') }}" href="{{ url_for('tpsimplereport') }}%}">
+                                Отчёт
+                            </a>
+                        </li>
+                    </ul>
                 </div>
-                {% block content %}Данная страница находится на заполнении {% endblock %}
-            </div>
-          </div>
+            </nav>
         </div>
+        <div class="col-sm-12 col-md-9" id = "content_block">
+            <div class="page-header">
+                <h1>{% block pagename %}{% endblock %}</h1>
+            </div>
+            {% block content %}Данная страница находится на заполнении {% endblock %}
+        </div>
+    </div>
+</div>
 </body>
-{% block scripts %} {% endblock %}
-{# TODO ShowErrorDialog #}
+
 <script src="{{ url_for('static', filename='lib/jquery/jquery-3.3.1.js')}}"></script>
 <script src="{{ url_for('static', filename='lib/popper/popper.js')}}"></script>
 <script src="{{ url_for('static', filename='lib/bootstrap/js/bootstrap.min.js')}}"></script>
+<script src="{{ url_for('static', filename='javascript/mainTemplate.js')}}"></script>
+{% block scripts %} {% endblock %}
 </html>

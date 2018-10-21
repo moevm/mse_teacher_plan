@@ -1,0 +1,13 @@
+{% extends 'mainTemplate.html' %}
+{% block title %}Регистрация{% endblock %}
+{% block pagename %}Регистрация{% endblock %}
+{% block content %}
+    {% set form_info = {'name': 'profile', 'fields': profile} %}
+    {% include 'includes/inputForm.html' %}
+{% endblock %}
+{% block scripts %}
+    <script>
+        var profile = JSON.parse('{{ profile|tojson|safe }}');
+    </script>
+    <script src="{{ url_for('static', filename='javascript/registration.js')}}"></script>
+{% endblock %}

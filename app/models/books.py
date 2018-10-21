@@ -1,11 +1,11 @@
 from mongoengine.document import Document
 from mongoengine.fields import IntField, StringField, ReferenceField
 from app.models.default_params import *
-from app.models.user import User
+from app.models.profile import Profile
 
 
 class Book(Document):
-    user = ReferenceField(User)
+    user = ReferenceField(Profile)
     authors = StringField(**default_string_params, verbose_name='Авторы')
     bookName = StringField(**default_string_params, verbose_name='Название')
     discipline = StringField(**default_string_params, verbose_name='Дисциплина')

@@ -15,7 +15,7 @@
                 {% if field.opts|length != 0 %}
                     <select class="form-control" id="{{ name }}">
                         {% for i in range(field.opts|length) %}
-                            <option value="{{ name + '_' + i|string }}"
+                            <option value="{{ name + '_' + i|string }}" id = {{ name + '_' + i|string }}
                                     {% if field.value == field.opts[i] %} selected="selected" {% endif %}>
                                 {{ field.opts[i] }}
                             </option>

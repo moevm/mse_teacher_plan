@@ -1,22 +1,40 @@
+from flask_login import UserMixin
+
+from app import login
 from mongoengine.document import Document
-from mongoengine.fields import IntField, StringField, ReferenceField, DateTimeField
+from mongoengine.fields import StringField, BooleanField
 from app.models.default_params import *
-
-user_type_choices = ['Преподаватель', 'Администратор']
-user_academic_status_choices = ['Ассистент', 'Старший преподаватель', 'Доцент', 'Профессор']
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
-class User(Document):
-    last_name = StringField(**default_string_params, verbose_name='Фамилия')
-    first_name = StringField(**default_string_params, verbose_name='Имя')
-    patronymic = StringField(**default_string_params, verbose_name='Отчество')
-    type = StringField(**default_string_params, choices=user_type_choices, verbose_name='Тип')
-    birth_date = DateTimeField(**default_params, verbose_name='Дата рождения')
-    github_id = IntField(**default_params, verbose_name='Github ID')
-    stepic_id = IntField(**default_params, verbose_name='Stepic ID')
-    election_date = DateTimeField(**default_params, verbose_name='Дата избрания/зачисления')
-    contract_date = DateTimeField(**default_params, verbose_name='Дата заключения конктракта')
-    academic_status = StringField(**default_string_params, choices=user_academic_status_choices,
-                                  verbose_name='Учебное звание')
-    year_of_academic_status = IntField(**default_params, verbose_name='Год присуждения')
+class User(Document, UserMixin):
+    login = StringField(**default_params)
+    password_hash = StringField(**default_params)
+    authenticated = BooleanField(default=False)
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
+    def is_active(self):  # All users are active
+        return True
+
+    def get_id(self):
+        return self.login
+
+    def is_authenticated(self):
+        return self.authenticated
+
+    def is_anonymous(self):
+        return False
+
     meta = {'collection': 'Users'}
+
+
+@login.user_loader
+def load_user(id):
+    for user in User.objects(login=id):
+        return user
+    return None
