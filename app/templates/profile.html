@@ -3,5 +3,12 @@
 {% block pagename %}Профиль{% endblock %}
 {% block content %}
     {% set form_info = {'name': 'profile', 'fields': profile} %}
+    {% set info = "'profile', '/profile', profile, 'PUT'" %}
     {% include 'includes/inputForm.html' %}
+{% endblock %}
+{% block scripts %}
+    <script>
+        var profile = JSON.parse('{{ profile|tojson|safe }}');
+    </script>
+    <script src="{{ url_for('static', filename='javascript/submit_form.js')}}"></script>
 {% endblock %}

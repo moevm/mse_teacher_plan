@@ -1,3 +1,4 @@
+import bson
 import datetime
 
 import mongoengine
@@ -19,7 +20,7 @@ def convert_HTML_to_mongo_types(obj):
     return 'text'
 
 
-def convert_mongo_template(obj: Document):
+def convert_mongo_model(obj: Document):
     fields = obj._fields_ordered
     res = []
     for field in fields:
@@ -39,12 +40,15 @@ def convert_mongo_template(obj: Document):
 
 
 def convert_mongo_document(obj: Document):
-    res = convert_mongo_template(obj)
+    res = convert_mongo_model(obj)
     fields = obj._fields_ordered
     for i in range(len(fields)):
         data = obj[fields[i]]
         if isinstance(data, datetime.datetime):
             data = data.date().isoformat()
+        if isinstance(data, bson.objectid.ObjectId):
+            data = str(data)
+        if isinstance(data, Document):
+            data = str(data.id)
         res[i]['value'] = data
-    print('h')
     return res

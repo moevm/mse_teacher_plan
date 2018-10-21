@@ -27,12 +27,14 @@
         </div>
         {% for i in range(models|length) %}
             {% set form_info = models[i] %}
-            {% set info = i %}
+            {% set info = "'" + form_info.name + "'" + ", '/newplan', models[" + i|string + "].fields, 'POST',
+                          models[" + i|string + "].name" %}
             {% include 'includes/inputForm.html' %}
         {% endfor %}
     </form>
 {% endblock %}
 {% block scripts %}
+     <script src="{{ url_for('static', filename='javascript/submit_form.js')}}"></script>
     <script>
         const models = JSON.parse('{{ models|tojson|safe }}');
 
@@ -48,32 +50,7 @@
             document.getElementById(option + '_form').style.display = 'block';
         }
 
-        function submitInfo(ind) {
-            let model = models[ind];
-            let obj = {'type': model.name};
-            for (let i = 0; i < model.fields.length; i++){
-                let name = model.name + '_' + model.fields[i].name;
-                let elem = document.getElementById(name);
-                if (elem) {
-                    obj[model.fields[i].name] = elem.value;
-                }
-            }
-            const xhttp = new XMLHttpRequest();
-            const url = '/newplan';
-            xhttp.open('POST', url, true);
-            xhttp.setRequestHeader("Content-Type", "application/json");
-            xhttp.onreadystatechange = function () {
-                if (this.readyState === 4 && this.status === 200) {
-                    res = JSON.parse(this.responseText);
-                    if (res.ok)
-                        window.open('/index', '_self');
-                    else
-                        showErrorDialog(res.message);
-                }
-            };
-            const data = JSON.stringify(obj);
-            xhttp.send(data);
-        }
         hideForms();
+
     </script>
 {% endblock %}

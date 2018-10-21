@@ -1,11 +1,13 @@
+import importlib
+
 from flask import render_template, url_for, request, jsonify, redirect
 from flask_login import current_user, login_user, logout_user, login_required
 
 from app import app
+from app.models.model import Model
 from app.models.profile import Profile
-from app.models.books import Book
-from app.convert import *
 from app.models.user import User
+from app.convert import *
 
 
 def f(text, name, type, opts=None, value=''):
@@ -14,35 +16,45 @@ def f(text, name, type, opts=None, value=''):
     return {'text': text, 'name': name, 'type': type, 'opts': opts, 'value': value}
 
 
-def m(text, name, fields):
-    return {'text': text, 'name': name, 'fields': fields}
-
-
 def get_current_profile():
     for c_user in Profile.objects(user=current_user.id):
         return c_user
     return None
 
 
-models = [
-    m('Подготовка учебников', 'books', convert_mongo_template(Book))
-]
+def get_model_class_by_name(name):
+    model = Model.objects.get(name=name)
+    module = importlib.import_module("app.models." + model.fileName, model.className)
+    model_class = getattr(module, model.className)
+    return model_class
 
 
+def get_models():
+    def m(text, name, fields):
+        return {'text': text, 'name': name, 'fields': fields}
+    res = []
+    for model in Model.objects:
+        module = importlib.import_module("app.models." + model.fileName, model.className)
+        model_class = getattr(module, model.className)
+        res.append(m(model.text, model.name, convert_mongo_model(model_class)))
+    return res
+
+
+# Логин
 @app.route('/login', methods=['GET'])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
-
     return render_template('login.html')
 
 
 @app.route('/login', methods=['POST'])
 def check_login():
     req_data = request.get_json()
-    found_user = None
-    for user in User.objects(login=req_data['login']):
-        found_user = user
+    try:
+        found_user = User.objects.get(login=req_data['login'])
+    except User.DoesNotExist:
+        return jsonify({"ok": False, 'data': 'Логил или пароль неверны'})
     if found_user is not None and found_user.check_password(req_data['password']):
         login_user(found_user)
         return jsonify({"ok": True})
@@ -50,12 +62,13 @@ def check_login():
         return jsonify({"ok": False, 'data': 'Логил или пароль неверны'})
 
 
+# Регистрация
 @app.route('/registration')
 def registration():
     profile = [
-        f('Логин', 'login', 'text'),
-        f('Пароль', 'password', 'text')
-    ] + convert_mongo_template(Profile)
+                  f('Логин', 'login', 'text'),
+                  f('Пароль', 'password', 'text')
+              ] + convert_mongo_model(Profile)
     return render_template('registration.html', profile=profile)
 
 
@@ -66,23 +79,27 @@ def new_profile():
         login=req_data['login']
     )
     user.set_password(req_data['password'])
-    profile = Profile(
-        user=user,
-        last_name=req_data['last_name'],
-        first_name=req_data['first_name'],
-        patronymic=req_data['patronymic'],
-        type=req_data['type'],
-        birth_date=req_data['birth_date'],
-        github_id=req_data['github_id'],
-        stepic_id=req_data['stepic_id'],
-        election_date=req_data['election_date'],
-        contract_date=req_data['contract_date'],
-        academic_status=req_data['academic_status'],
-        year_of_academic_status=req_data['year_of_academic_status']
-    )
+    del req_data['login']
+    del req_data['password']
+    profile = Profile(user=user, **req_data)
     user.save()
     profile.save()
     return jsonify({"ok": True})
+
+
+# Обновление профиля
+@app.route('/profile', methods=['PUT'])
+def update_profile():
+    req_data = request.get_json()
+    # user = User.objects.get(id=req_data['user'])
+    del req_data['user']
+    profile = Profile.objects.get(id=req_data['id'])
+    del req_data['id']
+    for entry in req_data:
+        profile[entry] = req_data[entry]
+    profile.save()
+    return jsonify({"ok": True})
+
 
 @app.route('/')
 @app.route('/index')
@@ -96,7 +113,10 @@ def index():
 @login_required
 def add_new_plan():
     req_data = request.get_json()
-    print(req_data)
+    model_class = get_model_class_by_name(req_data['add_info'])
+    del req_data['add_info']
+    new_plan = model_class(**req_data)
+    new_plan.save()
     return jsonify({'ok': True, 'message': ''})
 
 
@@ -107,16 +127,17 @@ def tpprofile():
                            profile=convert_mongo_document(get_current_profile()))
 
 
-@app.route('/tplogout')  # TODO
+@app.route('/tplogout')
 @login_required
 def tplogout():
     logout_user()
     return redirect(url_for('index'))
 
 
-@app.route('/tpnewplan')  #TODO
+@app.route('/tpnewplan')  # TODO Refactor?
 @login_required
 def tpnewplan():
+    models = get_models()
     return render_template('makeNewPlan.html', title='Новый план', models=models)
 
 
