@@ -1,0 +1,7 @@
+{"_id":{"$oid":"5bccc7969689470151a49d7a"},"text":"Подготовка учебников","name":"books","fileName":"books","className":"Book"}
+{"_id":{"$oid":"5bd07f2212da400f94f8c7fc"},"text":"Постановка и модернизация дисциплин","name":"discipline","fileName":"discipline","className":"Discipline"}
+{"_id":{"$oid":"5bd07f4d12da400f94f8c7fd"},"text":"Научная работа","name":"scienceWork","fileName":"scienceWork","className":"ScienceWork"}
+{"_id":{"$oid":"5bd07f7e12da400f94f8c7fe"},"text":"Участие в конференциях и выставках","name":"conf","fileName":"conference","className":"Conference"}
+{"_id":{"$oid":"5bd07fa612da400f94f8c7ff"},"text":"Список публикаций","name":"publ","fileName":"publication","className":"Publication"}
+{"_id":{"$oid":"5bd07fde12da400f94f8c800"},"text":"Повышение квалификации","name":"kval","fileName":"qualification","className":"Qualification"}
+{"_id":{"$oid":"5bd0801612da400f94f8c801"},"text":"Другие виды работ","name":"other","fileName":"other","className":"Other"}

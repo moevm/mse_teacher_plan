@@ -34,9 +34,12 @@ def get_models():
         return {'text': text, 'name': name, 'fields': fields}
     res = []
     for model in Model.objects:
-        module = importlib.import_module("app.models." + model.fileName, model.className)
-        model_class = getattr(module, model.className)
-        res.append(m(model.text, model.name, convert_mongo_model(model_class)))
+        try:
+            module = importlib.import_module("app.models." + model.fileName, model.className)
+            model_class = getattr(module, model.className)
+            res.append(m(model.text, model.name, convert_mongo_model(model_class)))
+        except ModuleNotFoundError:
+            print(f'Модуль "{model.text}" не найден')
     return res
 
 
