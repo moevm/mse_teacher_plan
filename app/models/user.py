@@ -3,9 +3,9 @@ from flask_login import UserMixin
 from app import login
 from mongoengine.document import Document
 from mongoengine.fields import StringField, BooleanField
-from app.models.default_params import *
 from werkzeug.security import generate_password_hash, check_password_hash
-
+default_params = {'required': True}
+default_string_params = {**default_params, 'max_length': 250}
 
 class User(Document, UserMixin):
     login = StringField(**default_params)

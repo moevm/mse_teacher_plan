@@ -2,8 +2,8 @@ from setuptools import setup
 
 setup(
     name='mse_teacher_plan',
-    version='',
-    packages=['app', 'venv.lib.python3.6.site-packages.bson', 'venv.lib.python3.6.site-packages.click',
+    version='1.0',
+    packages=['app', 'app.models', 'venv.lib.python3.6.site-packages.bson', 'venv.lib.python3.6.site-packages.click',
               'venv.lib.python3.6.site-packages.flask', 'venv.lib.python3.6.site-packages.flask.json',
               'venv.lib.python3.6.site-packages.gridfs', 'venv.lib.python3.6.site-packages.jinja2',
               'venv.lib.python3.6.site-packages.blinker', 'venv.lib.python3.6.site-packages.pymongo',
@@ -20,7 +20,8 @@ setup(
               'venv.lib.python3.6.site-packages.werkzeug', 'venv.lib.python3.6.site-packages.werkzeug.debug',
               'venv.lib.python3.6.site-packages.werkzeug.contrib', 'venv.lib.python3.6.site-packages.flask_wtf',
               'venv.lib.python3.6.site-packages.flask_wtf.recaptcha', 'venv.lib.python3.6.site-packages.markupsafe',
-              'venv.lib.python3.6.site-packages.mongoengine', 'venv.lib.python3.6.site-packages.mongoengine.base',
+              'venv.lib.python3.6.site-packages.flask_login', 'venv.lib.python3.6.site-packages.mongoengine',
+              'venv.lib.python3.6.site-packages.mongoengine.base',
               'venv.lib.python3.6.site-packages.mongoengine.queryset',
               'venv.lib.python3.6.site-packages.flask_bootstrap', 'venv.lib.python3.6.site-packages.flask_mongoengine',
               'venv.lib.python3.6.site-packages.flask_mongoengine.wtf',
@@ -65,9 +66,9 @@ setup(
               'venv.lib.python3.6.site-packages.pip-10.0.1-py3.6.egg.pip._internal.models',
               'venv.lib.python3.6.site-packages.pip-10.0.1-py3.6.egg.pip._internal.commands',
               'venv.lib.python3.6.site-packages.pip-10.0.1-py3.6.egg.pip._internal.operations'],
-    url='',
+    url='https://github.com/moevm/mse_teacher_plan',
     license='',
-    author='pavel',
-    author_email='',
+    author='SqrtMinusOne, Tharitos, zoOm60rus',
+    author_email='thexcloud@gmail.com',
     description=''
 )

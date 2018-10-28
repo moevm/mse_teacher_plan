@@ -1,12 +1,10 @@
-from mongoengine.document import Document
-from mongoengine.fields import IntField, StringField, ReferenceField, DateTimeField
-from app.models.default_params import *
+from mongoengine import DateTimeField, StringField
+from app.models.default_model import *
 
 type_conf_choices = ['Конкурс', 'Выставка', 'Конференция', 'Семинар']
 
 
-class Conference(Document):
-    user = ReferenceField('User')
+class Conference(DefaultModel):
     event_name = StringField(**default_string_params, verbose_name='Название события')
     level = StringField(**default_string_params, verbose_name='Уровень')
     place = StringField(**default_string_params, verbose_name='Место проведения')

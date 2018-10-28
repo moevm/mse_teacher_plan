@@ -1,10 +1,8 @@
-from mongoengine.document import Document
-from mongoengine.fields import IntField, StringField, ReferenceField, DateTimeField
-from app.models.default_params import *
+from mongoengine import StringField, DateTimeField
+from app.models.default_model import *
 
 
-class Qualification(Document):
-    user = ReferenceField('User')
+class Qualification(DefaultModel):
     course_name = StringField(**default_string_params, verbose_name='Название')
     discipline = StringField(**default_string_params, verbose_name='Дисциплина')
     authors = StringField(**default_string_params, verbose_name='Спикеры')

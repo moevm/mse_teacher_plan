@@ -28,7 +28,7 @@
         {% for i in range(models|length) %}
             {% set form_info = models[i] %}
             {% set info = "'" + form_info.name + "'" + ", '/newplan', models[" + i|string + "].fields, 'POST',
-                          models[" + i|string + "].name" %}
+                          {'type': models[" + i|string + "].name, 'year': document.getElementById('selectYear').value}" %}
             {% include 'includes/inputForm.html' %}
         {% endfor %}
     </form>

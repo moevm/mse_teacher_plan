@@ -1,11 +1,8 @@
-from mongoengine.document import Document
-from mongoengine.fields import IntField, StringField, ReferenceField, DateTimeField
-from app.models.default_params import *
-from app.models.profile import Profile
+from mongoengine import DateTimeField, StringField
+from app.models.default_model import *
 
 
-class ScienceWork(Document):
-    user = ReferenceField(Profile)
+class ScienceWork(DefaultModel):
     start_date = DateTimeField(**default_params, verbose_name='Дата начала')
     organization = StringField(**default_string_params, verbose_name='Организация')
     work_name = StringField(**default_string_params, verbose_name='Название научной работы')

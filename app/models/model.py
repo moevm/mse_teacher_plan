@@ -1,6 +1,6 @@
 from mongoengine.document import Document
 from mongoengine.fields import StringField
-from app.models.default_params import *
+from app.models.default_model import default_params
 
 
 class Model(Document):

@@ -1,11 +1,8 @@
-from mongoengine.document import Document
-from mongoengine.fields import IntField, StringField, ReferenceField
-from app.models.default_params import *
-from app.models.profile import Profile
+from mongoengine import StringField
+from app.models.default_model import *
 
 
-class Discipline(Document):
-    user = ReferenceField(Profile)
+class Discipline(DefaultModel):
     disc = StringField(**default_string_params, verbose_name='Дисциплина')
     typeOfUpdate = StringField(**default_string_params, verbose_name='Характер изменений')
     type = StringField(**default_string_params, verbose_name='Тип')

@@ -1,13 +1,12 @@
-from mongoengine.document import Document
-from mongoengine.fields import IntField, StringField, ReferenceField, DateTimeField
-from app.models.default_params import *
+from mongoengine import StringField, DateTimeField
+
+from app.models.default_model import *
 
 reiteration_choices = ['Одноразовый', 'Повторяющийся']
 publication_type_choices = ['Методическое указание', 'Книга', 'Статья в журнале', 'Сборник']
 
 
-class Publication(Document):
-    user = ReferenceField('User')
+class Publication(DefaultModel):
     publication_type = StringField(**default_string_params, choices=publication_type_choices,
                                    verbose_name='Тип')
     reiteration = StringField(**default_string_params, choices=reiteration_choices, verbose_name='Вид повторения')

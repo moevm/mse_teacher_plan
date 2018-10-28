@@ -43,6 +43,11 @@ def get_models():
     return res
 
 
+def get_available_users():  # TODO
+    res = [get_current_profile()]
+    return res
+
+
 # Логин
 @app.route('/login', methods=['GET'])
 def login():
@@ -116,7 +121,8 @@ def index():
 @login_required
 def add_new_plan():
     req_data = request.get_json()
-    model_class = get_model_class_by_name(req_data['add_info'])
+    model_class = get_model_class_by_name(req_data['add_info']['type'])
+    req_data['year'] = req_data['add_info']['year']
     del req_data['add_info']
     new_plan = model_class(**req_data)
     new_plan.save()
@@ -137,17 +143,18 @@ def tplogout():
     return redirect(url_for('index'))
 
 
-@app.route('/tpnewplan')  # TODO Refactor?
+@app.route('/tpnewplan')
 @login_required
 def tpnewplan():
     models = get_models()
     return render_template('makeNewPlan.html', title='Новый план', models=models)
 
 
-@app.route('/tpplanlist')  #TODO
+@app.route('/tpplanlist')
 @login_required
 def tpplanlist():
-    return 'DUMMY'
+    return render_template('listOfPlans.html', title='Список планов', profile=get_current_profile(),
+                           available_users=get_available_users())
 
 
 @app.route('/tpsimplereport')  #TODO

@@ -1,6 +1,6 @@
 from mongoengine.document import Document
 from mongoengine.fields import IntField, StringField, ReferenceField, DateTimeField
-from app.models.default_params import *
+from app.models.default_model import default_params, default_string_params
 from app.models.user import User
 
 user_type_choices = ['Преподаватель', 'Администратор']

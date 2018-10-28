@@ -1,0 +1,51 @@
+{% extends 'mainTemplate.html' %}
+{% block title %}Список планов{% endblock %}
+{% block pagename %}Список индивидуальных планов: {{ profile.last_name }} {{ profile.first_name }}{% endblock %}
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <label>Пользователь</label>
+                <select class="custom-select">
+                    {% for user in available_users %}
+                        <option value="{{ user.user.id }}">
+                            {{ user.last_name }}
+                            {{ user.first_name }}
+                            {{ user.patronymic }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-sm-12 col-md-4">
+                <label for="year_range">Год: </label>
+                <input type="text" id="year_range" style="border: 0" readonly>
+                <div class="py-3">
+                    <div id="year_slider"></div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-2">
+                <label for="filter_button">&nbsp</label><br>
+                <button id="filter_button" class="btn btn-primary" onclick="showPlans()">Показать</button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script>
+        $(()=>{
+            let slider = $("#year_slider");
+            slider.slider({
+                range: true,
+                min: 2014,
+                max: 2023,
+                values: [2014, 2018],
+                slide: (event, ui) =>{
+                    $("#year_range").val(ui.values[ 0 ] + " - " + ui.values[ 1 ])
+                }
+            });
+            $("#year_range").val(slider.slider( "values", 0 ) +
+      " - " + slider.slider( "values", 1 ) );
+        })
+    </script>
+    <script src="{{ url_for('static', filename='javascript/listOfPlans.js') }}"> </script>
+{% endblock %}
