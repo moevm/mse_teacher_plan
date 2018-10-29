@@ -70,5 +70,5 @@ setup(
     license='',
     author='SqrtMinusOne, Tharitos, zoOm60rus',
     author_email='thexcloud@gmail.com',
-    description=''
+    description='', install_requires=['mongoengine', 'flask']
 )

@@ -1,51 +1,14 @@
-import importlib
-
 from flask import render_template, url_for, request, jsonify, redirect
 from flask_login import current_user, login_user, logout_user, login_required
 
 from app import app
-from app.models.model import Model
-from app.models.profile import Profile
-from app.models.user import User
-from app.convert import *
-
-
-def f(text, name, type, opts=None, value=''):
-    if opts is None:
-        opts = []
-    return {'text': text, 'name': name, 'type': type, 'opts': opts, 'value': value}
+from app.api.models import *
+from app.api.plans import *
+from app.api.users import *
 
 
 def get_current_profile():
-    for c_user in Profile.objects(user=current_user.id):
-        return c_user
-    return None
-
-
-def get_model_class_by_name(name):
-    model = Model.objects.get(name=name)
-    module = importlib.import_module("app.models." + model.fileName, model.className)
-    model_class = getattr(module, model.className)
-    return model_class
-
-
-def get_models():
-    def m(text, name, fields):
-        return {'text': text, 'name': name, 'fields': fields}
-    res = []
-    for model in Model.objects:
-        try:
-            module = importlib.import_module("app.models." + model.fileName, model.className)
-            model_class = getattr(module, model.className)
-            res.append(m(model.text, model.name, convert_mongo_model(model_class)))
-        except ModuleNotFoundError:
-            print(f'Модуль "{model.text}" не найден')
-    return res
-
-
-def get_available_users():  # TODO
-    res = [get_current_profile()]
-    return res
+    return get_profile_by_user_id(current_user.id)
 
 
 # Логин
@@ -59,53 +22,35 @@ def login():
 @app.route('/login', methods=['POST'])
 def check_login():
     req_data = request.get_json()
-    try:
-        found_user = User.objects.get(login=req_data['login'])
-    except User.DoesNotExist:
-        return jsonify({"ok": False, 'data': 'Логил или пароль неверны'})
-    if found_user is not None and found_user.check_password(req_data['password']):
+    found_user = check_user_auth(req_data)
+    if found_user is None:
+        return jsonify({"ok": False, 'data': 'Логин или пароль неверны'})
+    else:
         login_user(found_user)
         return jsonify({"ok": True})
-    else:
-        return jsonify({"ok": False, 'data': 'Логил или пароль неверны'})
 
 
 # Регистрация
 @app.route('/registration')
 def registration():
-    profile = [
-                  f('Логин', 'login', 'text'),
-                  f('Пароль', 'password', 'text')
-              ] + convert_mongo_model(Profile)
-    return render_template('registration.html', profile=profile)
+    return render_template('registration.html', profile=get_registration_form())
 
 
 @app.route('/registration', methods=['POST'])
 def new_profile():
     req_data = request.get_json()
-    user = User(
-        login=req_data['login']
-    )
-    user.set_password(req_data['password'])
-    del req_data['login']
-    del req_data['password']
-    profile = Profile(user=user, **req_data)
-    user.save()
-    profile.save()
+    try:
+        register_user(req_data)
+    except Exception as exp:  # TODO process common exceptions
+        return jsonify({"ok": False, 'data': type(exp)})
     return jsonify({"ok": True})
 
 
 # Обновление профиля
 @app.route('/profile', methods=['PUT'])
-def update_profile():
+def upd_profile():
     req_data = request.get_json()
-    # user = User.objects.get(id=req_data['user'])
-    del req_data['user']
-    profile = Profile.objects.get(id=req_data['id'])
-    del req_data['id']
-    for entry in req_data:
-        profile[entry] = req_data[entry]
-    profile.save()
+    update_profile(req_data)
     return jsonify({"ok": True})
 
 
@@ -115,18 +60,6 @@ def update_profile():
 @login_required
 def index():
     return render_template('index.html', title='Главная', profile=get_current_profile())
-
-
-@app.route('/newplan', methods=['POST'])
-@login_required
-def add_new_plan():
-    req_data = request.get_json()
-    model_class = get_model_class_by_name(req_data['add_info']['type'])
-    req_data['year'] = req_data['add_info']['year']
-    del req_data['add_info']
-    new_plan = model_class(**req_data)
-    new_plan.save()
-    return jsonify({'ok': True, 'message': ''})
 
 
 @app.route('/tpprofile')
@@ -143,6 +76,17 @@ def tplogout():
     return redirect(url_for('index'))
 
 
+@app.route('/newplan', methods=['POST'])
+@login_required
+def add_new_plan():
+    req_data = request.get_json()
+    req_data['year'] = req_data['add_info']['year']
+    plan_type = req_data['add_info']['type']
+    del req_data['add_info']
+    new_plan(plan_type, req_data)
+    return jsonify({'ok': True, 'message': ''})
+
+
 @app.route('/tpnewplan')
 @login_required
 def tpnewplan():
@@ -150,11 +94,18 @@ def tpnewplan():
     return render_template('makeNewPlan.html', title='Новый план', models=models)
 
 
+@app.route('/plans', methods=['GET'])  # TODO
+@login_required
+def plans():
+    req_data = request.get_json()
+    get_user_plans(req_data['user_id'])
+    return jsonify({'ok': True, 'message': ''})
+
 @app.route('/tpplanlist')
 @login_required
 def tpplanlist():
     return render_template('listOfPlans.html', title='Список планов', profile=get_current_profile(),
-                           available_users=get_available_users())
+                           available_users=get_available_users(current_user))
 
 
 @app.route('/tpsimplereport')  #TODO

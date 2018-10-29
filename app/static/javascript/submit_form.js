@@ -7,7 +7,7 @@ function submitInfo(form_name, url, init_object, method='POST', add_info=null) {
             if (elem.type !== 'select-one')
                 obj[init_object[i].name] = elem.value;
             else{
-                obj[init_object[i].name] = $("#" + elem.value).text().replace(/[\r?\n\s]/g, "")
+                obj[init_object[i].name] = clear($("#" + elem.value).text())
             }
         }
         else if (init_object[i].value){
@@ -30,4 +30,9 @@ function submitInfo(form_name, url, init_object, method='POST', add_info=null) {
                 window.open('/', '_self')
         }
     })
+}
+
+function clear(text) {
+    text = text.replace(/([\n\s]+$)/g, "").replace(/^([\n\s]+)/g, "")
+    return text
 }
