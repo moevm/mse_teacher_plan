@@ -31,6 +31,7 @@ def get_plan_document(plan_id):
 def get_plan(plan_id):
     return convert_mongo_document(get_plan_document(plan_id))
 
+
 def delete_plan(plan_id):
     models = get_model_classes()
     for model in models:
@@ -42,7 +43,7 @@ def delete_plan(plan_id):
 
 
 # Получить планы пользователя
-def get_user_plans(id):
+def get_user_plans(id, year_start, year_end):
     models = get_model_classes()
     res = []
     for model in models:
@@ -54,6 +55,7 @@ def get_user_plans(id):
                 'plans': []
             }
             for plan in plans:
-                current_res['plans'].append(convert_mongo_document(plan))
+                if year_start <= plan.year <= year_end:
+                    current_res['plans'].append(convert_mongo_document(plan))
             res.append(current_res)
     return res

@@ -128,7 +128,7 @@ def tpnewplan():
 @login_required
 def plans():
     req_data = request.args
-    plans = get_user_plans(req_data['user_id'])
+    plans = get_user_plans(req_data['user_id'], int(req_data['year_start']), int(req_data['year_end']))
     return jsonify({'ok': True, 'plans': plans})
 
 
