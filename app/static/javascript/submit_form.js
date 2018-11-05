@@ -33,6 +33,6 @@ function submitInfo(form_name, url, init_object, method='POST', add_info=null) {
 }
 
 function clear(text) {
-    text = text.replace(/([\n\s]+$)/g, "").replace(/^([\n\s]+)/g, "")
+    text = text.replace(/([\n\s]+$)/g, "").replace(/^([\n\s]+)/g, "");
     return text
 }

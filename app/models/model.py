@@ -1,6 +1,9 @@
 from mongoengine.document import Document
 from mongoengine.fields import StringField
-from app.models.default_model import default_params
+
+
+default_params = {'required': True}
+default_string_params = {**default_params, 'max_length': 250}
 
 
 class Model(Document):

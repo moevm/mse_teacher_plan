@@ -12,6 +12,11 @@ def get_model_class_by_name(name):
     return model_class
 
 
+def get_model_info_by_name(name):
+    model = Model.objects.get(name=name)
+    return model
+
+
 def get_model_classes() -> List[Document]:
     res = []
     for model in Model.objects:
@@ -21,6 +26,13 @@ def get_model_classes() -> List[Document]:
             res.append(model_class)
         except ModuleNotFoundError:
             print(f'Модуль "{model.text}" не найден')
+    return res
+
+
+def get_model_names():
+    res = []
+    for model in Model.objects:
+        res.append(model.name)
     return res
 
 

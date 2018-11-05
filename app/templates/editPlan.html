@@ -1,0 +1,14 @@
+{% extends 'mainTemplate.html' %}
+{% block title %} Редактирование плана {% endblock %}
+{% block pagename %} Редактирование плана {% endblock %}
+{% block content %}
+    {% set form_info = {'name': 'plan', 'fields': plan} %}
+    {% set info = "'plan', '/plan', plan, 'PUT'"%}
+    {% include 'includes/inputForm.html' %}
+{% endblock %}
+{% block scripts %}
+    <script>
+        var plan = JSON.parse('{{ plan|tojson|safe }}');
+    </script>
+    <script src="{{ url_for('static', filename='javascript/submit_form.js')}}"></script>
+{% endblock %}

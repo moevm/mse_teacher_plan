@@ -76,15 +76,45 @@ def tplogout():
     return redirect(url_for('index'))
 
 
+# Новый план
 @app.route('/newplan', methods=['POST'])
 @login_required
 def add_new_plan():
     req_data = request.get_json()
     req_data['year'] = req_data['add_info']['year']
+    req_data['user'] = current_user.id
     plan_type = req_data['add_info']['type']
     del req_data['add_info']
     new_plan(plan_type, req_data)
     return jsonify({'ok': True, 'message': ''})
+
+
+@app.route('/plan', methods=['DELETE'])
+@login_required
+def delete_plan_req():
+    req_data = request.get_json()
+    delete_plan(req_data['id'])
+    return jsonify({'ok': True, 'message': ''})
+
+
+@app.route('/plan', methods=['GET'])
+@login_required
+def get_plan_req():
+    req_data = request.args
+    plan = get_plan(req_data['id'])
+    return render_template('editPlan.html', title='Редактиование плана', plan=plan)
+
+
+@app.route('/plan', methods=['PUT'])
+@login_required
+def edit_plan():
+    req_data = request.get_json()
+    del req_data['user']
+    del req_data['model']  # TODO Delete possible unnecessary iteration through DB
+    plan_id = req_data['id']
+    del req_data['id']
+    save_plan(plan_id, req_data)
+    return jsonify({'ok': True})
 
 
 @app.route('/tpnewplan')
@@ -97,9 +127,10 @@ def tpnewplan():
 @app.route('/plans', methods=['GET'])  # TODO
 @login_required
 def plans():
-    req_data = request.get_json()
-    get_user_plans(req_data['user_id'])
-    return jsonify({'ok': True, 'message': ''})
+    req_data = request.args
+    plans = get_user_plans(req_data['user_id'])
+    return jsonify({'ok': True, 'plans': plans})
+
 
 @app.route('/tpplanlist')
 @login_required
