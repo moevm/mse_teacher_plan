@@ -37,9 +37,15 @@
             <li class="{{ item_params }}">
                 <a class="{{ button_params }} {{ button_here("Профиль") }}" href="{{ url_for('tpprofile') }}">Профиль</a>
             </li>
+            {% if current_user.is_authenticated %}
             <li class="{{ item_params }}">
                 <a class="{{ button_params }} btn-danger" href="{{ url_for('tplogout') }}">Выйти</a>
             </li>
+            {% else %}
+            <li class="{{ item_params }}">
+                <a class="{{ button_params }} btn-danger" href="{{ url_for('tplogout') }}">Войти</a>
+            </li>
+            {% endif %}
         </ul>
     </div>
 </nav>
