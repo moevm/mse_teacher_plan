@@ -51,7 +51,11 @@ def register_user(registration_data):
     del registration_data['password']
     profile = Profile(user=user, **registration_data)
     user.save()
-    profile.save()
+    try:
+        profile.save()
+    except:
+        user.delete()
+        raise
 
 
 # Обновление профиля. Обязательно поле 'id'

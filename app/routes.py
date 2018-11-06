@@ -42,7 +42,7 @@ def new_profile():
     try:
         register_user(req_data)
     except Exception as exp:  # TODO process common exceptions
-        return jsonify({"ok": False, 'data': type(exp)})
+        return jsonify({"ok": False, 'data': exp.args})
     return jsonify({"ok": True})
 
 

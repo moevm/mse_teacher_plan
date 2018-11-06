@@ -7,8 +7,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 default_params = {'required': True}
 default_string_params = {**default_params, 'max_length': 250}
 
+
 class User(Document, UserMixin):
-    login = StringField(**default_params)
+    login = StringField(**default_params, unique=True)
     password_hash = StringField(**default_params)
     authenticated = BooleanField(default=False)
 

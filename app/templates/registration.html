@@ -3,7 +3,7 @@
 {% block pagename %}Регистрация{% endblock %}
 {% block content %}
     {% set form_info = {'name': 'profile', 'fields': profile} %}
-    {% set info = "'profile', '/registration', profile" %}
+    {% set info = "`profile`, `/registration`, profile" %}
     {% include 'includes/inputForm.html' %}
 {% endblock %}
 {% block scripts %}

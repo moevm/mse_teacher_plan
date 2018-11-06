@@ -30,7 +30,7 @@
                     {% if name == "profile_login" or name == "profile_password" %}
                     <input class="form-control" type="{{ field.type }}" id = "{{ name }}" value="{{ field.value }}" pattern="[0-9-A-Za-zА-Яа-яЁё]{1,50}" required>
                     {% elif field.type == "text" %}
-                    <input class="form-control" type="{{ field.type }}" id = "{{ name }}" value="{{ field.value }}" pattern="[A-Za-zА-Яа-яЁё]{1,250}" required>
+                    <input class="form-control" type="{{ field.type }}" id = "{{ name }}" value="{{ field.value }}" pattern="[0-9. A-Za-zА-Яа-яЁё]{1,250}" required>
                     {% elif field.type == "date" %}
                     <input class="form-control" type="{{ field.type }}" id = "{{ name }}" value="{{ field.value }}" min="1900-01-01" required>
                     <script>document.getElementById('{{ name }}').max = textdate;</script>
@@ -44,12 +44,12 @@
             </div>
         {% endif %}
     {% endfor %}
-    <button type="submit" class="btn btn-primary" id = "reg_button">Сохранить</button>
+    <button type="submit" class="btn btn-primary" id = "reg_{{ form_info.name }}_button">Сохранить</button>
     <script>
-        $("#reg_button").on('submit', function() {
+        $("#{{ form_info.name + '_form' }}").submit( function(event) {
             submitInfo({{ info }});
-            $(this).preventDefault();
-        })
+            event.preventDefault();
+        });
     </script>
     <p></p>
 </form>

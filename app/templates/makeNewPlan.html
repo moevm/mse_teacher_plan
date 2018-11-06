@@ -2,7 +2,7 @@
 {% block title %}Создание индивидуального плана{% endblock %}
 {% block pagename %}Создание индивидуального плана{% endblock %}
 {% block content %}
-    <form>
+    <div>
         <div class="form-row">
             <div class="col-sm-12 col-md-8">
                 <label for="selectWork">Выберите тип работы:</label>
@@ -27,13 +27,14 @@
         </div>
         {% for i in range(models|length) %}
             {% set form_info = models[i] %}
-            {% set info = "'" + form_info.name + "'" + ", '/newplan', models[" + i|string + "].fields, 'POST',
+            {% set info = "`" + form_info.name + "`" + ", `/newplan`, models[" + i|string + "].fields, `POST`,
                           {
-                            'type': models[" + i|string + "].name,
-                            'year': document.getElementById('selectYear').value }" %}
+                            type: models[" + i|string + "].name,
+                            year: document.getElementById(`selectYear`).value
+                           }" %}
             {% include 'includes/inputForm.html' %}
         {% endfor %}
-    </form>
+    </div>
 {% endblock %}
 {% block scripts %}
      <script src="{{ url_for('static', filename='javascript/submit_form.js')}}"></script>
