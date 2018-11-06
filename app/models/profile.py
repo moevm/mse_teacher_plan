@@ -14,8 +14,8 @@ class Profile(Document):
     patronymic = StringField(**default_string_params, verbose_name='Отчество')
     type = StringField(**default_string_params, choices=user_type_choices, verbose_name='Тип')
     birth_date = DateTimeField(**default_params, verbose_name='Дата рождения')
-    github_id = IntField(**default_params, verbose_name='Github ID')
-    stepic_id = IntField(**default_params, verbose_name='Stepic ID')
+    github_id = IntField(**default_params, verbose_name='Github ID', unique=True)
+    stepic_id = IntField(**default_params, verbose_name='Stepic ID', unique=True)
     election_date = DateTimeField(**default_params, verbose_name='Дата избрания/зачисления')
     contract_date = DateTimeField(**default_params, verbose_name='Дата заключения конктракта')
     academic_status = StringField(**default_string_params, choices=user_academic_status_choices,

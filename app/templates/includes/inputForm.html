@@ -3,7 +3,12 @@
 {# fields {text: str, name: str, type: str, opts: array, value: str #}
 {# Output: submitInfo(info) #}
 
-<div id="{{ form_info.name + '_form' }}" class="container-fluid">
+<script>
+    var date = new Date();
+    var year = date.getFullYear();
+    var textdate = date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
+</script>
+<form id="{{ form_info.name + '_form' }}" class="container-fluid">
     {% for k in range(form_info.fields|length) %}
         {% if form_info.fields[k].text != '%NO_VERBOSE_NAME%' %}
             <div class="form-group">
@@ -22,10 +27,29 @@
                         {% endfor %}
                     </select>
                 {% else %}
-                    <input class="form-control" type="{{ field.type }}" id = "{{ name }}" value="{{ field.value }}">
+                    {% if name == "profile_login" or name == "profile_password" %}
+                    <input class="form-control" type="{{ field.type }}" id = "{{ name }}" value="{{ field.value }}" pattern="[0-9-A-Za-zА-Яа-яЁё]{1,50}" required>
+                    {% elif field.type == "text" %}
+                    <input class="form-control" type="{{ field.type }}" id = "{{ name }}" value="{{ field.value }}" pattern="[A-Za-zА-Яа-яЁё]{1,250}" required>
+                    {% elif field.type == "date" %}
+                    <input class="form-control" type="{{ field.type }}" id = "{{ name }}" value="{{ field.value }}" min="1900-01-01" required>
+                    <script>document.getElementById('{{ name }}').max = textdate;</script>
+                    {% elif field.type == "number" and name!= "profile_year_of_academic_status" %}
+                    <input class="form-control" type="{{ field.type }}" id = "{{ name }}" value="{{ field.value }}" pattern="[0-9]{1,15}" required>
+                    {% else %}
+                    <input class="form-control" type="{{ field.type }}" id = "{{ name }}" value="{{ field.value }}" min="1900" required>
+                    <script>document.getElementById('{{ name }}').max = year;</script>
+                    {% endif %}
                 {% endif %}
             </div>
         {% endif %}
     {% endfor %}
-    <button type="button" class="btn btn-primary" onclick="submitInfo({{ info }})">Сохранить</button>
-</div>
+    <button type="submit" class="btn btn-primary" id = "reg_button">Сохранить</button>
+    <script>
+        $("#reg_button").on('submit', function() {
+            submitInfo({{ info }});
+            $(this).preventDefault();
+        })
+    </script>
+    <p></p>
+</form>
