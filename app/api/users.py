@@ -10,9 +10,52 @@ def get_profile_by_user_id(id):
     return None
 
 
+def get_user_by_login(login):
+    try:
+        found_user = User.objects.get(login=login)
+    except User.DoesNotExist:
+        return None
+    return found_user
+
+
+# Найти пользователя по id
+def get_user_by_id(id):
+    try:
+        found_user = User.objects.get(id=id)
+    except User.DoesNotExist:
+        return None
+    return found_user
+
+
+# Получить тип пользователя
+def get_user_type(id):
+    profile = get_profile_by_user_id(id)
+    if profile:
+        return profile.type
+    return None
+
+
+# Получить список профилей, к чьим планам данный имеет доступ
+def get_available_profiles(user):
+    profile = get_profile_by_user_id(user.id)
+    res = []
+    if profile.type == 'Администратор':
+        for prof in Profile.objects():
+            res.append(prof)
+    else:
+        res = [profile]
+    return res
+
+
 # Получить список пользователей, к чьим планам данный имеет доступ
-def get_available_users(user):  # TODO
-    res = [get_profile_by_user_id(user.id)]
+def get_available_users(user):
+    profile = get_profile_by_user_id(user.id)
+    res = []
+    if profile.type == 'Администратор':
+        for us in User.objects():
+            res.append(us)
+    else:
+        res = [user]
     return res
 
 
@@ -43,6 +86,7 @@ def get_registration_form():
 
 # Зарегистровать пользователя по возвращенной форме
 def register_user(registration_data):
+    registration_data = dict(registration_data)
     user = User(
         login=registration_data['login']
     )
@@ -58,8 +102,9 @@ def register_user(registration_data):
         raise
 
 
-# Обновление профиля. Обязательно поле 'id'
+# Обновление профиля. Обязательно поле 'id' для объекта Profile
 def update_profile(profile_data):
+    profile_data = dict(profile_data)
     if 'user' in profile_data:
         del profile_data['user']
     profile = Profile.objects.get(id=profile_data['id'])
@@ -67,3 +112,14 @@ def update_profile(profile_data):
     for entry in profile_data:
         profile[entry] = profile_data[entry]
     profile.save()
+
+
+# Удаление пользователя
+def delete_user(id):
+    try:
+        found_user = User.objects.get(id=id)
+        profile = get_profile_by_user_id(id)
+    except (User.DoesNotExist, Profile.DoesNotExist):
+        return None
+    found_user.delete()
+    profile.delete()

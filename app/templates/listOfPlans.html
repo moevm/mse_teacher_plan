@@ -1,6 +1,12 @@
 {% extends 'mainTemplate.html' %}
 {% block title %}Список планов{% endblock %}
-{% block pagename %}Список индивидуальных планов: {{ profile.last_name }} {{ profile.first_name }}{% endblock %}
+{% block pagename %}
+    {% if user.type == 'Преподаватель' %}
+        Список индивидуальных планов: {{ user.last_name }} {{ user.first_name }}
+    {% else %}
+        Индивидуальные планы
+    {% endif %}
+{% endblock %}
 {% block content %}
     <div class="container-fluid">
         <div class="row">
@@ -14,6 +20,11 @@
                             {{ user.patronymic }}
                         </option>
                     {% endfor %}
+                    {% if user.type != 'Преподаватель' %}
+                        <option value="All">
+                            Все доступные
+                        </option>
+                    {% endif %}
                 </select>
             </div>
             <div class="col-sm-12 col-md-4">
@@ -47,7 +58,7 @@
                 }
             });
             $("#year_range").val(slider.slider( "values", 0 ) +
-      " - " + slider.slider( "values", 1 ) );
+                " - " + slider.slider( "values", 1 ) );
         })
     </script>
     <script src="{{ url_for('static', filename='javascript/listOfPlans.js') }}"> </script>

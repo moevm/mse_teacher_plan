@@ -59,14 +59,14 @@ def upd_profile():
 @app.route('/tpindex')
 @login_required
 def index():
-    return render_template('index.html', title='Главная', profile=get_current_profile())
+    return render_template('index.html', title='Главная', user=get_current_profile())
 
 
 @app.route('/tpprofile')
 @login_required
 def tpprofile():
     return render_template('profile.html', title='Профиль',
-                           profile=convert_mongo_document(get_current_profile()))
+                           profile=convert_mongo_document(get_current_profile()), user=get_current_profile())
 
 
 @app.route('/tplogout')
@@ -102,7 +102,7 @@ def delete_plan_req():
 def get_plan_req():
     req_data = request.args
     plan = get_plan(req_data['id'])
-    return render_template('editPlan.html', title='Редактиование плана', plan=plan)
+    return render_template('editPlan.html', title='Редактиование плана', plan=plan, user=get_current_profile())
 
 
 @app.route('/plan', methods=['PUT'])
@@ -117,29 +117,48 @@ def edit_plan():
     return jsonify({'ok': True})
 
 
+@app.route('/fakeplan', methods=['POST'])
+@login_required
+def fake_plan():
+    req_data = request.get_json()
+    new_fake_plan(req_data['user_id'], req_data['type'])
+    return jsonify({'ok': True})
+
+
 @app.route('/tpnewplan')
 @login_required
 def tpnewplan():
     models = get_models()
-    return render_template('makeNewPlan.html', title='Новый план', models=models)
+    return render_template('makeNewPlan.html', title='Новый план', models=models, user=get_current_profile())
 
 
 @app.route('/plans', methods=['GET'])  # TODO
 @login_required
 def plans():
     req_data = request.args
-    plans = get_user_plans(req_data['user_id'], int(req_data['year_start']), int(req_data['year_end']))
+    if req_data['user_id'] != 'All':
+        plans = get_user_plans(req_data['user_id'], int(req_data['year_start']), int(req_data['year_end']))
+    else:
+        plans = get_available_plans(current_user.id, int(req_data['year_start']), int(req_data['year_end']))
     return jsonify({'ok': True, 'plans': plans})
 
 
 @app.route('/tpplanlist')
 @login_required
 def tpplanlist():
-    return render_template('listOfPlans.html', title='Список планов', profile=get_current_profile(),
-                           available_users=get_available_users(current_user))
+    return render_template('listOfPlans.html', title='Список планов', user=get_current_profile(),
+                           available_users=get_available_profiles(current_user))
 
 
 @app.route('/tpsimplereport')  #TODO
 @login_required
 def tpsimplereport():
     return 'DUMMY'
+
+
+@app.route('/tpfillbd')
+@login_required
+def tpfillbd():
+    models = get_models()
+    return render_template('fillDatabase.html', title='Заполнение БД', user=get_current_profile(),
+                           available_users=get_available_profiles(current_user), models=models)

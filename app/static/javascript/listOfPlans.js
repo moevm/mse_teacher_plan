@@ -1,4 +1,4 @@
-function showPlans() { //TODO
+function showPlans() {
     let slider = $("#year_slider");
     let obj = {
         user_id: $("#user_select").val(),
@@ -27,9 +27,14 @@ function printPlans(plans_obj){
         accordion_content.append(plans_table);
         plans_accordion.append(header, accordion_content);
     });
-    plans_accordion.accordion({
-        heightStyle: "fill"
-    });
+    if (plans_obj.length === 0){
+        plans_accordion.append($('<h3>').text('Планов нет'))
+    }
+    else {
+        plans_accordion.accordion({
+            heightStyle: "fill"
+        });
+    }
     plans_container.append(plans_accordion);
 }
 

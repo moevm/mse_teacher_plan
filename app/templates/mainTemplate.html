@@ -2,6 +2,7 @@
 {% macro button_here(name) %}
     {% if title == name  %} btn-primary {% else %} btn-secondary {% endif %}
 {% endmacro %}
+
 {% macro get_value_by_name(name, list) %}
     {% for i in list %}
         {% if i.name == name %}
@@ -9,9 +10,11 @@
         {% endif %}
     {% endfor %}
 {% endmacro %}
+
 {% macro get_mongo_value_by_name(name, object) %}
     {{ object._data[name] }}
 {% endmacro %}
+
 <html lang="ru-ru">
 <head>
     <meta charset="UTF-8">
@@ -81,6 +84,13 @@
                                 Отчёт
                             </a>
                         </li>
+                        {% if user.type == 'Администратор' %}
+                            <li class="{{ item_params }}">
+                                <a class="{{ button_params }} {{ button_here('Заполнение БД') }}" href="{{ url_for('tpfillbd') }}">
+                                    Заполнение БД
+                                </a>
+                            </li>
+                        {% endif %}
                     </ul>
                 </div>
             </nav>

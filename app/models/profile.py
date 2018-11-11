@@ -3,7 +3,7 @@ from mongoengine.fields import IntField, StringField, ReferenceField, DateTimeFi
 from app.models.default_model import default_params, default_string_params
 from app.models.user import User
 
-user_type_choices = ['Преподаватель', 'Администратор']
+user_type_choices = ['Преподаватель', 'Администратор', 'Менеджер']
 user_academic_status_choices = ['Ассистент', 'Старший преподаватель', 'Доцент', 'Профессор']
 
 
