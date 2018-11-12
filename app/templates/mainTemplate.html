@@ -84,12 +84,14 @@
                                 Отчёт
                             </a>
                         </li>
-                        {% if user.type == 'Администратор' %}
-                            <li class="{{ item_params }}">
-                                <a class="{{ button_params }} {{ button_here('Заполнение БД') }}" href="{{ url_for('tpfillbd') }}">
-                                    Заполнение БД
-                                </a>
-                            </li>
+                        {% if user %}
+                            {% if user.type == 'Администратор' %}
+                                <li class="{{ item_params }}">
+                                    <a class="{{ button_params }} {{ button_here('Заполнение БД') }}" href="{{ url_for('tpfillbd') }}">
+                                        Заполнение БД
+                                    </a>
+                                </li>
+                            {% endif %}
                         {% endif %}
                     </ul>
                 </div>

@@ -39,7 +39,7 @@ def get_user_type(id):
 def get_available_profiles(user):
     profile = get_profile_by_user_id(user.id)
     res = []
-    if profile.type == 'Администратор':
+    if profile.type == 'Администратор' or profile.type == 'Менеджер':
         for prof in Profile.objects():
             res.append(prof)
     else:
@@ -51,7 +51,7 @@ def get_available_profiles(user):
 def get_available_users(user):
     profile = get_profile_by_user_id(user.id)
     res = []
-    if profile.type == 'Администратор':
+    if profile.type == 'Администратор' or profile.type == 'Менеджер':
         for us in User.objects():
             res.append(us)
     else:

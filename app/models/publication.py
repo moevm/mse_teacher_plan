@@ -21,4 +21,4 @@ class Publication(DefaultModel):
     date = DateTimeField(**default_params, verbose_name='Дата')
     ISBN = StringField(**default_string_params, verbose_name='ISBN')
     type = StringField(**default_string_params, verbose_name='Вид')
-    meta = {'collection': 'Profiles'}
+    meta = {'collection': 'Publications'}

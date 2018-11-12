@@ -21,11 +21,13 @@ function printPlans(plans_obj){
     plans_container.empty();
     let plans_accordion = $('<div>');
     plans_obj.forEach((plan_type)=>{
-        let header = $('<h3>').text(plan_type.text);
-        let accordion_content = $('<div>');
-        let plans_table = generatePlanTable(plan_type);
-        accordion_content.append(plans_table);
-        plans_accordion.append(header, accordion_content);
+        if (plan_type.plans.length > 0) {
+            let header = $('<h3>').text(plan_type.text);
+            let accordion_content = $('<div>');
+            let plans_table = generatePlanTable(plan_type);
+            accordion_content.append(plans_table);
+            plans_accordion.append(header, accordion_content);
+        }
     });
     if (plans_obj.length === 0){
         plans_accordion.append($('<h3>').text('Планов нет'))
