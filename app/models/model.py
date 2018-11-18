@@ -1,3 +1,6 @@
+from typing import Union
+
+from bson import ObjectId
 from mongoengine.document import Document
 from mongoengine.fields import StringField
 
@@ -12,3 +15,6 @@ class Model(Document):
     fileName = StringField(**default_params)
     className = StringField(**default_params)
     meta = {'collection': 'Models'}
+
+
+DocId = Union[int, str, ObjectId]

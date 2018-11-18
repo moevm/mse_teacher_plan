@@ -5,7 +5,7 @@ setup(
     version='',
     packages=['app', 'app.api', 'app.models'],
     install_requires=['Flask', 'pymongo', 'flask_mongoengine', 'flask_debugtoolbar',
-                      'flask_login', 'mongoengine'],
+                      'flask_login', 'mongoengine', 'faker'],
     url='',
     license='',
     author='thexc',

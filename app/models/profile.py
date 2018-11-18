@@ -12,7 +12,7 @@ class Profile(Document):
     last_name = StringField(**default_string_params, verbose_name='Фамилия')
     first_name = StringField(**default_string_params, verbose_name='Имя')
     patronymic = StringField(**default_string_params, verbose_name='Отчество')
-    type = StringField(**default_string_params, choices=user_type_choices, verbose_name='Тип')
+    type = StringField(**default_string_params, choices=user_type_choices, verbose_name='Тип', fixed=True)
     birth_date = DateTimeField(**default_params, verbose_name='Дата рождения')
     github_id = IntField(**default_params, verbose_name='Github ID', unique=True)
     stepic_id = IntField(**default_params, verbose_name='Stepic ID', unique=True)

@@ -1,16 +1,21 @@
-from app.api.convert import convert_mongo_model
+from typing import Union, List
+
+import mongoengine
+
+from app.api.convert import convert_mongo_model, ConvertedDocument
 from app.models.profile import Profile
 from app.models.user import User
+from models.model import DocId
 
 
 # Получить профиль, привязанный к пользователю
-def get_profile_by_user_id(id):
+def get_profile_by_user_id(id: DocId) -> Union[Profile, None]:
     for c_user in Profile.objects(user=id):
         return c_user
     return None
 
 
-def get_user_by_login(login):
+def get_user_by_login(login: str) -> Union[User, None]:
     try:
         found_user = User.objects.get(login=login)
     except User.DoesNotExist:
@@ -19,7 +24,7 @@ def get_user_by_login(login):
 
 
 # Найти пользователя по id
-def get_user_by_id(id):
+def get_user_by_id(id: DocId) -> Union[User, None]:
     try:
         found_user = User.objects.get(id=id)
     except User.DoesNotExist:
@@ -28,7 +33,7 @@ def get_user_by_id(id):
 
 
 # Получить тип пользователя
-def get_user_type(id):
+def get_user_type(id: DocId) -> Union[str, None]:
     profile = get_profile_by_user_id(id)
     if profile:
         return profile.type
@@ -36,7 +41,7 @@ def get_user_type(id):
 
 
 # Получить список профилей, к чьим планам данный имеет доступ
-def get_available_profiles(user):
+def get_available_profiles(user: User) -> List[Profile]:
     profile = get_profile_by_user_id(user.id)
     res = []
     if profile.type == 'Администратор' or profile.type == 'Менеджер':
@@ -48,7 +53,7 @@ def get_available_profiles(user):
 
 
 # Получить список пользователей, к чьим планам данный имеет доступ
-def get_available_users(user):
+def get_available_users(user: User) -> List[User]:
     profile = get_profile_by_user_id(user.id)
     res = []
     if profile.type == 'Администратор' or profile.type == 'Менеджер':
@@ -60,7 +65,7 @@ def get_available_users(user):
 
 
 # Проверить логин и пароль
-def check_user_auth(user_data):
+def check_user_auth(user_data) -> Union[User, None]:
     try:
         found_user = User.objects.get(login=user_data['login'])
     except User.DoesNotExist:
@@ -72,7 +77,7 @@ def check_user_auth(user_data):
 
 
 # Вернуть параметры формы для регистрации
-def get_registration_form():
+def get_registration_form() -> ConvertedDocument:
     def f(text, name, type, opts=None, value=''):
         if opts is None:
             opts = []
@@ -85,7 +90,7 @@ def get_registration_form():
 
 
 # Зарегистровать пользователя по возвращенной форме
-def register_user(registration_data):
+def register_user(registration_data) -> User:
     registration_data = dict(registration_data)
     user = User(
         login=registration_data['login']
@@ -100,6 +105,7 @@ def register_user(registration_data):
     except:
         user.delete()
         raise
+    return user
 
 
 # Обновление профиля. Обязательно поле 'id' для объекта Profile
@@ -115,7 +121,7 @@ def update_profile(profile_data):
 
 
 # Удаление пользователя
-def delete_user(id):
+def delete_user(id: DocId):
     try:
         found_user = User.objects.get(id=id)
         profile = get_profile_by_user_id(id)
