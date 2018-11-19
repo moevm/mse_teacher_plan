@@ -162,3 +162,16 @@ def tpfillbd():
     models = get_models()
     return render_template('fillDatabase.html', title='Заполнение БД', user=get_current_profile(),
                            available_users=get_available_profiles(current_user), models=models)
+
+
+@app.route('/tpuserlist')
+@login_required
+def tpuserlist():
+    return render_template('listOfUsers.html', title='Список пользователей', user=get_current_profile())
+
+
+@app.route('/userlist', methods=['GET'])
+@login_required
+def userlist():
+    return jsonify({'ok': True, 'users': get_user_and_profile_list()})
+

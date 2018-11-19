@@ -97,7 +97,12 @@ class UsersTest(unittest.TestCase):
     def test_get_registration_form(self):
         form = get_registration_form()
         self.assertGreaterEqual(len(form), 1)
-        
+
+    def test_user_and_profile_list(self):
+        list = get_user_and_profile_list()
+        self.assertIsNotNone(list[0]['user'])
+        self.assertIsNotNone(list[0]['profile'])
+
 
 if __name__ == '__main__':
     unittest.main()

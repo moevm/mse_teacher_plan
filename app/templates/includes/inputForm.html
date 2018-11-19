@@ -3,6 +3,14 @@
 {# fields {text: str, name: str, type: str, opts: array, value: str #}
 {# Output: submitInfo(info) #}
 
+{% macro dis_or_req(bool) %}
+    {% if bool %}
+        disabled
+    {% else %}
+        required
+    {% endif %}
+{% endmacro %}
+
 <script>
     var date = new Date();
     var year = date.getFullYear();
@@ -18,7 +26,7 @@
                     {{ field.text }}
                 </label>
                 {% if field.opts|length != 0 %}
-                    <select class="form-control" id="{{ name }}">
+                    <select class="form-control" id="{{ name }}" {{ dis_or_req(field.fixed) }}>
                         {% for i in range(field.opts|length) %}
                             <option value="{{ name + '_' + i|string }}" id = {{ name + '_' + i|string }}
                                     {% if field.value == field.opts[i] %} selected="selected" {% endif %}>
@@ -28,16 +36,21 @@
                     </select>
                 {% else %}
                     {% if name == "profile_login" or name == "profile_password" %}
-                    <input class="form-control" type="{{ field.type }}" id = "{{ name }}" value="{{ field.value }}" pattern="[0-9-A-Za-zА-Яа-яЁё]{1,50}" required>
+                    <input class="form-control" type="{{ field.type }}" id = "{{ name }}" value="{{ field.value }}"
+                           pattern="[0-9-A-Za-zА-Яа-яЁё]{1,50}" {{ dis_or_req(field.fixed) }}>
                     {% elif field.type == "text" %}
-                    <input class="form-control" type="{{ field.type }}" id = "{{ name }}" value="{{ field.value }}" pattern="[0-9. A-Za-zА-Яа-яЁё]{1,250}" required>
+                    <input class="form-control" type="{{ field.type }}" id = "{{ name }}" value="{{ field.value }}"
+                           pattern="[0-9. A-Za-zА-Яа-яЁё]{1,250}" {{ dis_or_req(field.fixed) }}>
                     {% elif field.type == "date" %}
-                    <input class="form-control" type="{{ field.type }}" id = "{{ name }}" value="{{ field.value }}" min="1900-01-01" required>
+                    <input class="form-control" type="{{ field.type }}" id = "{{ name }}" value="{{ field.value }}"
+                           min="1900-01-01" {{ dis_or_req(field.fixed) }}>
                     <script>document.getElementById('{{ name }}').max = textdate;</script>
                     {% elif field.type == "number" and name!= "profile_year_of_academic_status" %}
-                    <input class="form-control" type="{{ field.type }}" id = "{{ name }}" value="{{ field.value }}" pattern="[0-9]{1,15}" required>
+                    <input class="form-control" type="{{ field.type }}" id = "{{ name }}" value="{{ field.value }}"
+                           pattern="[0-9]{1,15}" {{ dis_or_req(field.fixed) }}>
                     {% else %}
-                    <input class="form-control" type="{{ field.type }}" id = "{{ name }}" value="{{ field.value }}" min="1900" required>
+                    <input class="form-control" type="{{ field.type }}" id = "{{ name }}" value="{{ field.value }}"
+                           min="1900" {{ dis_or_req(field.fixed) }}>
                     <script>document.getElementById('{{ name }}').max = year;</script>
                     {% endif %}
                 {% endif %}

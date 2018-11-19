@@ -1,0 +1,13 @@
+{% extends 'mainTemplate.html' %}
+{% block title %} Список пользователей {% endblock %}
+{% block pagename %} Список пользователей {% endblock %}
+{% block content %}
+    <div class="container-fluid">
+        <div class="col-12" id="users_container">
+
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script src="{{ url_for('static', filename='javascript/listOfUsers.js')}}"></script>
+{% endblock %}

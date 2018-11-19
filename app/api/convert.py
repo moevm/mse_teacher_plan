@@ -43,7 +43,7 @@ def convert_mongo_model(obj: Type[Document]) -> ConvertedDocument:
         except AttributeError:
             text = '%NO_VERBOSE_NAME%'
         try:
-            fixed = current_field.changeable_by_admin
+            fixed = current_field.fixed
         except AttributeError:
             fixed = False
         name = current_field.name

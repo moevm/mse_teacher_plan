@@ -92,6 +92,13 @@
                                     </a>
                                 </li>
                             {% endif %}
+                            {% if user.type != 'Преподаватель' %}
+                                <li class="{{ item_params }}">
+                                    <a class="{{ button_params }} {{ button_here('Список пользователей') }}" href="{{ url_for('tpuserlist') }}">
+                                        Список пользователей
+                                    </a>
+                                </li>
+                            {% endif %}
                         {% endif %}
                     </ul>
                 </div>

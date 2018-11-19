@@ -2,7 +2,7 @@ from typing import Union, List
 
 import mongoengine
 
-from app.api.convert import convert_mongo_model, ConvertedDocument
+from app.api.convert import convert_mongo_model, ConvertedDocument, convert_mongo_document
 from app.models.profile import Profile
 from app.models.user import User
 from models.model import DocId
@@ -129,3 +129,15 @@ def delete_user(id: DocId):
         return None
     found_user.delete()
     profile.delete()
+
+
+# Получить список пользователей
+def get_user_and_profile_list():
+    res = []
+    for user in User.objects():
+        profile = get_profile_by_user_id(user.id)
+        res.append({
+            'user': convert_mongo_document(user),
+            'profile': convert_mongo_document(profile)
+        })
+    return res
