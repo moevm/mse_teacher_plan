@@ -1,15 +1,15 @@
-function getUsers(){
+function getUsers(active_section = 0){
     $.ajax({
         url: '/userlist',
         method: 'GET',
         success: (response)=>{
             if (response.ok)
-                printUsers(response.users)
+                printUsers(response.users, active_section)
         }
     })
 }
 
-function printUsers(users) {
+function printUsers(users, active_section) {
     let sorted = sortByType(users);
     let attrs = [
         {'name': 'login', 'text': 'Логин'},
@@ -17,7 +17,9 @@ function printUsers(users) {
         {'text': 'Фамилия'},
         {'text': 'Учебное звание'}
     ];
-    createAccordion(sorted, $("#users_container"), attrs, true);
+    let container = $("#users_container");
+    container.empty();
+    createAccordion(sorted, container, attrs, true, active_section);
     console.log(sorted);
 }
 
@@ -58,8 +60,8 @@ function sortByType(users){
     return res;
 }
 
-function createAccordion(sorted, container, attrs, add_controls=false){
-    let accordion = $('<div>');
+function createAccordion(sorted, container, attrs, add_controls=false, active=0){
+    let accordion = $('<div>').attr('id', 'user_accordion');
     sorted.forEach((type_cont, index)=>{
         let header = $('<h3>').text(`Тип: ${type_cont.name}`);
         let content = $('<div>').attr('id', `acc_${index}`);
@@ -68,8 +70,10 @@ function createAccordion(sorted, container, attrs, add_controls=false){
         accordion.append(header, content)
     });
     accordion.accordion({
-        heightStyle: "fill"
+        heightStyle: "fill",
+        active: active
     });
+
     container.append(accordion);
 }
 
@@ -129,6 +133,27 @@ function generateUserTable(users, attrs, add_controls) {
     });
     table.append(header);
     return table;
+}
+
+function deleteUser(user_id){
+    $.ajax({
+        url: '/user',
+        method: 'DELETE',
+        dataType: 'json',
+        processData: false,
+        contentType: 'application/json',
+        data: JSON.stringify({id: user_id}),
+        success: (response)=>{
+            if (response.ok){
+                if (response.reload)
+                    location.reload();
+                else {
+                    let active = $('#user_accordion').accordion("option", 'active');
+                    getUsers(active)
+                }
+            }
+        }
+    })
 }
 
 getUsers();

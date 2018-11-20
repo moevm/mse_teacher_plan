@@ -1,11 +1,29 @@
-from typing import Union, List
-
-import mongoengine
+from typing import Union, List, Dict
 
 from app.api.convert import convert_mongo_model, ConvertedDocument, convert_mongo_document
 from app.models.profile import Profile
 from app.models.user import User
 from models.model import DocId
+
+
+def register_multiple_fake_users(user_number: int, plans_number: int):
+    from faker import Faker
+    fake = Faker()
+    from models.fake.profile import ProfileProvider
+    fake.add_provider(ProfileProvider)
+    for i in range(user_number):
+        register_fake_user(fake, plans_number)
+
+
+def register_fake_user(fake, plans_number=0):
+    fake_user = fake.moevm_profile()
+    fake_user['login'] = fake.user_name()
+    fake_user['password'] = fake.password()
+    user = register_user(fake_user)
+    if plans_number > 0:
+        from api.plans import new_multiple_fake_plans
+        new_multiple_fake_plans(user.id, plans_number)
+    return fake_user
 
 
 # Получить профиль, привязанный к пользователю
@@ -76,6 +94,14 @@ def check_user_auth(user_data) -> Union[User, None]:
         return None
 
 
+# Сменить пароль
+def change_password(id:DocId, old_password, new_password) -> bool:
+    user = get_user_by_id(id)
+    if not user:
+        return False
+    return user.change_password(old_password, new_password)
+
+
 # Вернуть параметры формы для регистрации
 def get_registration_form() -> ConvertedDocument:
     def f(text, name, type, opts=None, value=''):
@@ -127,6 +153,8 @@ def delete_user(id: DocId):
         profile = get_profile_by_user_id(id)
     except (User.DoesNotExist, Profile.DoesNotExist):
         return None
+    from api.plans import delete_user_plans
+    delete_user_plans(id)
     found_user.delete()
     profile.delete()
 

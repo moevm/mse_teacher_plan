@@ -1,5 +1,6 @@
 import datetime
 import unittest
+from random import randint
 
 from faker import Faker
 
@@ -24,10 +25,7 @@ class UsersTest(unittest.TestCase):
         self.fake.add_provider(ProfileProvider)
 
     def setUp(self):
-        self.fake_user = self.fake.moevm_profile()
-        self.fake_user['login'] = self.fake.user_name()
-        self.fake_user['password'] = self.fake.password()
-        register_user(self.fake_user)
+        self.fake_user = register_fake_user(self.fake)
 
     def tearDown(self):
         fake_user_id = get_user_by_login(self.fake_user['login']).id
@@ -46,11 +44,17 @@ class UsersTest(unittest.TestCase):
         self.assertEqual(type, self.fake_user['type'])
 
     def test_auth_user(self):
+        user = get_user_by_login(self.fake_user['login'])
         self.assertIsNotNone(check_user_auth(self.fake_user))
         self.assertIsNone(check_user_auth({
             'login': self.fake_user['login'],
             'password': self.fake.password()
         }))
+        new_password = self.fake.password()
+        self.assertTrue(change_password(user.id, self.fake_user['password'], new_password))
+        self.fake_user['password'] = new_password
+        self.assertIsNotNone(check_user_auth(self.fake_user))
+
 
     def test_update_profile(self):
         new_profile = self.fake.moevm_profile()
@@ -67,7 +71,9 @@ class UsersTest(unittest.TestCase):
         )
 
     def test_nonexistent_user(self):
-        id = str(self.fake.random_number(24))
+        id = ''
+        while len(id) < 24:
+            id = id + str(randint(0, 9))
         login = self.fake.user_name() + '%FAKE%'
         self.assertIsNone(get_profile_by_user_id(id))
         self.assertIsNone(get_user_by_id(id))

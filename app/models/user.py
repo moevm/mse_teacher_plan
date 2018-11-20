@@ -13,10 +13,17 @@ class User(Document, UserMixin):
     password_hash = StringField(**default_params)
     authenticated = BooleanField(default=False)
 
+    def change_password(self, old_password, new_password) -> bool:
+        if self.check_password(old_password):
+            self.set_password(new_password)
+            self.save()
+            return True
+        return False
+
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
-    def check_password(self, password):
+    def check_password(self, password) -> bool:
         return check_password_hash(self.password_hash, password)
 
     def is_active(self):  # All users are active

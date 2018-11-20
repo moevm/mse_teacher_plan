@@ -2,34 +2,58 @@
 {% block title %} Заполнение БД {% endblock %}
 {% block pagename %} Заполнение БД {% endblock %}
 {% block content %}
+
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-12 col-md-5">
-                <label for="user_select">Пользователь</label>
-                <select class="custom-select" id="user_select">
-                    {% for user in available_users %}
-                        <option value="{{ user.user.id }}">
-                            {{ user.last_name }}
-                            {{ user.first_name }}
-                            {{ user.patronymic }}
-                        </option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="col-sm-12 col-md-5">
-                <label for="selectWork">Выберите тип работы:</label>
-                <select class="form-control mb-3" id="selectWork">
-                    {% for i in range(models|length) %}
-                        <option value="{{ models[i].name }}">{{ models[i].text }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="col-sm-12 col-md-2">
-                <label>&nbsp;</label>
-                <button type="button" class="form-control btn btn-primary" onclick="makeFake()">Создать</button>
+        <div class="card mb-3">
+            <div class="card-header">Пакетное заполнение</div>
+            <div class="card-body row">
+                <div class="col-sm-12 col-md-5">
+                    <label>Количество пользователей</label>
+                    <div id="user_slider">
+                        <div id="user_slider_handle" class="ui-slider-handle" style=""></div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-5">
+                    <label>Количество планов на пользователя</label>
+                    <div id="plans_slider">
+                        <div id="plans_slider_handle" class="ui-slider-handle" ></div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-2">
+                    <label>&nbsp;</label>
+                    <button type="button" class="form-control btn btn-primary" onclick="fillDB()">Создать</button>
+                </div>
             </div>
         </div>
-
+        <div class="card mb-3">
+            <div class="card-header">Добавление планов</div>
+            <div class="card-body row">
+                <div class="col-sm-12 col-md-5">
+                    <label for="user_select">Пользователь</label>
+                    <select class="custom-select" id="user_select">
+                        {% for user in available_users %}
+                            <option value="{{ user.user.id }}">
+                                {{ user.last_name }}
+                                {{ user.first_name }}
+                                {{ user.patronymic }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-sm-12 col-md-5">
+                    <label for="selectWork">Выберите тип работы:</label>
+                    <select class="form-control mb-3" id="selectWork">
+                        {% for i in range(models|length) %}
+                            <option value="{{ models[i].name }}">{{ models[i].text }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-sm-12 col-md-2">
+                    <label>&nbsp;</label>
+                    <button type="button" class="form-control btn btn-primary" onclick="makeFake()">Создать</button>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}
 {% block scripts %}

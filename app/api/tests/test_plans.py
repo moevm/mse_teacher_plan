@@ -13,7 +13,6 @@ class PlansTest(unittest.TestCase):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-
     @classmethod
     def setUpClass(cls):
         cls.fake = Faker()
@@ -39,14 +38,19 @@ class PlansTest(unittest.TestCase):
         self.assertGreaterEqual(len(plan), 1)
 
     def test_get_user_plans(self):
-        plans = get_user_plans(self.user.id, 0, 10000)
+        plans = get_converted_user_plans(self.user.id, 0, 10000)
         self.assertEqual(plans[0]['plans'][0], get_plan(self.fake_plan.id))
 
     def test_available_plans(self):
         plans = get_available_users(self.user)
         self.assertGreaterEqual(len(plans), 1)
-        available_plans = get_available_plans(self.user.id, 0, 10000)
+        available_plans = get_converted_available_plans(self.user.id, 0, 10000)
         self.assertGreaterEqual(len(available_plans), 1)
+
+    def test_multiple(self):
+        new_multiple_fake_plans(self.user.id, 10)
+        plans = get_user_plans(self.user.id)
+        self.assertGreaterEqual(len(plans), 10)
 
     @classmethod
     def tearDownClass(cls):

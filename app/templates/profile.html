@@ -2,13 +2,29 @@
 {% block title %}Профиль{% endblock %}
 {% block pagename %}Профиль{% endblock %}
 {% block content %}
-    {% set form_info = {'name': 'profile', 'fields': profile} %}
-    {% set info = "`profile`, `/profile`, profile, `PUT`" %}
-    {% include 'includes/inputForm.html' %}
+    {% include 'includes/changePasswordModal.html' %}
+    <div class="card mb-3">
+        <div class="card-header">Управление профилем</div>
+        <div class="card-body">
+            <div class="btn-group" role="group">
+                <button class="btn btn-primary mr-3" data-toggle="modal" data-target="#passwordModel">Сменить пароль</button>
+                <button class="btn btn-danger" onclick="deleteUser(profile[1].value)">Удалить профиль</button>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">Редактирование профиля</div>
+        <div class="card-body">
+            {% set form_info = {'name': 'profile', 'fields': profile} %}
+            {% set info = "`profile`, `/profile`, profile, `PUT`" %}
+            {% include 'includes/inputForm.html' %}
+        </div>
+    </div>
 {% endblock %}
 {% block scripts %}
     <script>
         var profile = JSON.parse('{{ profile|tojson|safe }}');
     </script>
     <script src="{{ url_for('static', filename='javascript/submit_form.js')}}"></script>
+    <script src="{{ url_for('static', filename='javascript/listOfUsers.js')}}"></script>
 {% endblock %}

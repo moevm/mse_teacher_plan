@@ -54,6 +54,30 @@ def upd_profile():
     return jsonify({"ok": True})
 
 
+@app.route('/user', methods=['DELETE'])
+@login_required
+def delete_user_req():
+    req_data = request.get_json()
+    if str(current_user.id) == req_data['id']:
+        logout_user()
+        delete_user(req_data['id'])
+        return jsonify({'ok': True, 'reload': True, 'message': ''})
+    else:
+        delete_user(req_data['id'])
+        return jsonify({'ok': True, 'reload': False, 'message': ''})
+
+
+@app.route('/password', methods=['PUT'])
+@login_required
+def change_pass():
+    req_data = request.get_json()
+    res = change_password(current_user.id, req_data['old_pass'], req_data['new_pass'])
+    if res:
+        return jsonify({'ok': True})
+    else:
+        return jsonify({'ok': False, 'message': 'Old password is incorrect'})
+
+
 @app.route('/')
 @app.route('/index')
 @app.route('/tpindex')
@@ -125,6 +149,14 @@ def fake_plan():
     return jsonify({'ok': True})
 
 
+@app.route('/fakedata', methods=['POST'])
+@login_required
+def fake_data():
+    req_data = request.get_json()
+    register_multiple_fake_users(int(req_data['users']), int(req_data['plans']))
+    return jsonify({'ok': True})
+
+
 @app.route('/tpnewplan')
 @login_required
 def tpnewplan():
@@ -137,9 +169,9 @@ def tpnewplan():
 def plans():
     req_data = request.args
     if req_data['user_id'] != 'All':
-        plans = get_user_plans(req_data['user_id'], int(req_data['year_start']), int(req_data['year_end']))
+        plans = get_converted_user_plans(req_data['user_id'], int(req_data['year_start']), int(req_data['year_end']))
     else:
-        plans = get_available_plans(current_user.id, int(req_data['year_start']), int(req_data['year_end']))
+        plans = get_converted_available_plans(current_user.id, int(req_data['year_start']), int(req_data['year_end']))
     return jsonify({'ok': True, 'plans': plans})
 
 

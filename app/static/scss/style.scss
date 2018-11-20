@@ -2,3 +2,12 @@
 .btn-nav{
   margin-left: 20px;
 }
+
+#user_slider_handle, #plans_slider_handle {
+  width: 3em;
+  height: 1.6em;
+  top: 50%;
+  margin-top: -.8em;
+  text-align: center;
+  line-height: 1.6em;
+}

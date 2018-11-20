@@ -1,10 +1,11 @@
-from typing import List
+import random
+from typing import List, Dict, Union
 
 from flask_mongoengine import Document
 
 from api.users import get_available_users, get_user_by_id, get_profile_by_user_id
 from app.api.convert import convert_mongo_document, convert_mongo_model, ConvertedDocument
-from app.api.models import get_model_class_by_name, get_model_classes, get_model_info_by_name
+from app.api.models import get_model_class_by_name, get_model_classes, get_model_info_by_name, get_models
 # Новый план
 from models.fake.plan import generate_fake_by_converted_model
 from models.model import DocId
@@ -25,6 +26,12 @@ def new_fake_plan(user_id: DocId, plan_type: str) -> Document:
     created_plan = model_class(**plan)
     created_plan.save()
     return created_plan
+
+
+def new_multiple_fake_plans(user_id: DocId, number: int):
+    model_types = [i['name'] for i in get_models()]
+    for i in range(number):
+        new_fake_plan(user_id, random.choice(model_types))
 
 
 def save_plan(plan_id: DocId, plan_info):
@@ -57,8 +64,24 @@ def delete_plan(plan_id: DocId):
             continue
 
 
+def delete_user_plans(id):
+    for plan in get_user_plans(id):
+        delete_plan(plan.id)
+
+
 # Получить планы пользователя
-def get_user_plans(id: DocId, year_start: int, year_end: int) -> List[ConvertedDocument]:
+def get_user_plans(id: DocId) -> List[Document]:
+    models = get_model_classes()
+    res = []
+    for model in models:
+        plans = model.objects(user=id)
+        for plan in plans:
+            res.append(plan)
+    return res
+
+
+# Получить конвертированные планы пользователя
+def get_converted_user_plans(id: DocId, year_start: int, year_end: int) -> List[Dict[str, Union[list, ConvertedDocument]]]:
     models = get_model_classes()
     res = []
     for model in models:
@@ -76,7 +99,7 @@ def get_user_plans(id: DocId, year_start: int, year_end: int) -> List[ConvertedD
     return res
 
 
-def get_available_plans(id, year_start, year_end) -> List[ConvertedDocument]:
+def get_converted_available_plans(id, year_start, year_end) -> List[ConvertedDocument]:
     def is_already_saved(_all, _plan_group):
         _already_saved = None
         for saved_plan_group in _all:
@@ -95,7 +118,7 @@ def get_available_plans(id, year_start, year_end) -> List[ConvertedDocument]:
 
     all = []
     for user in get_available_users(get_user_by_id(id)):
-        current_plans = get_user_plans(user.id, year_start, year_end)
+        current_plans = get_converted_user_plans(user.id, year_start, year_end)
         for plan_group in current_plans:
             already_saved = is_already_saved(all, plan_group)
             if already_saved is not None:

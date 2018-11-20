@@ -4,7 +4,7 @@
 {# Output: submitInfo(info) #}
 
 {% macro dis_or_req(bool) %}
-    {% if bool %}
+    {% if bool and not form_info.fixed_disabled %}
         disabled
     {% else %}
         required
@@ -37,7 +37,7 @@
                 {% else %}
                     {% if name == "profile_login" or name == "profile_password" %}
                     <input class="form-control" type="{{ field.type }}" id = "{{ name }}" value="{{ field.value }}"
-                           pattern="[0-9-A-Za-zА-Яа-яЁё]{1,50}" {{ dis_or_req(field.fixed) }}>
+                           pattern="[0-9-A-Za-zА-Яа-яЁё_.]{1,50}" {{ dis_or_req(field.fixed) }}>
                     {% elif field.type == "text" %}
                     <input class="form-control" type="{{ field.type }}" id = "{{ name }}" value="{{ field.value }}"
                            pattern="[0-9. A-Za-zА-Яа-яЁё]{1,250}" {{ dis_or_req(field.fixed) }}>
