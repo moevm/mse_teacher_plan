@@ -4,7 +4,7 @@
 {% block content %}
     {% set form_info = {'name': 'profile', 'fields': profile, 'fixed_disabled': true} %}
     {% set info = "`profile`, `/registration`, profile" %}
-    {% include 'includes/inputForm.html' %}
+    {{ insert_form(form_info, info) }}
 {% endblock %}
 {% block scripts %}
     <script>

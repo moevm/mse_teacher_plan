@@ -4,7 +4,7 @@
 {% block content %}
     {% set form_info = {'name': 'plan', 'fields': plan} %}
     {% set info = "`plan`, `/plan`, plan, `PUT`"%}
-    {% include 'includes/inputForm.html' %}
+    {{ insert_form(form_info, info) }}
 {% endblock %}
 {% block scripts %}
     <script>

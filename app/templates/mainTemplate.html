@@ -15,6 +15,12 @@
     {{ object._data[name] }}
 {% endmacro %}
 
+{% macro insert_form(form_info, info_to_submit) %}
+    {% set form_info = form_info %}
+    {% set info = info_to_submit %}
+    {% include "includes/inputForm.html" %}
+{% endmacro %}
+
 <html lang="ru-ru">
 <head>
     <meta charset="UTF-8">
@@ -31,6 +37,7 @@
     <script src="{{ url_for('static', filename='bower_components/bootstrap/dist/js/bootstrap.js')}}"></script>
 </head>
 <body>
+{% include "includes/messageModal.html" %}
 <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-sm-3">
     <a class="navbar-brand" href="#">Индивидуальный план преподавателя</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main_collapse"
@@ -61,46 +68,7 @@
         <div class="col-sm-12 col-md-3" id="sidebar_block">
             <nav class="navbar navbar-expand-md navbar-light bg-light">
                 <div class="navbar-collapse collapse" id="main_collapse">
-                    <ul class="nav nav-sidebar">
-                        {% set button_params = 'btn btn-primary col-sm' %}
-                        {% set item_params = 'nav-item btn-block mr-2 mt-2' %}
-                        <li class="{{ item_params }}">
-                            <a class="{{ button_params }} {{ button_here('Главная') }} " href="{{ url_for('index') }}">
-                                Главная
-                            </a>
-                        </li>
-                        <li class="{{ item_params }}">
-                            <a class="{{ button_params }} {{ button_here('Новый план') }}" href="{{ url_for('tpnewplan') }}">
-                                Создать новый план
-                            </a>
-                        </li>
-                        <li class="{{ item_params }}">
-                            <a class="{{ button_params }} {{ button_here('Список планов') }}" href="{{ url_for('tpplanlist') }}">
-                                Список планов
-                            </a>
-                        </li>
-                        <li class="{{ item_params }}">
-                            <a class="{{ button_params }} {{ button_here('Отчёт') }}" href="{{ url_for('tpsimplereport') }}%}">
-                                Отчёт
-                            </a>
-                        </li>
-                        {% if user %}
-                            {% if user.type == 'Администратор' %}
-                                <li class="{{ item_params }}">
-                                    <a class="{{ button_params }} {{ button_here('Заполнение БД') }}" href="{{ url_for('tpfillbd') }}">
-                                        Заполнение БД
-                                    </a>
-                                </li>
-                            {% endif %}
-                            {% if user.type != 'Преподаватель' %}
-                                <li class="{{ item_params }}">
-                                    <a class="{{ button_params }} {{ button_here('Список пользователей') }}" href="{{ url_for('tpuserlist') }}">
-                                        Список пользователей
-                                    </a>
-                                </li>
-                            {% endif %}
-                        {% endif %}
-                    </ul>
+                    {% include "includes/sidebarList.html" %}
                 </div>
             </nav>
         </div>

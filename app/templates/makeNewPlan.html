@@ -32,7 +32,7 @@
                             type: models[" + i|string + "].name,
                             year: document.getElementById(`selectYear`).value
                            }" %}
-            {% include 'includes/inputForm.html' %}
+            {{ insert_form(form_info, info) }}
         {% endfor %}
     </div>
 {% endblock %}

@@ -10,6 +10,6 @@ function showSidebar() {
     $("#sidebar_block").show();
 }
 
-function showErrorDialog(text){  // TODO
-    alert(text);
+function showErrorDialog(text){
+    showModal('Ошибка', text)
 }

@@ -1,0 +1,40 @@
+<ul class="nav nav-sidebar">
+    {% set button_params = 'btn btn-primary col-sm' %}
+    {% set item_params = 'nav-item btn-block mr-2 mt-2' %}
+    <li class="{{ item_params }}">
+        <a class="{{ button_params }} {{ button_here('Главная') }} " href="{{ url_for('index') }}">
+            Главная
+        </a>
+    </li>
+    <li class="{{ item_params }}">
+        <a class="{{ button_params }} {{ button_here('Новый план') }}" href="{{ url_for('tpnewplan') }}">
+            Создать новый план
+        </a>
+    </li>
+    <li class="{{ item_params }}">
+        <a class="{{ button_params }} {{ button_here('Список планов') }}" href="{{ url_for('tpplanlist') }}">
+            Список планов
+        </a>
+    </li>
+    <li class="{{ item_params }}">
+        <a class="{{ button_params }} {{ button_here('Отчёт') }}" href="{{ url_for('tpsimplereport') }}%}">
+            Отчёт
+        </a>
+    </li>
+    {% if user %}
+        {% if user.type == 'Администратор' %}
+            <li class="{{ item_params }}">
+                <a class="{{ button_params }} {{ button_here('Заполнение БД') }}" href="{{ url_for('tpfillbd') }}">
+                    Заполнение БД
+                </a>
+            </li>
+        {% endif %}
+        {% if user.type != 'Преподаватель' %}
+            <li class="{{ item_params }}">
+                <a class="{{ button_params }} {{ button_here('Список пользователей') }}" href="{{ url_for('tpuserlist') }}">
+                    Список пользователей
+                </a>
+            </li>
+        {% endif %}
+    {% endif %}
+</ul>

@@ -1,47 +1,107 @@
-function getUsers(active_section = 0){
+var users;
+var active_section = 0;
+
+function getUsers(){
     $.ajax({
         url: '/userlist',
         method: 'GET',
         success: (response)=>{
-            if (response.ok)
-                printUsers(response.users, active_section)
+            if (response.ok) {
+                users = response.users;
+                users[0].user[1].text = 'Логин';
+                initFilter();
+            }
         }
     })
 }
 
-function printUsers(users, active_section) {
-    let sorted = sortByType(users);
-    let attrs = [
-        {'name': 'login', 'text': 'Логин'},
-        {'text': 'Имя'},
-        {'text': 'Фамилия'},
-        {'text': 'Учебное звание'}
-    ];
-    let container = $("#users_container");
-    container.empty();
-    createAccordion(sorted, container, attrs, true, active_section);
-    console.log(sorted);
+function getUsersAndPrint(){
+    $.ajax({
+        url: '/userlist',
+        method: 'GET',
+        success: (response)=>{
+            if (response.ok) {
+                users = response.users;
+                users[0].user[1].text = 'Логин';
+                printUsers()
+            }
+        }
+    })
 }
 
 
-function sortByType(users){
-    function getUserTypes(user) {
-        for(let field of user.profile){
-            if (field.name === 'type') {
-                return field.opts
+function initFilter() {
+    let selects = $("#fields_select");
+    let sort_options = $("#type_select");
+    let index = 0;
+    function addField(field) {
+        if (field.text !== "%NO_VERBOSE_NAME%") {
+            let checkbox = $("<input>").addClass('form-check-input').attr('type', 'checkbox').attr('value', field.name).
+            attr('id', `use_${field.name}`);
+            if (index++ < 4)
+                checkbox.attr('checked', '');
+            selects.append($("<div>").addClass('form-check').append(
+                checkbox
+            ).append(
+                $("<label>").addClass('form-check-label').attr('for', `use_${field.name}`).text(field.text)
+            ));
+            if (field.opts.length > 0){
+                sort_options.append($('<option>').val(field.name).text(field.text))
             }
         }
     }
-    function getType(user){
-        for (let i = 0; i < user.profile.length; i++){
-            if (user.profile[i].name === 'type'){
-                let type = user.profile[i].value;
-                // user.profile.splice(i, 1);
-                return type;
-            }
+
+    for (let field of users[0].user){
+        addField(field);
+    }
+
+    for (let field of users[0].profile) {
+        addField(field);
+    }
+}
+
+function readAttrs(){
+    let attrs = [];
+    for (let field of users[0].user){
+        let checkbox = $(`#use_${field.name}`);
+        if (checkbox && checkbox.is(':checked')){
+            attrs.push({'name' : field.name, 'text': field.text})
         }
     }
-    let types = getUserTypes(users[0]);
+    for (let field of users[0].profile){
+        let checkbox = $(`#use_${field.name}`);
+        if (checkbox && checkbox.is(':checked')){
+            attrs.push({'name' : field.name, 'text': field.text})
+        }
+    }
+    return attrs;
+}
+
+function printUsers() {
+    let sorted = sortBy($("#type_select").val());
+    let attrs = readAttrs();
+    let container = $("#users_container");
+    container.empty();
+    createAccordion(sorted, container, attrs, true, 0);
+    console.log(sorted);
+}
+
+function getField(fields, name){
+    for (let field of fields) {
+        if (field.name === name)
+            return field;
+    }
+}
+
+function sortBy(field){
+    function getAllOptions(user) {
+        return getField(user.profile, field).opts;
+    }
+    function getChosenOption(user) {
+        return getField(user.profile, field).value;
+    }
+
+    let types = getAllOptions(users[0]);
     let res = [];
     types.forEach((type)=>{
         res.push({
@@ -50,7 +110,7 @@ function sortByType(users){
         })
     });
     users.forEach((user)=>{
-        let type = getType(user);
+        let type = getChosenOption(user);
         res.forEach((type_cont)=>{
             if (type_cont.name === type){
                 type_cont.users.push(user);
@@ -60,7 +120,8 @@ function sortByType(users){
     return res;
 }
 
-function createAccordion(sorted, container, attrs, add_controls=false, active=0){
+
+function createAccordion(sorted, container, attrs, add_controls=false){
     let accordion = $('<div>').attr('id', 'user_accordion');
     sorted.forEach((type_cont, index)=>{
         let header = $('<h3>').text(`Тип: ${type_cont.name}`);
@@ -71,7 +132,7 @@ function createAccordion(sorted, container, attrs, add_controls=false, active=0)
     });
     accordion.accordion({
         heightStyle: "fill",
-        active: active
+        active: active_section
     });
 
     container.append(accordion);
@@ -148,8 +209,8 @@ function deleteUser(user_id){
                 if (response.reload)
                     location.reload();
                 else {
-                    let active = $('#user_accordion').accordion("option", 'active');
-                    getUsers(active)
+                    active_section = $('#user_accordion').accordion("option", 'active');
+                    getUsersAndPrint();
                 }
             }
         }
