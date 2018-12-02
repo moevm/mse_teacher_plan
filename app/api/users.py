@@ -1,15 +1,15 @@
 from typing import Union, List, Dict
 
-from api.convert import ConvertedDocument, convert_mongo_model, convert_mongo_document
+from app.api.convert import ConvertedDocument, convert_mongo_model, convert_mongo_document
 from app.models.profile import Profile
 from app.models.user import User
-from models.model import DocId
+from app.models.model import DocId
 
 
 def register_multiple_fake_users(user_number: int, plans_number: int):
     from faker import Faker
     fake = Faker()
-    from models.fake.profile import ProfileProvider
+    from app.models.fake.profile import ProfileProvider
     fake.add_provider(ProfileProvider)
     for i in range(user_number):
         register_fake_user(fake, plans_number)
@@ -21,7 +21,7 @@ def register_fake_user(fake, plans_number=0):
     fake_user['password'] = fake.password()
     user = register_user(fake_user)
     if plans_number > 0:
-        from api.plans import new_multiple_fake_plans
+        from app.api.plans import new_multiple_fake_plans
         new_multiple_fake_plans(user.id, plans_number)
     return fake_user
 
@@ -153,7 +153,7 @@ def delete_user(id: DocId):
         profile = get_profile_by_user_id(id)
     except (User.DoesNotExist, Profile.DoesNotExist):
         return None
-    from api.plans import delete_user_plans
+    from app.api.plans import delete_user_plans
     delete_user_plans(id)
     found_user.delete()
     profile.delete()

@@ -3,12 +3,12 @@ from typing import List, Dict, Union, Tuple
 
 from flask_mongoengine import Document
 
-from api.users import get_available_users, get_user_by_id, get_profile_by_user_id
+from app.api.users import get_available_users, get_user_by_id, get_profile_by_user_id
 from app.api.convert import convert_mongo_document, convert_mongo_model, ConvertedDocument
 from app.api.models import get_model_class_by_name, get_model_classes, get_model_info_by_name, get_models
 # Новый план
-from models.fake.plan import generate_fake_by_converted_model
-from models.model import DocId
+from app.models.fake.plan import generate_fake_by_converted_model
+from app.models.model import DocId
 
 
 def new_plan(plan_type: str, plan):

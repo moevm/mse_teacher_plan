@@ -4,8 +4,8 @@ import pdfkit
 from flask import render_template, url_for, request, jsonify, redirect, send_file
 from flask_login import current_user, login_user, logout_user, login_required
 
-from api.plans import *
-from api.users import *
+from app.api.plans import *
+from app.api.users import *
 from app import app
 
 

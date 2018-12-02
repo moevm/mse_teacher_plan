@@ -2,7 +2,7 @@ import unittest
 
 from faker import Faker
 from app.api.models import *
-from models.default_model import DefaultModel
+from app.models.default_model import DefaultModel
 
 
 class ModelsTest(unittest.TestCase):

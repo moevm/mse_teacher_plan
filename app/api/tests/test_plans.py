@@ -2,11 +2,11 @@ import unittest
 
 from faker import Faker
 
-from api.models import get_models
-from api.users import register_user, delete_user, get_user_by_login
-from api.plans import *
-from models.default_model import DefaultModel
-from models.fake.profile import ProfileProvider
+from app.api.models import get_models
+from app.api.users import register_user, delete_user, get_user_by_login
+from app.api.plans import *
+from app.models.default_model import DefaultModel
+from app.models.fake.profile import ProfileProvider
 
 
 class PlansTest(unittest.TestCase):
