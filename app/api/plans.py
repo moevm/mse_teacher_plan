@@ -1,5 +1,5 @@
 import random
-from typing import List, Dict, Union
+from typing import List, Dict, Union, Tuple
 
 from flask_mongoengine import Document
 
@@ -70,22 +70,29 @@ def delete_user_plans(id):
 
 
 # Получить планы пользователя
-def get_user_plans(id: DocId) -> List[Document]:
+def get_user_plans(id: DocId = None) -> List[Document]:
     models = get_model_classes()
     res = []
     for model in models:
-        plans = model.objects(user=id)
+        if id is not None:
+            plans = model.objects(user=id)
+        else:
+            plans = model.objects
         for plan in plans:
             res.append(plan)
     return res
 
 
-# Получить конвертированные планы пользователя
-def get_converted_user_plans(id: DocId, year_start: int, year_end: int) -> List[Dict[str, Union[list, ConvertedDocument]]]:
+# Получить конвертированные планы пользователя. Если id - None, то планы всех пользователей
+def get_converted_user_plans(id: DocId = None, year_start: int = 0, year_end: int = 3000)\
+        -> List[Dict[str, Union[list, ConvertedDocument]]]:
     models = get_model_classes()
     res = []
     for model in models:
-        plans = model.objects(user=id)
+        if id is not None:
+            plans = model.objects(user=id)
+        else:
+            plans = model.objects()
         if len(plans) != 0:
             current_res = {
                 'name': plans[0].model.name,
@@ -97,6 +104,21 @@ def get_converted_user_plans(id: DocId, year_start: int, year_end: int) -> List[
                     current_res['plans'].append(convert_mongo_document(plan))
             res.append(current_res)
     return res
+
+
+def get_plans_stat(id: DocId = None, year_start: int = 0, year_end: int = 3000)\
+        -> Tuple[List[Dict[str, Union[str, int]]], int]:
+    plans = get_converted_user_plans(id, year_start, year_end)
+    res = []
+    total = 0
+    for plan_type in plans:
+        plan_info = {
+            'name': plan_type['text'],
+            'plans_num': len(plan_type['plans'])
+        }
+        total = total + len(plan_type['plans'])
+        res.append(plan_info)
+    return res, total
 
 
 def get_converted_available_plans(id, year_start, year_end) -> List[ConvertedDocument]:

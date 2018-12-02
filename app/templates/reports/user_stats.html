@@ -1,0 +1,16 @@
+{% extends 'reports/main.html' %}
+
+{% block content %}
+    <div style="text-align: justify">
+        {% include 'reports/field_table.html' %}
+        {% include 'reports/plan_count.html' %}
+        {% for plan_type in plans_list %}
+            <br><p style="text-align: left; margin-bottom: 2px; font-weight: bold">
+                Тип: {{ plan_type.text }}
+            </p>
+            {% set object = plan_type['plans'] %}
+            {% include 'reports/document_table.html' %}
+        {% endfor %}
+
+    </div>
+{% endblock %}

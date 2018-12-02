@@ -1,0 +1,15 @@
+{% for category in categories %}
+    <h4>Сортировка по категории: {{ category.name }}</h4>
+    <table class="bordered_table">
+        <tr>
+            <th>Тип</th>
+            <th>Количество</th>
+        </tr>
+        {% for type, count in category.count.items() %}
+            <tr>
+                <td>{{ type }}</td>
+                <td>{{ count }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endfor %}

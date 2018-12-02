@@ -1,0 +1,13 @@
+{% extends 'reports/main.html' %}
+
+{% block content %}
+    <div style="text-align: justify">
+        {% include 'reports/field_table.html' %}
+        {% include 'reports/plan_count.html' %}
+        {% set categories = user_categs %}
+        {% include 'reports/categories.html' %}
+        {% set object = users %}
+        <h4>Список пользователей</h4>
+        {% include 'reports/document_table.html' %}
+    </div>
+{% endblock %}

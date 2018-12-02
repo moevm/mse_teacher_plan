@@ -41,6 +41,17 @@ class PlansTest(unittest.TestCase):
         plans = get_converted_user_plans(self.user.id, 0, 10000)
         self.assertEqual(plans[0]['plans'][0], get_plan(self.fake_plan.id))
 
+    def test_get_all_plans(self):
+        all_conv_plans = get_converted_user_plans()
+        all_plans = get_user_plans()
+        stats = get_plans_stat()
+        conv_plan_cnt = 0
+        for i in range(len(all_conv_plans)):
+            plan_type = all_conv_plans[i]
+            conv_plan_cnt = conv_plan_cnt + len(plan_type['plans'])
+            self.assertEqual(len(plan_type['plans']), stats[i]['plans_num'])
+        self.assertEqual(conv_plan_cnt, len(all_plans))
+
     def test_available_plans(self):
         plans = get_available_users(self.user)
         self.assertGreaterEqual(len(plans), 1)

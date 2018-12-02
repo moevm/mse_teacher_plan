@@ -1,6 +1,6 @@
 from typing import Union, List, Dict
 
-from app.api.convert import convert_mongo_model, ConvertedDocument, convert_mongo_document
+from api.convert import ConvertedDocument, convert_mongo_model, convert_mongo_document
 from app.models.profile import Profile
 from app.models.user import User
 from models.model import DocId
@@ -169,3 +169,52 @@ def get_user_and_profile_list():
             'profile': convert_mongo_document(profile)
         })
     return res
+
+
+# Подсчитать пользователей
+def count_users():
+    return len(get_user_and_profile_list())
+
+
+# Подсчитать количество пользователей в категориях
+def count_user_categs()-> List[Dict[str, Union[str, Dict[str, int]]]]:
+    def get_opts(converted_doc: ConvertedDocument)\
+            ->List[Dict[str, Union[str, int, List[str]]]]:
+        fields_with_opts = []
+        for field in converted_doc:
+            if field['opts']:
+                fields_with_opts.append(field)
+        return fields_with_opts
+
+    def get_opt_type(converted_doc: ConvertedDocument, req_field: Dict[str, str])->str:
+        for field in converted_doc:
+            if field['name'] == req_field['name']:
+                return field['value']
+
+    def count_opts(data: List[ConvertedDocument], opt_fields: List[Dict[str, str]])\
+            ->List[Dict[str, Union[str, Dict[str, int]]]]:
+        final_res = []
+        for opt_field in opt_fields:
+            res = {}
+            for elem in data:
+                elem_type = get_opt_type(elem, opt_field)
+                if elem_type not in res:
+                    res[elem_type] = 1
+                else:
+                    res[elem_type] = res[elem_type] + 1
+            final_res.append({
+                'name': opt_field['text'],
+                'count': res
+            })
+        return final_res
+
+    all = get_user_and_profile_list()
+    first = all[0]
+    # user_opts = get_opts(first['user'])
+    profile_opts = get_opts(first['profile'])
+    # users = [user['user'] for user in all]
+    profiles = [user['profile'] for user in all]
+    return count_opts(profiles, profile_opts)
+
+
+

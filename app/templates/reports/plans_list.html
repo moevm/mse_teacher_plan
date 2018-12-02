@@ -1,0 +1,13 @@
+{% for plan_type in plans_list %}
+    <b>Тип: {{ plan_type.name }}</b><br>
+    <table>
+        <tr>
+            {% for field in plan_type['plans'][0] %}
+
+            {% endfor %}
+        </tr>
+        {% for plan in plan_type['plans'] %}
+
+        {% endfor %}
+    </table>
+{% endfor %}

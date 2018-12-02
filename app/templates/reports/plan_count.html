@@ -1,0 +1,20 @@
+{% set border_style = "border: 1px solid black; " %}
+<div>
+    <h4>Статистика по планам</h4>
+    <table class="bordered_table">
+        <tr>
+            <th>Вид плана</th>
+            <th>Количество</th>
+        </tr>
+        {% for plan in plans %}
+            <tr>
+                <td>
+                    {{ plan.name }}
+                </td>
+                <td>
+                    {{ plan.plans_num }}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>

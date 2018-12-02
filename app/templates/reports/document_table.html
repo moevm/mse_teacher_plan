@@ -1,0 +1,20 @@
+<table class="bordered_table">
+    <tr>
+        {% for field in object[0] %}
+            {% if field.text != '%NO_VERBOSE_NAME%' %}
+                <th>
+                    {{ field.text }}
+                </th>
+            {% endif %}
+        {% endfor %}
+    </tr>
+    {% for fields in object %}
+        <tr>
+            {% for field in fields %}
+                {% if field.text != '%NO_VERBOSE_NAME%' %}
+                    <td>{{ field.value }}</td>
+                {% endif %}
+            {% endfor %}
+        </tr>
+    {% endfor %}
+</table>

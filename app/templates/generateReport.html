@@ -1,0 +1,47 @@
+{% extends 'mainTemplate.html' %}
+
+{% block title %} Отчёт {% endblock %}
+{% block pagename %} Генерация отчёта {% endblock %}
+{% block content %}
+    <div class="container-fluid">
+        <div class="card mb-3">
+            <div class="card-header">Настройка отчёта</div>
+            <div class="card-body row">
+                <div class="form-group col-sm-12 col-md-6">
+                    <label for="type_select">Тип отчёта</label>
+                    <select class="form-control" id="type_select">
+                    </select>
+                </div>
+                <div class="form-group col-sm-12 col-md-6">
+                    <label for="user_select">Пользователь</label>
+                    <select class="custom-select" id="user_select">
+                        {% for user in available_users %}
+                            <option value="{{ user.user.id }}">
+                                {{ user.last_name }}
+                                {{ user.first_name }}
+                                {{ user.patronymic }}
+                            </option>
+                        {% endfor %}
+                        {% if user.type != 'Преподаватель' %}
+                            <option value="All">
+                                Все доступные
+                            </option>
+                        {% endif %}
+                    </select>
+                </div>
+                <div class="btn-group col-12" role="group">
+                    <button class="btn btn-primary mr-3" onclick="previewReport()">Предпросмотр</button>
+                    <button class="btn btn-danger" onclick="getPDF()">Сохранить как PDF</button>
+                </div>
+            </div>
+        </div>
+        <div class="card" hidden="hidden" id="preview_report_card">
+            <div class="card-header">Предпросмотр</div>
+            <div class="card-body" id="preview_report"></div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='javascript/generateReport.js') }}"> </script>
+{% endblock %}
