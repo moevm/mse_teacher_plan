@@ -7,7 +7,9 @@
         {% set categories = user_categs %}
         {% include 'reports/categories.html' %}
         {% set object = users %}
-        <h4>Список пользователей</h4>
-        {% include 'reports/document_table.html' %}
+        <div>
+            <h4>Список пользователей</h4>
+            {% include 'reports/document_table.html' %}
+        </div>
     </div>
 {% endblock %}

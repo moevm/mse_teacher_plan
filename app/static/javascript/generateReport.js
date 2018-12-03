@@ -22,6 +22,7 @@ function initReportFilter() {
 }
 
 function previewReport(){
+    toggleLoading();
     let chosen_type = $("#type_select").val();
     $.ajax({
         url: '/report',
@@ -31,6 +32,7 @@ function previewReport(){
         },
         method: 'GET',
         success: (res)=>{
+            toggleLoading();
             $("#preview_report_card").removeAttr('hidden');
             let preview = $("#preview_report");
             preview.empty();
@@ -43,6 +45,7 @@ function previewReport(){
 
 function getPDF(){
     let chosen_type = $("#type_select").val();
+    toggleLoading();
     $.ajax({
         url: '/reportToPdf',
         data: {
@@ -51,8 +54,9 @@ function getPDF(){
         },
         method: 'GET',
         success: (res)=>{
+            toggleLoading();
             if (res.ok){
-                window.location.href = res.url
+                window.open(res.url, '_blank');
             }
         }
     })

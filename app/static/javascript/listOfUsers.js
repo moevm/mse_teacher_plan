@@ -185,10 +185,19 @@ function generateUserTable(users, attrs, add_controls) {
         });
         if (add_controls){
             let user_id = getAttrs(user, [{'name': 'id'}])[0];
+            let button_size = 24;
+            let edit_image = $("<img src='/static/icons/edit.png' alt='EDIT'>")
+                .css('height', `${button_size}px`).css('width', `${button_size}px`)
+                .attr('title', 'Редактировать план');
+            let delete_image = $("<img src='/static/icons/trash.png' alt='DEL'>")
+                .css('height', `${button_size}px`).css('width', `${button_size}px`)
+                .attr('title', 'Удалить план');
+            let edit_button = $("<a>").addClass("btn btn-sm btn-primary").attr('href', `/profile_edit?user_id=${user_id}`);
+            let delete_button = $("<a>").addClass("btn btn-sm btn-danger").attr('onclick', `deleteUser("${user_id}")`)
+            edit_button.append(edit_image);
+            delete_button.append(delete_image);
             row.append($("<th>").append($("<div>").addClass("btn-group").append(
-                $("<a>").addClass("btn btn-sm btn-secondary").text("EDIT").attr('href', `/profile_edit?user_id=${user_id}`),
-                $("<button>").addClass("btn btn-sm btn-danger").text("DEL").attr('onclick', `deleteUser("${user_id}")`)
-            )))
+                edit_button, delete_button)))
         }
         table.append(row);
     });

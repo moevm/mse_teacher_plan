@@ -1,8 +1,7 @@
-import pdfkit
 from flask import render_template, url_for, request, jsonify, redirect
 from flask_login import current_user, login_user, logout_user, login_required
 
-from app.reports import get_available_report_types, get_report_html
+from app.reports import get_available_report_types, get_report_html, get_report_pdf
 from app.api.plans import *
 from app.api.users import *
 from app import app
@@ -199,14 +198,7 @@ def report():
 def reportToPdf():
     req_data = request.args
     html = get_report_html(req_data)
-    import random
-    filename = ''
-    for i in range(15):
-        filename = filename + str(random.choice("0123456789ABCDEF"))
-    filename = filename + '.pdf'
-    actual_filename = 'app/static/generated_reports/' + filename
-    pdfkit.from_string(html, actual_filename)
-    url = url_for('static', filename=f'generated_reports/{filename}')
+    url = get_report_pdf(html)
     return jsonify({'ok': True, 'url': url})
 
 

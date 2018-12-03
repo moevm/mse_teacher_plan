@@ -1,17 +1,19 @@
-<h4>Общая статистика</h4>
-<table class="bordered_table">
-    <tr>
-        <th>Название поля</th>
-        <th>Значение</th>
-    </tr>
-    {% for field in stats %}
+<div>
+    <table class="bordered_table">
+        <caption><h4>Общая статистика</h4></caption>
         <tr>
-            <td>
-                {{ field.name }}
-            </td>
-            <td>
-                {{ field.value }}
-            </td>
+            <th>Название поля</th>
+            <th>Значение</th>
         </tr>
-    {% endfor %}
-</table>
+        {% for field in stats %}
+            <tr>
+                <td>
+                    {{ field.name }}
+                </td>
+                <td>
+                    {{ field.value }}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>

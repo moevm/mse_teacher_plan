@@ -78,9 +78,20 @@ function generatePlanRow(plan, add_year, add_controls) {
     });
     row.append(plan_fields);
     if (add_controls) {
+        let button_size = 24;
+        let edit_image = $("<img src='/static/icons/edit.png' alt='EDIT'>")
+            .css('height', `${button_size}px`).css('width', `${button_size}px`)
+            .attr('title', 'Редактировать план');
+        let delete_image = $("<img src='/static/icons/trash.png' alt='DEL'>")
+            .css('height', `${button_size}px`).css('width', `${button_size}px`)
+            .attr('title', 'Удалить план');
+        let edit_button = $("<a>").addClass("btn btn-sm btn-primary").attr('href', `/plan?id=${plan_id}`);
+        let delete_button = $("<a>").addClass("btn btn-sm btn-danger").attr('onclick', `deletePlan("${plan_id}")`);
+        edit_button.append(edit_image);
+        delete_button.append(delete_image);
         row.append($("<th>").append($("<div>").addClass("btn-group").append(
-            $("<a>").addClass("btn btn-sm btn-secondary").text("EDIT").attr('href', `/plan?id=${plan_id}`),
-            $("<button>").addClass("btn btn-sm btn-danger").text("DEL").attr('onclick', `deletePlan("${plan_id}")`)
+            edit_button,
+            delete_button
         )))
     }
     return row;

@@ -1,6 +1,7 @@
 from datetime import datetime as dt
 
-from flask import render_template
+import pdfkit
+from flask import render_template, url_for
 from flask_login import current_user
 
 from app.api.plans import get_plans_stat, get_converted_user_plans
@@ -84,3 +85,15 @@ def get_report_html(req_data):
             req_data['user_id'] = None
         return get_user_stat_report_template(req_data['user_id'])
     return 'TODO?'
+
+
+def get_report_pdf(html):
+    import random
+    filename = ''
+    for i in range(15):
+        filename = filename + str(random.choice("0123456789ABCDEF"))
+    filename = filename + '.pdf'
+    actual_filename = 'app/static/generated_reports/' + filename
+    pdfkit.from_string(html, actual_filename)
+    url = url_for('static', filename=f'generated_reports/{filename}')
+    return url

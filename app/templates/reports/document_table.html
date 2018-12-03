@@ -1,4 +1,5 @@
 <table class="bordered_table">
+    <caption><h4>{{ table_caption }}</h4></caption>
     <tr>
         {% for field in object[0] %}
             {% if field.text != '%NO_VERBOSE_NAME%' %}
