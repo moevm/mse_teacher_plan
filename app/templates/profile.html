@@ -15,7 +15,8 @@
     <div class="card">
         <div class="card-header">Редактирование профиля</div>
         <div class="card-body">
-            {{ insert_form({"name": "profile", "fields": profile}, "`profile`, `/profile`, profile, `PUT`")}}
+            {{ insert_form({"name": "profile", "fields": profile, "fixed_disabled": enable_fixed_edit},
+             "`profile`, `/profile`, profile, `PUT`")}}
         </div>
     </div>
 {% endblock %}

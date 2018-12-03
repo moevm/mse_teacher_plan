@@ -186,7 +186,7 @@ function generateUserTable(users, attrs, add_controls) {
         if (add_controls){
             let user_id = getAttrs(user, [{'name': 'id'}])[0];
             row.append($("<th>").append($("<div>").addClass("btn-group").append(
-                $("<a>").addClass("btn btn-sm btn-secondary").text("EDIT"),
+                $("<a>").addClass("btn btn-sm btn-secondary").text("EDIT").attr('href', `/profile_edit?user_id=${user_id}`),
                 $("<button>").addClass("btn btn-sm btn-danger").text("DEL").attr('onclick', `deleteUser("${user_id}")`)
             )))
         }
