@@ -28,5 +28,4 @@ function customToggle(){
         }
         toggled = false;
     }
-
 }

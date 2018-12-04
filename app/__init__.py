@@ -11,4 +11,5 @@ toolbar = DebugToolbarExtension(app)
 login = LoginManager(app)
 login.login_view = 'login'
 
+# noinspection PyUnresolvedReferences
 from app import routes

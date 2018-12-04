@@ -11,3 +11,20 @@
   text-align: center;
   line-height: 1.6em;
 }
+
+.unit_sortable {
+  border: 1px solid #eee;
+  min-height: 20px;
+  width: 100%;
+  list-style-type: none;
+  padding: 5px 0 0 0;
+  float: left;
+  margin: 0 10px 0 0;
+
+  li{
+    margin: 0 5px 5px 5px;
+    padding: 5px;
+    font-size: 16px;
+    width: 95%;
+  }
+}

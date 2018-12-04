@@ -1,12 +1,12 @@
-var report_types;
+var report_units;
 
-function getAvailableReports(){
+function getAvailableReportUnits(){
     $.ajax({
-        url: '/reporttypes',
+        url: '/reportunits',
         method: 'GET',
         success: (response)=>{
-            if (response.ok) {
-                report_types = response.types;
+            if (response.ok){
+                report_units = response.units;
                 initReportFilter();
             }
         }
@@ -14,45 +14,73 @@ function getAvailableReports(){
 }
 
 function initReportFilter() {
-    let list = $("#type_select");
-    for(let report_type of report_types){
-        let option = $("<option>").val(report_type.name).text(report_type.text);
-        list.append(option)
+    let list_all = $("<ul>").addClass('connectedSortable').addClass('unit_sortable')
+        .attr('id', 'list_all');
+    let list_config = $("<ul>").addClass('connectedSortable').addClass('unit_sortable')
+        .attr('id', 'list_config');
+    for (unit of report_units){
+        let elem = $("<li>").text(unit.text).addClass('ui-state-default').data('value', unit.name);
+        list_all.append(elem);
     }
+    // noinspection JSUnresolvedFunction
+    list_all.sortable({
+        connectWith: ".connectedSortable"
+    }).disableSelection();
+    // noinspection JSUnresolvedFunction
+    list_config.sortable({
+        connectWith: ".connectedSortable"
+    }).disableSelection();
+    $("#empty_container").empty().append(list_config);
+    $("#config_container").empty().append(list_all);
+}
+
+function getSelectedUnits(){
+    let list_config = $("#list_config");
+    let res = [];
+    list_config.children().each(function(){res.push($(this).data('value'))});
+    return res;
 }
 
 function previewReport(){
     toggleLoading();
-    let chosen_type = $("#type_select").val();
+    let selected_units = getSelectedUnits();
     $.ajax({
         url: '/report',
-        data: {
-            type: chosen_type,
+        data: JSON.stringify({
+            units: selected_units,
             user_id: $("#user_select").val()
-        },
-        method: 'GET',
+        }),
+        method: 'POST',
+        dataType: 'json',
+        processData: false,
+        contentType: 'application/json',
         success: (res)=>{
             toggleLoading();
-            $("#preview_report_card").removeAttr('hidden');
-            let preview = $("#preview_report");
-            preview.empty();
-            let iframe = $('<iframe>').attr('srcdoc', res).css('width', '100%')
-                .css('height', '800px');
-            preview.append(iframe)
+            if (res.ok) {
+                $("#preview_report_card").removeAttr('hidden');
+                let preview = $("#preview_report");
+                preview.empty();
+                let iframe = $('<iframe>').attr('srcdoc', res.html).css('width', '100%')
+                    .css('height', '800px');
+                preview.append(iframe)
+            }
         }
     })
 }
 
 function getPDF(){
-    let chosen_type = $("#type_select").val();
     toggleLoading();
+    let selectedUnits = getSelectedUnits();
     $.ajax({
         url: '/reportToPdf',
-        data: {
-            type: chosen_type,
+        data: JSON.stringify({
+            units: selectedUnits,
             user_id: $("#user_select").val()
-        },
-        method: 'GET',
+        }),
+        method: 'POST',
+        dataType: 'json',
+        processData: false,
+        contentType: 'application/json',
         success: (res)=>{
             toggleLoading();
             if (res.ok){
@@ -63,5 +91,5 @@ function getPDF(){
 }
 
 $(document).ready(function () {
-    getAvailableReports();
+    getAvailableReportUnits();
 });

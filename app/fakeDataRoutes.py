@@ -1,0 +1,31 @@
+from flask import render_template, request, jsonify
+from flask_login import login_required, current_user
+
+from api.models import get_models
+from api.plans import new_fake_plan
+from api.users import get_available_profiles, register_multiple_fake_users, get_current_profile
+from app import app
+
+
+@app.route('/tpfillbd')
+@login_required
+def tpfillbd():
+    models = get_models()
+    return render_template('fillDatabase.html', title='Заполнение БД', user=get_current_profile(),
+                           available_users=get_available_profiles(current_user), models=models)
+
+
+@app.route('/fakeplan', methods=['POST'])
+@login_required
+def fake_plan():
+    req_data = request.get_json()
+    new_fake_plan(req_data['user_id'], req_data['type'])
+    return jsonify({'ok': True})
+
+
+@app.route('/fakedata', methods=['POST'])
+@login_required
+def fake_data():
+    req_data = request.get_json()
+    register_multiple_fake_users(int(req_data['users']), int(req_data['plans']))
+    return jsonify({'ok': True})

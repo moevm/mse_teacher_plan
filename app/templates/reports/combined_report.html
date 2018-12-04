@@ -1,0 +1,33 @@
+{% extends 'reports/main.html' %}
+
+{% block content %}
+    <div style="text-align: justify">
+        {% for unit in units %}
+            {% if unit == 'user_plan' %}
+                {% include 'reports/plans_list.html' %}
+            {% elif unit == 'user_stats' %}
+                {% set stats = user_stats %}
+                {% include 'reports/field_table.html' %}
+                {% set plans = user_plans_count %}
+                {% include 'reports/plan_count.html' %}
+            {% elif unit == 'users_categs' %}
+                {% set categories = users_categs %}
+                {% include 'reports/categories.html' %}
+            {% elif unit == 'plans_stats' %}
+                {% set plans = all_plans_count %}
+                {% include 'reports/plan_count.html' %}
+            {% elif unit == 'users_list' %}
+                <div>
+                    {% set table_caption = 'Список пользователей' %}
+                    {% set object = users_list %}
+                    {% include 'reports/document_table.html' %}
+                </div>
+            {% elif unit == 'all_stats' %}
+                {% set stats = all_stats %}
+                {% include 'reports/field_table.html' %}
+            {% else %}
+                <p>Пункт отчёта "{{ unit }}" настроен неправильно</p>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}

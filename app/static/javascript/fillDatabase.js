@@ -38,6 +38,7 @@ function makeFake() {
 }
 
 function fillDB() {
+    toggleLoading();
     let obj = {
         users: $("#user_slider").slider("value"),
         plans: $("#plans_slider").slider("value")
@@ -48,5 +49,8 @@ function fillDB() {
         processData: false,
         'contentType': 'application/json',
         'data': JSON.stringify(obj),
+        success: ()=>{
+            toggleLoading();
+        }
     })
 }

@@ -33,6 +33,7 @@ def convert_HTML_to_mongo_types(obj) -> str:
     return 'text'
 
 
+# noinspection PyProtectedMember
 def convert_mongo_model(obj: Type[Document]) -> ConvertedDocument:
     fields = obj._fields_ordered
     res = []
@@ -58,6 +59,7 @@ def convert_mongo_model(obj: Type[Document]) -> ConvertedDocument:
 
 def convert_mongo_document(obj: Document) -> ConvertedDocument:
     res = convert_mongo_model(obj)
+    # noinspection PyProtectedMember
     fields = obj._fields_ordered
     for i in range(len(fields)):
         data = obj[fields[i]]

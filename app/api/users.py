@@ -1,9 +1,15 @@
 from typing import Union, List, Dict
 
+from flask_login import current_user
+
 from app.api.convert import ConvertedDocument, convert_mongo_model, convert_mongo_document
 from app.models.profile import Profile
 from app.models.user import User
 from app.models.model import DocId
+
+
+def get_current_profile():
+    return get_profile_by_user_id(current_user.id)
 
 
 def register_multiple_fake_users(user_number: int, plans_number: int):
