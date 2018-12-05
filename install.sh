@@ -131,6 +131,7 @@ PIP="pip"
 bigEcho "Starting database"
 if ! ps -e | grep "mongod" > /dev/null; then
     sudo systemctl start mongod
+    sleep 4
 else
     echo "MongoDB Server is running"
 fi

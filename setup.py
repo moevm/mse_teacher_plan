@@ -6,7 +6,7 @@ setup(
     packages=['app', 'app.api', 'app.models'],
     install_requires=['Flask', 'pymongo', 'flask_mongoengine', 'flask_debugtoolbar',
                       'flask_login', 'mongoengine', 'faker', 'pdfkit', 'Flask-WTF', 'six', 'Blinker',
-                      'WTForms', 'text-unidecode', 'python-dateutil'],
+                      'WTForms', 'text-unidecode', 'python-dateutil', 'sentry-sdk[flask]'],
     url='',
     license='',
     author='thexc',

@@ -38,6 +38,7 @@ def convert_mongo_model(obj: Type[Document]) -> ConvertedDocument:
     fields = obj._fields_ordered
     res = []
     for field in fields:
+        # noinspection PyUnresolvedReferences
         current_field = obj._fields[field]
         try:
             text = current_field.verbose_name

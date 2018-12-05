@@ -1,3 +1,5 @@
+import logging
+
 from flask import url_for, render_template, request, jsonify
 from flask_login import current_user, login_user
 from werkzeug.utils import redirect
@@ -41,5 +43,6 @@ def new_profile():
     try:
         register_user(req_data)
     except Exception as exp:  # TODO process common exceptions
+        logging.error()
         return jsonify({"ok": False, 'data': exp.args})
     return jsonify({"ok": True})

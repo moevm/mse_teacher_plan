@@ -7,6 +7,7 @@
                 {% include 'reports/plans_list.html' %}
             {% elif unit == 'user_stats' %}
                 {% set stats = user_stats %}
+                {% set table_caption = 'Статистика по пользователю' %}
                 {% include 'reports/field_table.html' %}
                 {% set plans = user_plans_count %}
                 {% include 'reports/plan_count.html' %}
@@ -24,6 +25,7 @@
                 </div>
             {% elif unit == 'all_stats' %}
                 {% set stats = all_stats %}
+                {% set table_caption = 'Статистика по БД' %}
                 {% include 'reports/field_table.html' %}
             {% else %}
                 <p>Пункт отчёта "{{ unit }}" настроен неправильно</p>
