@@ -1,7 +1,7 @@
 from flask import render_template, jsonify, request
 from flask_login import login_required, current_user
 
-from api.users import get_available_profiles, get_current_profile
+from app.api.users import get_available_profiles, get_current_profile
 from app import app
 from reports import get_available_report_units, get_report_html, get_report_pdf
 

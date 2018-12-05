@@ -4,7 +4,7 @@ from app.api.convert import convert_mongo_document
 from flask import request, jsonify, render_template, redirect, url_for
 from flask_login import login_required, current_user, logout_user
 
-from api.users import update_profile, delete_user, change_password
+from app.api.users import update_profile, delete_user, change_password
 from app import app
 
 

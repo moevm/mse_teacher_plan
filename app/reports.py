@@ -5,11 +5,11 @@ import pdfkit
 from flask import url_for, render_template
 from flask_login import current_user
 
-from api.plans import get_converted_user_plans, get_plans_stat
-from api.reports import get_available_reports
-from api.users import get_profile_by_user_id, count_user_categs, get_user_and_profile_list, count_users
+from app.api.plans import get_converted_user_plans, get_plans_stat
+from app.api.reports import get_available_reports
+from app.api.users import get_profile_by_user_id, count_user_categs, get_user_and_profile_list, count_users
 from app.api.users import get_current_profile
-from models.model import DocId
+from app.models.model import DocId
 
 
 class ReportConstructor:

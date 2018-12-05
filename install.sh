@@ -86,7 +86,7 @@ PYTHONCHECK=$(checkPython ${PYTHON})
 echo Checking ${PYTHON}: ${PYTHONCHECK}
 if ! ${PYTHONCHECK}; then
     PYTHON="python3"
-    PIP="pip3"
+    #PIP="pip3"
     PYTHONCHECK=$(checkPython ${PYTHON})
     echo Checking ${PYTHON}: ${PYTHONCHECK}
     if ! ${PYTHONCHECK}; then

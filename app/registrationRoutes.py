@@ -4,7 +4,7 @@ from flask import url_for, render_template, request, jsonify
 from flask_login import current_user, login_user
 from werkzeug.utils import redirect
 
-from api.users import check_user_auth, get_registration_form, register_user
+from app.api.users import check_user_auth, get_registration_form, register_user
 from app import app
 
 
