@@ -40,9 +40,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="btn-group col-12" role="group">
-                    <button class="btn btn-primary mr-3" onclick="previewReport()">Предпросмотр</button>
-                    <button class="btn btn-danger" onclick="getPDF()">Сохранить как PDF</button>
+                <div class="btn-toolbar" role="group" data-toggle="buttons">
+                    {% set resp_buttons = 'col-xs mb-2 col-sm-4 col-mb-3' %}
+                    <div class="{{ resp_buttons }}">
+                        <button class="btn btn-block btn-primary" onclick="previewReport()">Предпросмотр</button>
+                    </div>
+                    <div class="{{ resp_buttons }}">
+                        <button class="btn btn-block btn-danger" onclick="getPDF()">Сохранить как PDF</button>
+                    </div>
                 </div>
             </div>
         </div>

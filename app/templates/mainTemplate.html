@@ -35,12 +35,20 @@
     <script src="{{ url_for('static', filename='bower_components/jquery-ui/jquery-ui.js') }}"></script>
     {# <script src="{{ url_for('static', filename='lib/popper/popper.js')}}"></script> #}
     <script src="{{ url_for('static', filename='bower_components/bootstrap/dist/js/bootstrap.js')}}"></script>
+    <script src="{{ url_for('static', filename='bower_components/jquery-ui-touch-punch-improved/jquery.ui.touch-punch-improved.js') }}"></script>
 </head>
 <body>
 {% include "includes/messageModal.html" %}
 {% include "includes/loadingModal.html" %}
 <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-sm-3">
-    <a class="navbar-brand" href="#">Индивидуальный план преподавателя</a>
+    <a class="navbar-brand" href="#">
+        <div class="d-none d-sm-block">
+            Индивидуальный план преподавателя
+        </div>
+        <div class="d-block d-sm-none">
+            ИП преподавателя
+        </div>
+    </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main_collapse"
             aria-controls="main_collapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>

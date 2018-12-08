@@ -7,20 +7,20 @@
         <div class="card mb-3">
             <div class="card-header">Пакетное заполнение</div>
             <div class="card-body row">
-                <div class="col-sm-12 col-md-5">
+                <div class="col-sm-12 col-md-5 mb-3">
                     <label>Количество пользователей</label>
                     <div id="user_slider">
                         <div id="user_slider_handle" class="ui-slider-handle" style=""></div>
                     </div>
                 </div>
-                <div class="col-sm-12 col-md-5">
+                <div class="col-sm-12 col-md-5 mb-3">
                     <label>Количество планов на пользователя</label>
                     <div id="plans_slider">
                         <div id="plans_slider_handle" class="ui-slider-handle" ></div>
                     </div>
                 </div>
                 <div class="col-sm-12 col-md-2">
-                    <label>&nbsp;</label>
+                    <label class="d-sm-none d-md-block">&nbsp;</label>
                     <button type="button" class="form-control btn btn-primary" onclick="fillDB()">Создать</button>
                 </div>
             </div>
@@ -28,7 +28,7 @@
         <div class="card mb-3">
             <div class="card-header">Добавление планов</div>
             <div class="card-body row">
-                <div class="col-sm-12 col-md-5">
+                <div class="col-sm-12 col-md-5 mb-3">
                     <label for="user_select">Пользователь</label>
                     <select class="custom-select" id="user_select">
                         {% for user in available_users %}
@@ -40,7 +40,7 @@
                         {% endfor %}
                     </select>
                 </div>
-                <div class="col-sm-12 col-md-5">
+                <div class="col-sm-12 col-md-5 mb-3">
                     <label for="selectWork">Выберите тип работы:</label>
                     <select class="form-control mb-3" id="selectWork">
                         {% for i in range(models|length) %}
@@ -49,7 +49,7 @@
                     </select>
                 </div>
                 <div class="col-sm-12 col-md-2">
-                    <label>&nbsp;</label>
+                    <label class="d-sm-none d-md-block">&nbsp;</label>
                     <button type="button" class="form-control btn btn-primary" onclick="makeFake()">Создать</button>
                 </div>
             </div>
