@@ -1,0 +1,5 @@
+[Unit]
+Description=Goaccess for mse_teacher_plan
+
+[Service]
+ExecStart=/usr/local/bin/goaccess -f /home/pi/PROGRAMMING/mse_teacher_plan/logs/access.log -o /home/pi/PROGRAMMING/mse_teacher_plan/app/static/report.html --real-time-html -p /etc/goaccess.conf --log-format=COMBINED --real-time-html

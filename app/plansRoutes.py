@@ -2,7 +2,7 @@ from flask import render_template, request, jsonify
 from flask_login import login_required, current_user
 
 from app.api.models import get_models
-from api.plans import new_plan, delete_plan, get_plan, save_plan, get_converted_user_plans, \
+from app.api.plans import new_plan, delete_plan, get_plan, save_plan, get_converted_user_plans, \
     get_converted_available_plans
 from app.api.users import get_available_profiles, get_current_profile
 from app import app

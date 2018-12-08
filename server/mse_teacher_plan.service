@@ -1,0 +1,11 @@
+[Unit]
+Description=uWSGI instance to serve mse_teacher_plan
+After=network.target
+
+[Service]
+WorkingDirectory=/home/pi/PROGRAMMING/mse_teacher_plan
+Environment=/home/pi/PROGRAMMING/mse_teacher_plan/venv/bin
+ExecStart=/usr/local/bin/uwsgi /home/pi/PROGRAMMING/mse_teacher_plan/server/mse_teacher_plan.ini
+
+[Install]
+WantedBy=multi-user.target
