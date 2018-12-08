@@ -1,0 +1,7 @@
+{% extends "mainTemplate.html" %}
+{% block title %} Логи {% endblock %}
+{% block pagename %} Логи сервера {% endblock %}
+{% block content %}
+	<a class="btn btn-primary mb-3" href='/static/report.html'>Открыть в отдельной странице</a>
+	<iframe src="/static/report.html" style="width: 100%; height: 70vh"> </iframe>
+{% endblock %}
