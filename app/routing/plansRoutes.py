@@ -42,7 +42,7 @@ def delete_plan_req():
     return jsonify({'ok': True, 'message': ''})
 
 
-@app.route('/plan', methods=['GET'])
+@app.route('/plan')
 @login_required
 def get_plan_req():
     req_data = request.args

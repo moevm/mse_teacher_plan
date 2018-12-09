@@ -1,7 +1,6 @@
 from mongoengine.document import Document
 from mongoengine.fields import IntField, StringField, ReferenceField, DateTimeField
-from app.models.default_model import default_params, default_string_params
-from app.models.user import User
+from models.plans.default_model import default_params, default_string_params
 
 user_type_choices = ['Преподаватель', 'Администратор', 'Менеджер']
 user_academic_status_choices = ['Ассистент', 'Старший преподаватель', 'Доцент', 'Профессор']

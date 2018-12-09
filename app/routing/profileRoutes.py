@@ -9,6 +9,9 @@ from app import app
 
 
 # Обновление профиля
+from routing.userTypeDecorators import admin_required
+
+
 @app.route('/profile', methods=['PUT'])
 def upd_profile():
     req_data = request.get_json()
@@ -31,6 +34,7 @@ def delete_user_req():
 
 @app.route('/profile_edit')
 @login_required
+@admin_required
 def profile_edit():
     req_data = request.args
     profile = convert_mongo_document(get_profile_by_user_id(req_data['user_id']))

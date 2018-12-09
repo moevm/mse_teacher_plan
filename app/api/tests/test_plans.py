@@ -2,10 +2,8 @@ import unittest
 
 from faker import Faker
 
-from app.api.models import get_models
 from app.api.users import register_user, delete_user, get_user_by_login
 from app.api.plans import *
-from app.models.default_model import DefaultModel
 from app.models.fake.profile import ProfileProvider
 
 
@@ -44,13 +42,14 @@ class PlansTest(unittest.TestCase):
     def test_get_all_plans(self):
         all_conv_plans = get_converted_user_plans()
         all_plans = get_user_plans()
-        stats = get_plans_stat()
+        stats, total = get_plans_stat()
         conv_plan_cnt = 0
         for i in range(len(all_conv_plans)):
             plan_type = all_conv_plans[i]
             conv_plan_cnt = conv_plan_cnt + len(plan_type['plans'])
             self.assertEqual(len(plan_type['plans']), stats[i]['plans_num'])
         self.assertEqual(conv_plan_cnt, len(all_plans))
+        self.assertEqual(conv_plan_cnt, total)
 
     def test_available_plans(self):
         plans = get_available_users(self.user)

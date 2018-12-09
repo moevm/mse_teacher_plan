@@ -55,7 +55,6 @@ class UsersTest(unittest.TestCase):
         self.fake_user['password'] = new_password
         self.assertIsNotNone(check_user_auth(self.fake_user))
 
-
     def test_update_profile(self):
         new_profile = self.fake.moevm_profile()
         fake_user_id = get_user_by_login(self.fake_user['login']).id
@@ -108,6 +107,17 @@ class UsersTest(unittest.TestCase):
         list = get_user_and_profile_list()
         self.assertIsNotNone(list[0]['user'])
         self.assertIsNotNone(list[0]['profile'])
+
+    def test_count_user_categs(self):
+        users_number = count_users()
+        res = count_user_categs()
+        self.assertIsNotNone(res)
+        for category in res:
+            self.assertIsNotNone(category)
+            total = 0
+            for category_type, number in category['count'].items():
+                total = total + number
+            self.assertEqual(total, users_number)
 
 
 if __name__ == '__main__':

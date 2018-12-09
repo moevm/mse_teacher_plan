@@ -1,5 +1,5 @@
 from mongoengine import DateTimeField, StringField
-from app.models.default_model import *
+from models.plans.default_model import *
 
 
 class Other(DefaultModel):

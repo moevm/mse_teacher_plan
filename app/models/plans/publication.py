@@ -1,6 +1,6 @@
 from mongoengine import StringField, DateTimeField
 
-from app.models.default_model import *
+from models.plans.default_model import *
 
 reiteration_choices = ['Одноразовый', 'Повторяющийся']
 publication_type_choices = ['Методическое указание', 'Книга', 'Статья в журнале', 'Сборник']
