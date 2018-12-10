@@ -1,13 +1,28 @@
+"""
+=====================
+API генерации отчётов
+=====================
+Информация о типах доступных отчётов, также, как и о моделях, хранится в БД.
+"""
+
 from typing import Dict, List
-
 from app.api.users import get_user_by_id, get_profile_by_user_id
-
 from app.models.model import DocId
-
 from app.models.report import Report
 
 
 def get_all_reports()->List[Dict[str, str]]:
+    """
+    Получить информацию о всех отчётах
+    Структура возвращаемого объекта:
+    [
+        {
+            'name' - имя
+            'text' - отображаемый текст
+            'min_auth' - минимальный уровень допуска
+        }
+    ]
+    """
     reports = Report.objects()
     res = []
     for report in reports:
@@ -20,6 +35,12 @@ def get_all_reports()->List[Dict[str, str]]:
 
 
 def get_available_reports(user_id: DocId)->List[Dict[str, str]]:
+    """
+    Получение информации об отчётах, доступных данному пользователю.
+    Структура return такая же, как и в
+    get_all_reports()
+    :param user_id: Id пользователя
+    """
     def compare_categories(category1: str, category2: str)->int:
         categories = ['Преподаватель', 'Менеджер', 'Администратор']
         res1 = categories.index(category1)

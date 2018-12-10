@@ -1,3 +1,21 @@
+"""
+===================================
+API Для конвертации моделей MongoDB
+===================================
+Информацию о моделях БД нужно передавать в JavaScript и т.п. Функции этого файла переводят
+модели mongoDB в более удобные для работы объекты и обратно.
+Структура конвертированной модели -
+    [
+        {
+            'text'  - отображаемый текст. Может быть %NO_VERBOSE_NAME%
+            'name'  - короткое обозначение
+            'type'  - тип. Может быть Date, Number или String
+            'opts'  - список принимаемых значений. Если пустой, то значения любые
+            'value' - значение. Пустое для модели и заполненное для документа.
+            'fixed' - разрешено ли изменять
+        }
+    ]
+"""
 from typing import Union, List, Type, Dict
 
 import bson
@@ -25,6 +43,11 @@ def f(text: str, name: str, type: str, opts: List[str] = None,
 
 
 def convert_HTML_to_mongo_types(obj) -> str:
+    """
+    Переводит поля модели mongoDB в типы HTML
+    :param obj: Поле mongoengine
+    :return: Наиболее тип HTML
+    """
     if isinstance(obj, mongoengine.fields.IntField):
         return 'number'
     if isinstance(obj, mongoengine.fields.DateTimeField):
@@ -35,6 +58,11 @@ def convert_HTML_to_mongo_types(obj) -> str:
 
 # noinspection PyProtectedMember
 def convert_mongo_model(obj: Type[Document]) -> ConvertedDocument:
+    """
+    Конвертирует класс модели mongoengine
+    :param obj: Модель mongoengine
+    :return: Конвертированная модель
+    """
     fields = obj._fields_ordered
     res = []
     for field in fields:
@@ -59,6 +87,11 @@ def convert_mongo_model(obj: Type[Document]) -> ConvertedDocument:
 
 
 def convert_mongo_document(obj: Document) -> ConvertedDocument:
+    """
+    Конвертирует документ
+    :param obj: Документ
+    :return: Конвертированный документ
+    """
     res = convert_mongo_model(obj)
     # noinspection PyProtectedMember
     fields = obj._fields_ordered

@@ -7,7 +7,7 @@ setup(
     install_requires=['Flask', 'pymongo', 'flask_mongoengine', 'flask_debugtoolbar',
                       'flask_login', 'mongoengine', 'faker', 'pdfkit', 'Flask-WTF', 'six', 'Blinker',
                       'WTForms', 'text-unidecode', 'python-dateutil', 'sentry-sdk[flask]',
-                      'certifi', 'urllib3'],
+                      'certifi', 'urllib3', 'werkzeug'],
     url='',
     license='',
     author='thexc',

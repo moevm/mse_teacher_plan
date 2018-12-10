@@ -1,7 +1,6 @@
 import logging.config
-import sentry_sdk
-from time import gmtime, strftime
 
+import sentry_sdk
 from flask import Flask
 from flask.logging import default_handler
 from flask_debugtoolbar import DebugToolbarExtension
@@ -21,9 +20,8 @@ sentry_sdk.init(
     dsn="https://6fd2141e720544de9ec65b07ec202302@sentry.io/1337579",
     integrations=[FlaskIntegration(), sentry_logging]
 )
-timestamp = strftime("%Y-%m-%d %H:%M:%S", gmtime())
 logging.config.fileConfig('config/logging.conf')
-logging.info('||Starting app||')
+logging.info(f'||Starting {__name__}||')
 app = Flask(__name__)
 app.config.from_object(Config)
 app.logger.removeHandler(default_handler)
