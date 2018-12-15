@@ -5,7 +5,7 @@ from app.api.models import get_models
 from app.api.plans import new_fake_plan
 from app.api.users import get_available_profiles, register_multiple_fake_users, get_current_profile
 from app import app
-from routing.userTypeDecorators import admin_required
+from app.routing.userTypeDecorators import admin_required
 
 
 @app.route('/tpfillbd')

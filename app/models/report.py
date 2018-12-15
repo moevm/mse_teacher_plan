@@ -1,7 +1,7 @@
 from mongoengine.document import Document
 from mongoengine.fields import StringField
 
-from models.plans.default_model import default_string_params
+from app.models.plans.default_model import default_string_params
 
 
 class Report(Document):

@@ -9,7 +9,7 @@ from app import app
 
 
 # Обновление профиля
-from routing.userTypeDecorators import admin_required
+from app.routing.userTypeDecorators import admin_required
 
 
 @app.route('/profile', methods=['PUT'])
