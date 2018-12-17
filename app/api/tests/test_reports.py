@@ -4,7 +4,7 @@ from app.api.users import register_fake_user, get_user_by_login, delete_user
 from faker import Faker
 
 from app.api.reports import *
-from models.fake.profile import ProfileProvider
+from app.models.fake.profile import ProfileProvider
 
 
 class ReportsTest(unittest.TestCase):

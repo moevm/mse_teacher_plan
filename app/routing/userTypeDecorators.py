@@ -8,7 +8,7 @@
 """
 from functools import wraps
 from flask_login import current_user
-from api.users import get_user_type
+from app.api.users import get_user_type
 import logging
 
 

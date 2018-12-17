@@ -1,7 +1,7 @@
 import unittest
 
 from app.api.models import *
-from models.plans.default_model import DefaultModel
+from app.models.plans.default_model import DefaultModel
 
 
 class ModelsTest(unittest.TestCase):

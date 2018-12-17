@@ -3,7 +3,7 @@ from flask_login import login_required
 
 from app.api.users import get_user_and_profile_list, get_current_profile
 from app import app
-from routing.userTypeDecorators import manager_required
+from app.routing.userTypeDecorators import manager_required
 
 
 @app.route('/tpuserlist')
