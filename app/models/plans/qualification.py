@@ -1,5 +1,5 @@
 from mongoengine import StringField, DateTimeField
-from models.plans.default_model import *
+from app.models.plans.default_model import *
 
 
 class Qualification(DefaultModel):

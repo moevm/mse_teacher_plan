@@ -3,7 +3,7 @@ from mongoengine.document import Document
 from mongoengine.fields import StringField
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from models.plans.default_model import default_string_params
+from app.models.plans.default_model import default_string_params
 
 
 class Token(Document):

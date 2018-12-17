@@ -51,6 +51,7 @@ def get_model_classes() -> List[Document]:
             res.append(model_class)
         except ModuleNotFoundError:
             logging.error(f'Модуль "{model.text}" не найден')
+            raise
     return res
 
 
