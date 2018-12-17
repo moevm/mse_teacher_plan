@@ -10,7 +10,7 @@
 {% block content %}
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-12 col-md-6 mb-3">
+            <div class="col-sm-12 col-md-4 mb-3">
                 <label>Пользователь</label>
                 <select class="custom-select" id="user_select">
                     {% for user in available_users %}
@@ -34,9 +34,18 @@
                     <div id="year_slider"></div>
                 </div>
             </div>
-            <div class="col-sm-12 col-md-2">
-                <label for="filter_button">&nbsp</label><br>
-                <button id="filter_button" class="btn btn-primary" onclick="showPlans()">Показать</button>
+            <div class="col-sm-12 col-md-4 mb-3">
+                <div class="btn-toolbar row" role="group" data-toggle="buttons">
+                    {% set resp_buttons = 'col' %}
+                    <div class="{{ resp_buttons }}">
+                        <label for="filter_button">&nbsp</label><br>
+                        <button id="filter_button" class="btn btn-primary btn-block" onclick="showPlans()">Показать</button>
+                    </div>
+                    <div class="{{ resp_buttons }}">
+                        <label for="full_button">&nbsp</label><br>
+                        <button id="full_button" class="btn btn-primary btn-block" onclick="toggleSimple()">Вывод: всё</button>
+                    </div>
+                </div>
             </div>
             <div class="col-12" id="plans_container">
 

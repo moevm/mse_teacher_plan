@@ -16,6 +16,25 @@ function showPlans() {
     })
 }
 
+var simple = false;
+const simple_length = 2;
+
+function toggleSimple(){
+    let button = $("#full_button");
+    if (!simple){
+        button.removeClass('btn-primary');
+        button.addClass('btn-success');
+        button.text('Вывод: меньше');
+        simple = true;
+    }
+    else {
+        button.addClass('btn-primary');
+        button.removeClass('btn-success');
+        button.text('Вывод: всё');
+        simple = false;
+    }
+}
+
 function printPlans(plans_obj){
     let plans_container = $("#plans_container");
     plans_container.empty();
@@ -45,18 +64,21 @@ function generatePlanTable(plan_type, add_year = true, add_controls = true) {
     let table_header = $("<thead>").addClass('thead-light').append("<tr>");
     if (add_year)
         table_header.append($("<th>").attr('scope', 'col').text('Год'));
-    plan_type.plans[0].forEach((field) => {
+    for (field of plan_type.plans[0]){
         if (field.text !== '%NO_VERBOSE_NAME%')
             table_header.append($("<th>").attr('scope', 'col').text(field.text));
-    });
+        if (simple && table_header.children().length > simple_length)
+            break
+    }
     if (add_controls)
         table_header.append($("<th>").attr('scope', 'col').text('Управление'));
     plans_table.append(table_header);
+
     let table_body = $("<tbody>");
-    plan_type.plans.forEach((plan) => {
+    for (plan of plan_type.plans){
         let row = generatePlanRow(plan, add_year, add_controls);
         table_body.append(row);
-    });
+    }
     plans_table.append(table_body);
     return plans_table;
 }
@@ -65,17 +87,23 @@ function generatePlanRow(plan, add_year, add_controls) {
     let row = $("<tr>");
     let plan_fields = [];
     let plan_id = null;
-    plan.forEach((field) => {
-        if (field.text !== '%NO_VERBOSE_NAME%')
+    let index = 0;
+    for (field of plan){
+        if (field.text !== '%NO_VERBOSE_NAME%') {
             plan_fields.push($("<td>").text(field.value));
+            index++;
+        }
         else if ((field.name === 'year') && add_year) {
             let year_field = $("<th>").attr('scope', 'row').text(field.value);
-            row.append(year_field)
+            row.append(year_field);
+            index++;
         }
         else if (field.name === 'id') {
             plan_id = field.value;
         }
-    });
+        if (simple && index >= simple_length)
+            break;
+    }
     row.append(plan_fields);
     if (add_controls) {
         let button_size = 24;

@@ -8,7 +8,7 @@ from typing import Union, List, Dict, Tuple, Any
 
 from flask_login import current_user
 
-from api.tokens import check_token, activate_token
+from app.api.tokens import check_token, activate_token
 from app.api.convert import ConvertedDocument, convert_mongo_model, convert_mongo_document, f
 from app.models.model import DocId
 from app.models.profile import Profile

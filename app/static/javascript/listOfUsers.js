@@ -30,6 +30,7 @@ function getUsersAndPrint(){
 }
 
 
+
 function initFilter() {
     let selects = $("#fields_select");
     let sort_options = $("#type_select");
