@@ -22,10 +22,15 @@
         </a>
     </li>
     {% if user %}
-       {% if user.type != 'Преподаватель' %}
+        {% if user.type != 'Преподаватель' %}
             <li class="{{ item_params }}">
                 <a class="{{ button_params }} {{ button_here('Список пользователей') }}" href="{{ url_for('tpuserlist') }}">
                     Список пользователей
+                </a>
+            </li>
+            <li class="{{ item_params }}">
+                <a class="{{ button_params }} {{ button_here('Выдача токенов') }}" href="{{ url_for('tokens')  }}">
+                    Выдача токенов
                 </a>
             </li>
         {% endif %}
@@ -35,12 +40,11 @@
                     Заполнение БД
                 </a>
             </li>
-	    <li class="{{ item_params }}">
-		    <a class="{{ button_params }} {{ button_here('Логи') }}" href="{{ url_for('logs')  }}">
-		    Логи
-		</a>
-	    </li>
+            <li class="{{ item_params }}">
+                <a class="{{ button_params }} {{ button_here('Логи') }}" href="{{ url_for('logs')  }}">
+                    Логи
+                </a>
+            </li>
         {% endif %}
- 
     {% endif %}
 </ul>

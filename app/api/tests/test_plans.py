@@ -2,7 +2,7 @@ import unittest
 
 from faker import Faker
 
-from app.api.users import register_user, delete_user, get_user_by_login
+from app.api.users import register_user, delete_user, get_user_by_login, register_fake_user
 from app.api.plans import *
 from app.models.fake.profile import ProfileProvider
 
@@ -15,10 +15,8 @@ class PlansTest(unittest.TestCase):
     def setUpClass(cls):
         cls.fake = Faker()
         cls.fake.add_provider(ProfileProvider)
-        cls.fake_user = cls.fake.moevm_profile()
-        cls.fake_user['login'] = cls.fake.user_name()
-        cls.fake_user['password'] = cls.fake.password()
-        cls.user = register_user(cls.fake_user)
+        cls.fake_user = register_fake_user(cls.fake)
+        cls.user = get_user_by_login(cls.fake_user['login'])
         plan_type = get_models()[0]['name']
         cls.fake_plan = new_fake_plan(cls.user.id, plan_type)
 

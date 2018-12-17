@@ -4,15 +4,25 @@ function submitInfo(form_name, url, init_object, method='POST', add_info=null) {
         let name = form_name + '_' + init_object[i].name;
         let elem = document.getElementById(name);
         if (elem) {
-            if (elem.type !== 'select-one')
-                obj[init_object[i].name] = elem.value;
-            else{
-                obj[init_object[i].name] = clear($("#" + elem.value).text())
+            if (elem.type !== 'select-one') {
+                let text = elem.value;
+                obj[init_object[i].name] = text;
+                if (init_object[i].type === 'password'){
+                    let other_pass = $(`#${name}_repeat`).val();
+                    if (text !== other_pass){
+                        showErrorDialog('Введённые пароли не равны');
+                        return;
+                    }
+                }
+            }
+            else {
+                obj[init_object[i].name] = clear($("#" + elem.value).text());
             }
         }
         else if (init_object[i].value){
             obj[init_object[i].name] = init_object[i].value
         }
+
     }
     if (add_info)
         obj['add_info'] = add_info;

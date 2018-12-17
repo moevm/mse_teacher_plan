@@ -1,10 +1,18 @@
+"""
+==================
+Декораторы доступа
+==================
+Несмотря на то, что ссылки на недоступные страницы вроде логов сервера скрыты от части пользователей, к ним могут
+получить доступ все пользователи, просто введя нужный адрес. Данные декораторы же запрещают некоторым пользователям
+проходить по определённым маршрутам или отправлять определённые запросы
+"""
 from functools import wraps
 from flask_login import current_user
 from api.users import get_user_type
 import logging
 
 
-def makeTypeCheckDecorator(check_function):
+def make_type_check_decorator(check_function):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
@@ -24,5 +32,5 @@ def makeTypeCheckDecorator(check_function):
     return decorator
 
 
-admin_required = makeTypeCheckDecorator(lambda: get_user_type(current_user.id) == 'Администратор')
-manager_required = makeTypeCheckDecorator(lambda: get_user_type(current_user.id) != 'Преподаватель')
+admin_required = make_type_check_decorator(lambda: get_user_type(current_user.id) == 'Администратор')
+manager_required = make_type_check_decorator(lambda: get_user_type(current_user.id) != 'Преподаватель')

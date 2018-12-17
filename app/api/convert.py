@@ -13,8 +13,25 @@ API Для конвертации моделей MongoDB
             'opts'  - список принимаемых значений. Если пустой, то значения любые
             'value' - значение. Пустое для модели и заполненное для документа.
             'fixed' - разрешено ли изменять
+            'validate_rule' - правило валидации
         }
     ]
+Генератор форм (inputForm.html) позволяет осуществлять валидацию. Типы валидации следующие:
+    'text' - [0-9. A-Za-zА-Яа-яЁё]{1,1000}
+    'token' - [0-9a-f]{1,30}
+    'string' - [0-9-A-Za-zА-Яа-яЁё_.]{1,50}
+    'id' - [0-9A-Za-z_.]{1,50}
+    'date' - Дата от 01/01/1990 до текущего
+    'alldate' - Дата от 01/01/1990 до 01/01/2100
+    'year' - от 1900 до текущего
+    'allyear' - от 1900 до 2100
+Валидация по умолчанию:
+    Текст - 'text'
+    Дата - 'alldate'
+    Пароль - 'string'
+    Числовые типы - нет
+
+Атрибуты fixed и validate_rule можно задавать как кастомные атрибуты flask_mongoengine.
 """
 from typing import Union, List, Type, Dict
 
@@ -29,7 +46,7 @@ ConvertedDocument = List[ConvertedField]
 
 
 def f(text: str, name: str, type: str, opts: List[str] = None,
-      value: str='', fixed: bool =False) -> ConvertedField:
+      value: str='', fixed: bool=False, validate_rule: str="") -> ConvertedField:
     if opts is None:
         opts = []
     return {
@@ -38,7 +55,8 @@ def f(text: str, name: str, type: str, opts: List[str] = None,
         'type': type,
         'opts': opts,
         'value': value,
-        'fixed': fixed
+        'fixed': fixed,
+        'validate_rule': validate_rule
     }
 
 
@@ -52,6 +70,11 @@ def convert_HTML_to_mongo_types(obj) -> str:
         return 'number'
     if isinstance(obj, mongoengine.fields.DateTimeField):
         return 'date'
+    try:
+        if obj.validate == 'password':
+            return 'password'
+    except AttributeError:
+        return 'text'
     # if obj.isinstance(mongoengine.fields.StringField):
     return 'text'
 
@@ -76,13 +99,17 @@ def convert_mongo_model(obj: Type[Document]) -> ConvertedDocument:
             fixed = current_field.fixed
         except AttributeError:
             fixed = False
+        try:
+            validate_rule = current_field.validate_rule
+        except AttributeError:
+            validate_rule = ""
         name = current_field.name
         type = convert_HTML_to_mongo_types(current_field)
         opts = None
         if current_field.choices:
             opts = current_field.choices
         value = ''
-        res.append(f(text, name, type, opts, value, fixed))
+        res.append(f(text, name, type, opts, value, fixed, validate_rule))
     return res
 
 

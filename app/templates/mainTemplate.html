@@ -57,16 +57,16 @@
         {% set button_params = 'btn col-sm' %}
         {% set item_params = 'nav-item mr-2 mt-2' %}
         <ul class="navbar-nav ml-auto">
-            <li class="{{ item_params }}">
-                <a class="{{ button_params }} {{ button_here("Профиль") }}" href="{{ url_for('tpprofile') }}">Профиль</a>
-            </li>
             {% if current_user.is_authenticated %}
+                <li class="{{ item_params }}">
+                    <a class="{{ button_params }} {{ button_here("Профиль") }}" href="{{ url_for('tpprofile') }}">Профиль</a>
+                </li>
                 <li class="{{ item_params }}">
                     <a class="{{ button_params }} btn-danger" href="{{ url_for('tplogout') }}">Выйти</a>
                 </li>
             {% else %}
                 <li class="{{ item_params }}">
-                    <a class="{{ button_params }} btn-danger" href="{{ url_for('tplogout') }}">Войти</a>
+                    <a class="{{ button_params }} btn-danger" href="{{ url_for('login') }}">Войти</a>
                 </li>
             {% endif %}
         </ul>

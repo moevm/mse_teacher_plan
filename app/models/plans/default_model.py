@@ -11,7 +11,7 @@ default_string_params = {**default_params, 'max_length': 250}
 class DefaultModel(Document):
     user = ReferenceField(User)
     model = ReferenceField(Model)
-    year = IntField(**default_params)
+    year = IntField(**default_params, validate_rule='allyear')
     meta = {
         'allow_inheritance': True,
         'abstract': True

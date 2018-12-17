@@ -25,10 +25,13 @@ class ProfileProvider(BaseProvider):
         return str(self.fake.date())
 
     def github_id(self):
-        return self.fake.random_number(10)
+        random_id = ""
+        for i in range(15):
+            random_id = random_id + str(random.choice("0123456789ABCDEF"))
+        return random_id
 
     def stepic_id(self):
-        return self.fake.random_number(10)
+        return self.github_id()
 
     def election_date(self):
         return str(self.fake.date())

@@ -3,10 +3,10 @@
 {# fields {text: str, name: str, type: str, opts: array, value: str #}
 {# Output: submitInfo(info) #}
 
-{% macro dis_or_req(bool) %}
-    {% if bool and not form_info.fixed_disabled %}
+{% macro dis_or_req(fixed, is_token) %}
+    {% if fixed and not form_info.fixed_disabled %}
         disabled
-    {% else %}
+    {% elif not is_token %}
         required
     {% endif %}
 {% endmacro %}
@@ -35,23 +35,54 @@
                         {% endfor %}
                     </select>
                 {% else %}
-                    {% if name == "profile_login" or name == "profile_password" %}
-                    <input class="form-control" type="{{ field.type }}" id = "{{ name }}" value="{{ field.value }}"
-                           pattern="[0-9-A-Za-zА-Яа-яЁё_.]{1,50}" {{ dis_or_req(field.fixed) }}>
-                    {% elif field.type == "text" %}
-                    <input class="form-control" type="{{ field.type }}" id = "{{ name }}" value="{{ field.value }}"
-                           pattern="[0-9. A-Za-zА-Яа-яЁё]{1,250}" {{ dis_or_req(field.fixed) }}>
+                    {% if field.type == 'text' %}
+                        {% set validate_pattern = "[0-9. A-Za-zА-Яа-яЁё]{1,1000}" %}
+                        {% set is_token = false %}
+                        {% if field.validate_rule == "id" %}
+                            {% set validate_pattern = "[0-9A-Za-z_.]{1,50}" %}
+                        {% elif field.validate_rule == "string" %}
+                            {% set vailidate_pattern = "[0-9-A-Za-zА-Яа-яЁё_.]{1,50}" %}
+                        {% elif field.validate_rule == "token" %}
+                            {% set vailidate_pattern = "[0-9a-f]{1,30}" %}
+                            {% set is_token = true %}
+                        {% endif %}
+                        <input class="form-control" type="{{ field.type }}" id = "{{ name }}" value="{{ field.value }}"
+                               pattern="{{ validate_pattern }}" {{ dis_or_req(field.fixed, is_token) }}>
+                    {% elif field.type == 'password' %}
+                        {% set validate_pattern = "[0-9. A-Za-zА-Яа-яЁё]{1,1000}" %}
+                        <input class="form-control mb-3" type="{{ field.type }}" id = "{{ name }}"
+                               pattern="{{ validate_pattern }}" {{ dis_or_req(field.fixed) }}>
+                        <label for="{{ name + "_repeat" }}">
+                            Повторите: {{ field.text }}
+                        </label>
+                        <input class="form-control" type="{{ field.type }}" id = "{{ name + "_repeat" }}"
+                               pattern="{{ validate_pattern }}" {{ dis_or_req(field.fixed) }}>
                     {% elif field.type == "date" %}
-                    <input class="form-control" type="{{ field.type }}" id = "{{ name }}" value="{{ field.value }}"
-                           min="1900-01-01" {{ dis_or_req(field.fixed) }}>
-                    <script>document.getElementById('{{ name }}').max = textdate;</script>
-                    {% elif field.type == "number" and name!= "profile_year_of_academic_status" %}
-                    <input class="form-control" type="{{ field.type }}" id = "{{ name }}" value="{{ field.value }}"
-                           pattern="[0-9]{1,15}" {{ dis_or_req(field.fixed) }}>
+                        <input class="form-control" type="{{ field.type }}" id = "{{ name }}" value="{{ field.value }}"
+                               min="1900-01-01" max="2100-01-01" {{ dis_or_req(field.fixed) }}>
+                        {% if field.validate_rule == "date" %}
+                            <script>document.getElementById('{{ name }}').max = textdate;</script>
+                        {% endif %}
+                    {% elif field.type == "number" %}
+                        <input class="form-control" type="{{ field.type }}" id = "{{ name }}" value="{{ field.value }}"
+                                {{ dis_or_req(field.fixed) }}>
+                        {% if field.validate_rule == "year" %}
+                            <script>
+                                let field = document.getElementById('{{ name }}');
+                                field.min = 1900;
+                                field.max = year;
+                            </script>
+                        {% elif field.validate_rule == "allyear" %}
+                            <script>
+                                let field = document.getElementById('{{ name }}');
+                                field.min = 1900;
+                                field.max = 2100;
+                            </script>
+                        {% endif %}
                     {% else %}
-                    <input class="form-control" type="{{ field.type }}" id = "{{ name }}" value="{{ field.value }}"
-                           min="1900" {{ dis_or_req(field.fixed) }}>
-                    <script>document.getElementById('{{ name }}').max = year;</script>
+                        <input class="form-control" type="{{ field.type }}" id = "{{ name }}" value="{{ field.value }}"
+                               min="1900" {{ dis_or_req(field.fixed) }}>
+                        <script>document.getElementById('{{ name }}').max = year;</script>
                     {% endif %}
                 {% endif %}
             </div>

@@ -4,14 +4,15 @@
 API Для работы с пользователями
 ===============================
 """
-from typing import Union, List, Dict
+from typing import Union, List, Dict, Tuple, Any
 
 from flask_login import current_user
 
-from app.api.convert import ConvertedDocument, convert_mongo_model, convert_mongo_document
+from api.tokens import check_token, activate_token
+from app.api.convert import ConvertedDocument, convert_mongo_model, convert_mongo_document, f
+from app.models.model import DocId
 from app.models.profile import Profile
 from app.models.user import User
-from app.models.model import DocId
 
 
 def get_current_profile():
@@ -45,7 +46,7 @@ def register_fake_user(fake, plans_number=0):
     fake_user = fake.moevm_profile()
     fake_user['login'] = fake.user_name()
     fake_user['password'] = fake.password()
-    user = register_user(fake_user)
+    user = register_user(fake_user, True)
     if plans_number > 0:
         from app.api.plans import new_multiple_fake_plans
         new_multiple_fake_plans(user.id, plans_number)
@@ -151,7 +152,7 @@ def check_user_auth(user_data) -> Union[User, None]:
         return None
 
 
-def change_password(id:DocId, old_password, new_password) -> bool:
+def change_password(id: DocId, old_password, new_password) -> bool:
     """
     Сменить пароль
     :param id: Id пользователя
@@ -170,23 +171,45 @@ def get_registration_form() -> ConvertedDocument:
     Вернуть параметры формы для регистрации
     :return: Данные формы профиля + Логин и пароль
     """
-    def f(text, name, type, opts=None, value=''):
-        if opts is None:
-            opts = []
-        return {'text': text, 'name': name, 'type': type, 'opts': opts, 'value': value}
     form = [
-                  f('Логин', 'login', 'text'),
-                  f('Пароль', 'password', 'text')
-              ] + convert_mongo_model(Profile)
+               f('Логин', 'login', 'text'),
+               f('Пароль', 'password', 'password'),
+               f('Токен', 'token', 'text', validate_rule='token')
+           ] + convert_mongo_model(Profile)
     return form
 
 
-def register_user(registration_data) -> User:
+def auth_user_registration(registration_data, ignore_token) -> Tuple[bool, Any]:
+    """
+    Авторизирует регистрацию пользователя по токенам
+    :param registration_data: Данные формы
+    :param ignore_token: Игнорировать ли токен
+    :return: Boolean, указывающий, прошла ли авторизация, и токен (или None)
+    """
+    if registration_data['type'] == 'Преподаватель' or ignore_token:
+        return True, None
+    elif registration_data['type'] == 'Менеджер':
+        token = check_token(registration_data['token'], 'REG_MNG')
+        del registration_data['token']
+        return token is not None, token
+    elif registration_data['type'] == 'Администратор':
+        token = check_token(registration_data['token'], 'REG_ADM')
+        del registration_data['token']
+        return token is not None, token
+    return False, None
+
+
+def register_user(registration_data, ignore_token=False) -> User:
     """
     Зарегистровать пользователя по данным формы (сгенерированной get_registration_form()
+    :param ignore_token: Указывает, игнорировать ли токен. Полезно, если в БД нет пользователей
+    или при тестировании
     :param registration_data: Данные формы
     :return: Пользователь
     """
+    token_ok, token = auth_user_registration(registration_data, ignore_token)
+    if not token_ok:
+        raise Exception("Токен неверен")
     registration_data = dict(registration_data)
     user = User(
         login=registration_data['login']
@@ -201,6 +224,7 @@ def register_user(registration_data) -> User:
     except:
         user.delete()
         raise
+    activate_token(token)
     return user
 
 
@@ -257,7 +281,7 @@ def count_users():
     return len(get_user_and_profile_list())
 
 
-def count_user_categs()-> List[Dict[str, Union[str, Dict[str, int]]]]:
+def count_user_categs() -> List[Dict[str, Union[str, Dict[str, int]]]]:
     """
     Подсчитать количество пользователей в категориях.
     Структура возвращаемого объекта:
@@ -270,21 +294,22 @@ def count_user_categs()-> List[Dict[str, Union[str, Dict[str, int]]]]:
             }
         ]
     """
-    def get_opts(converted_doc: ConvertedDocument)\
-            ->List[Dict[str, Union[str, int, List[str]]]]:
+
+    def get_opts(converted_doc: ConvertedDocument) \
+            -> List[Dict[str, Union[str, int, List[str]]]]:
         fields_with_opts = []
         for field in converted_doc:
             if field['opts']:
                 fields_with_opts.append(field)
         return fields_with_opts
 
-    def get_opt_type(converted_doc: ConvertedDocument, req_field: Dict[str, str])->str:
+    def get_opt_type(converted_doc: ConvertedDocument, req_field: Dict[str, str]) -> str:
         for field in converted_doc:
             if field['name'] == req_field['name']:
                 return field['value']
 
-    def count_opts(data: List[ConvertedDocument], opt_fields: List[Dict[str, str]])\
-            ->List[Dict[str, Union[str, Dict[str, int]]]]:
+    def count_opts(data: List[ConvertedDocument], opt_fields: List[Dict[str, str]]) \
+            -> List[Dict[str, Union[str, Dict[str, int]]]]:
         final_res = []
         for opt_field in opt_fields:
             res = {}
@@ -307,6 +332,3 @@ def count_user_categs()-> List[Dict[str, Union[str, Dict[str, int]]]]:
     # users = [user['user'] for user in all]
     profiles = [user['profile'] for user in all]
     return count_opts(profiles, profile_opts)
-
-
-

@@ -1,0 +1,38 @@
+{% extends "mainTemplate.html" %}
+{% block title %} Выдача токенов {% endblock %}
+{% block pagename %} Выдача токенов {% endblock %}
+{% block content %}
+    <div class="card mb-3">
+        <div class="card-header">Выдача токенов</div>
+        <div class="card-body">
+            <label for="selectToken">Выберите тип токена</label>
+            <select class="form-control mb-3" id="selectToken">
+                {% for token in tokens %}
+                    <option value="{{ token.name }}">{{ token.text }}</option>
+                {% endfor %}
+            </select>
+            <div class="btn-toolbar" role="group" data-toggle="buttons">
+                {% set resp_buttons = 'col-xs mb-2 col-sm-4 col-mb-3' %}
+                <div class="{{ resp_buttons }}">
+                    <button class="btn btn-block btn-primary" onclick="new_token()">Выдать</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mb-3 collapse" id="token_card">
+        <div class="card-header">Полученный токен</div>
+        <div class="card-body">
+            <p>Ключ от данного токена отображается только сейчас и будет утерян при закрытии
+                окна. Скопируйте его и передайте пользователю, которому необходима авторизация
+                указанного действия. После использования токен будет утерян.
+            </p>
+            <label for="tokenKey">
+                Ключ:
+            </label>
+            <input class="form-control" id="tokenKey" disabled>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script src="{{ url_for('static', filename='javascript/token.js') }}"> </script>
+{% endblock %}

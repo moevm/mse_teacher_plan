@@ -8,7 +8,7 @@ from app.api.users import *
 from app.models.fake.profile import ProfileProvider
 
 
-def customDeepEqual(params, dict1, dict2):
+def custom_deep_equal(params, dict1, dict2):
     for param in params:
         if isinstance(dict1[param], datetime.datetime) or isinstance(dict2[param], datetime.datetime):
             if str(dict1[param])[0:9] != str(dict2[param])[0:9]:
@@ -36,9 +36,9 @@ class UsersTest(unittest.TestCase):
         user = get_user_by_id(user.id)
         profile = get_profile_by_user_id(user.id)
         self.assertTrue(
-            customDeepEqual(['last_name', 'first_name', 'patronymic', 'type', 'birth_date', 'github_id',
+            custom_deep_equal(['last_name', 'first_name', 'patronymic', 'type', 'birth_date', 'github_id',
                              'stepic_id', 'election_date', 'contract_date', 'academic_status', 'year_of_academic_status'],
-                            profile, self.fake_user)
+                              profile, self.fake_user)
         )
         type = get_user_type(user.id)
         self.assertEqual(type, self.fake_user['type'])
@@ -63,10 +63,10 @@ class UsersTest(unittest.TestCase):
         update_profile(new_profile)
         profile = get_profile_by_user_id(fake_user_id)
         self.assertTrue(
-            customDeepEqual(['last_name', 'first_name', 'patronymic', 'type', 'birth_date', 'github_id',
+            custom_deep_equal(['last_name', 'first_name', 'patronymic', 'type', 'birth_date', 'github_id',
                              'stepic_id', 'election_date', 'contract_date', 'academic_status',
                              'year_of_academic_status'],
-                            new_profile, profile)
+                              new_profile, profile)
         )
 
     def test_nonexistent_user(self):

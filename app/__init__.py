@@ -20,6 +20,7 @@ sentry_sdk.init(
     dsn="https://6fd2141e720544de9ec65b07ec202302@sentry.io/1337579",
     integrations=[FlaskIntegration(), sentry_logging]
 )
+
 logging.config.fileConfig('config/logging.conf')
 logging.info(f'||Starting {__name__}||')
 app = Flask(__name__)
