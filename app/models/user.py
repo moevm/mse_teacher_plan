@@ -9,7 +9,7 @@ default_string_params = {**default_params, 'max_length': 250}
 
 
 class User(Document, UserMixin):
-    login = StringField(**default_params, unique=True)
+    login = StringField(**default_params, unique=True, validate_rule='string')
     password_hash = StringField(**default_params)
     authenticated = BooleanField(default=False)
 

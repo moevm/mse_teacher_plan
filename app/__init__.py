@@ -21,7 +21,7 @@ sentry_sdk.init(
     integrations=[FlaskIntegration(), sentry_logging]
 )
 
-logging.config.fileConfig('config/logging.conf')
+# logging.config.fileConfig('config/logging.conf')  # Comment this while testing. TODO Fix logging in unit tests
 logging.info(f'||Starting {__name__}||')
 app = Flask(__name__)
 app.config.from_object(Config)

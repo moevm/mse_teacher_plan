@@ -172,7 +172,7 @@ def get_registration_form() -> ConvertedDocument:
     :return: Данные формы профиля + Логин и пароль
     """
     form = [
-               f('Логин', 'login', 'text'),
+               f('Логин', 'login', 'text', validate_rule='string'),
                f('Пароль', 'password', 'password'),
                f('Токен', 'token', 'text', validate_rule='token')
            ] + convert_mongo_model(Profile)
@@ -181,18 +181,27 @@ def get_registration_form() -> ConvertedDocument:
 
 def auth_user_registration(registration_data, ignore_token) -> Tuple[bool, Any]:
     """
-    Авторизирует регистрацию пользователя по токенам
+    Авторизирует регистрацию пользователя по токенам. Выполняет проверка на наличие администраторов в БД.
+    Если их нет, токен игнорируется.
     :param registration_data: Данные формы
     :param ignore_token: Игнорировать ли токен
     :return: Boolean, указывающий, прошла ли авторизация, и токен (или None)
     """
     if registration_data['type'] == 'Преподаватель' or ignore_token:
         return True, None
-    elif registration_data['type'] == 'Менеджер':
+    if not ignore_token:
+        categs = count_user_categs()
+        if categs is None:
+            return True, None
+        for categ in categs:
+            if categ['name'] == 'Тип':
+                if categ['count']['Администратор'] == 0:
+                    return True, None
+    if registration_data['type'] == 'Менеджер':
         token = check_token(registration_data['token'], 'REG_MNG')
         del registration_data['token']
         return token is not None, token
-    elif registration_data['type'] == 'Администратор':
+    if registration_data['type'] == 'Администратор':
         token = check_token(registration_data['token'], 'REG_ADM')
         del registration_data['token']
         return token is not None, token
@@ -217,6 +226,8 @@ def register_user(registration_data, ignore_token=False) -> User:
     user.set_password(registration_data['password'])
     del registration_data['login']
     del registration_data['password']
+    if 'token' in registration_data:
+        del registration_data['token']
     profile = Profile(user=user, **registration_data)
     user.save()
     try:
@@ -293,6 +304,7 @@ def count_user_categs() -> List[Dict[str, Union[str, Dict[str, int]]]]:
                 }
             }
         ]
+    Если пользоватлей нет, вернёт None!
     """
 
     def get_opts(converted_doc: ConvertedDocument) \
@@ -326,6 +338,8 @@ def count_user_categs() -> List[Dict[str, Union[str, Dict[str, int]]]]:
         return final_res
 
     all = get_user_and_profile_list()
+    if len(all) == 0:
+        return None
     first = all[0]
     # user_opts = get_opts(first['user'])
     profile_opts = get_opts(first['profile'])
