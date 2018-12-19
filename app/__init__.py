@@ -9,20 +9,20 @@ from flask_mongoengine import MongoEngine
 from sentry_sdk.integrations.flask import FlaskIntegration
 from sentry_sdk.integrations.logging import LoggingIntegration
 
-from config.config import Config
+from app.config.config import Config
 
 sentry_logging = LoggingIntegration(
-    level=logging.INFO,        # Capture info and above as breadcrumbs
-    event_level=logging.ERROR  # Send errors as events
+    level=logging.INFO,
+    event_level=logging.ERROR
 )
 
 sentry_sdk.init(
-    dsn="https://6fd2141e720544de9ec65b07ec202302@sentry.io/1337579",
+    dsn=Config.SENTRY_DSN,
     integrations=[FlaskIntegration(), sentry_logging]
 )
 
-# logging.config.fileConfig('config/logging.conf')  # Comment this while testing. TODO Fix logging in unit tests
-logging.info(f'||Starting {__name__}||')
+logging.config.fileConfig('app/config/logging.conf')  # This stuff will probaly crash while unit testing.
+logging.info(f'||Starting {__name__}||')  # To resolve this, set working directory to the project root
 app = Flask(__name__)
 app.config.from_object(Config)
 app.logger.removeHandler(default_handler)

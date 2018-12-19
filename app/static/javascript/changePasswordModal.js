@@ -17,7 +17,7 @@ function savePassword() {
                 if (response.ok)
                     location.reload();
                 else
-                    alert(response.message)
+                    showErrorDialog(response.message)
             }
         })
     }

@@ -83,7 +83,7 @@ function printUsers() {
     let attrs = readAttrs();
     let container = $("#users_container");
     container.empty();
-    createAccordion(sorted, container, attrs, true, 0);
+    createAccordion(sorted, container, attrs, true);
     console.log(sorted);
 }
 

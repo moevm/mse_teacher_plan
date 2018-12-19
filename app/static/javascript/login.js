@@ -7,7 +7,7 @@ $('#login_button').click((event)=>{
         event.stopPropagation()
     }
     form.addClass('was-validated');
-    obj = {
+    let obj = {
         'login': $('#login_input').val(),
         'password': $("#password_input").val()
     };

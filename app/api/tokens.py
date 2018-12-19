@@ -63,9 +63,8 @@ def check_token(token_key: str, expected_token_type: str):
     :return: Объект токена
     """
     for token in Token.objects:
-        if token.check_token(token_key):
-            if token.type == expected_token_type:
-                return token
+        if token.check_token(token_key) and token.type == expected_token_type:
+            return token
 
 
 def activate_token(token):

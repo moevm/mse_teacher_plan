@@ -10,4 +10,5 @@ class Config(object):
         'username': 'python',
         'password': 'python'
     }
+    SENTRY_DSN = os.environ.get('SENTY_DSN') or "https://6fd2141e720544de9ec65b07ec202302@sentry.io/1337579"
 

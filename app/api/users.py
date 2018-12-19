@@ -9,7 +9,7 @@ from typing import Union, List, Dict, Tuple, Any
 from flask_login import current_user
 
 from app.api.tokens import check_token, activate_token
-from app.api.convert import ConvertedDocument, convert_mongo_model, convert_mongo_document, f
+from app.api.convert import ConvertedDocument, convert_mongo_model, convert_mongo_document, gen_field_row
 from app.models.model import DocId
 from app.models.profile import Profile
 from app.models.user import User
@@ -172,9 +172,9 @@ def get_registration_form() -> ConvertedDocument:
     :return: Данные формы профиля + Логин и пароль
     """
     form = [
-               f('Логин', 'login', 'text', validate_rule='string'),
-               f('Пароль', 'password', 'password'),
-               f('Токен', 'token', 'text', validate_rule='token')
+               gen_field_row('Логин', 'login', 'text', validate_rule='string'),
+               gen_field_row('Пароль', 'password', 'password'),
+               gen_field_row('Токен', 'token', 'text', validate_rule='token')
            ] + convert_mongo_model(Profile)
     return form
 
@@ -194,9 +194,8 @@ def auth_user_registration(registration_data, ignore_token) -> Tuple[bool, Any]:
         if categs is None:
             return True, None
         for categ in categs:
-            if categ['name'] == 'Тип':
-                if categ['count']['Администратор'] == 0:
-                    return True, None
+            if categ['name'] == 'Тип' and categ['count']['Администратор'] == 0:
+                return True, None
     if registration_data['type'] == 'Менеджер':
         token = check_token(registration_data['token'], 'REG_MNG')
         del registration_data['token']
@@ -306,7 +305,6 @@ def count_user_categs() -> List[Dict[str, Union[str, Dict[str, int]]]]:
         ]
     Если пользоватлей нет, вернёт None!
     """
-
     def get_opts(converted_doc: ConvertedDocument) \
             -> List[Dict[str, Union[str, int, List[str]]]]:
         fields_with_opts = []
@@ -341,8 +339,6 @@ def count_user_categs() -> List[Dict[str, Union[str, Dict[str, int]]]]:
     if len(all) == 0:
         return None
     first = all[0]
-    # user_opts = get_opts(first['user'])
     profile_opts = get_opts(first['profile'])
-    # users = [user['user'] for user in all]
     profiles = [user['profile'] for user in all]
     return count_opts(profiles, profile_opts)

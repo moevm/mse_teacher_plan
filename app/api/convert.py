@@ -45,8 +45,8 @@ ConvertedField = Dict[str, Union[str, int, List[str]]]
 ConvertedDocument = List[ConvertedField]
 
 
-def f(text: str, name: str, type: str, opts: List[str] = None,
-      value: str='', fixed: bool=False, validate_rule: str="") -> ConvertedField:
+def gen_field_row(text: str, name: str, type: str, opts: List[str] = None,
+                  value: str='', fixed: bool=False, validate_rule: str="") -> ConvertedField:
     if opts is None:
         opts = []
     return {
@@ -60,7 +60,7 @@ def f(text: str, name: str, type: str, opts: List[str] = None,
     }
 
 
-def convert_HTML_to_mongo_types(obj) -> str:
+def convert_html_to_mongo_types(obj) -> str:
     """
     Переводит поля модели mongoDB в типы HTML
     :param obj: Поле mongoengine
@@ -104,12 +104,12 @@ def convert_mongo_model(obj: Type[Document]) -> ConvertedDocument:
         except AttributeError:
             validate_rule = ""
         name = current_field.name
-        type = convert_HTML_to_mongo_types(current_field)
+        type = convert_html_to_mongo_types(current_field)
         opts = None
         if current_field.choices:
             opts = current_field.choices
         value = ''
-        res.append(f(text, name, type, opts, value, fixed, validate_rule))
+        res.append(gen_field_row(text, name, type, opts, value, fixed, validate_rule))
     return res
 
 

@@ -64,7 +64,7 @@ function generatePlanTable(plan_type, add_year = true, add_controls = true) {
     let table_header = $("<thead>").addClass('thead-light').append("<tr>");
     if (add_year)
         table_header.append($("<th>").attr('scope', 'col').text('Год'));
-    for (field of plan_type.plans[0]){
+    for (let field of plan_type.plans[0]){
         if (field.text !== '%NO_VERBOSE_NAME%')
             table_header.append($("<th>").attr('scope', 'col').text(field.text));
         if (simple && table_header.children().length > simple_length)
@@ -75,7 +75,7 @@ function generatePlanTable(plan_type, add_year = true, add_controls = true) {
     plans_table.append(table_header);
 
     let table_body = $("<tbody>");
-    for (plan of plan_type.plans){
+    for (let plan of plan_type.plans){
         let row = generatePlanRow(plan, add_year, add_controls);
         table_body.append(row);
     }
@@ -88,7 +88,7 @@ function generatePlanRow(plan, add_year, add_controls) {
     let plan_fields = [];
     let plan_id = null;
     let index = 0;
-    for (field of plan){
+    for (let field of plan){
         if (field.text !== '%NO_VERBOSE_NAME%') {
             plan_fields.push($("<td>").text(field.value));
             index++;

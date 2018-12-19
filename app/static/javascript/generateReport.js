@@ -18,7 +18,7 @@ function initReportFilter() {
         .attr('id', 'list_all');
     let list_config = $("<ul>").addClass('connectedSortable').addClass('unit_sortable')
         .attr('id', 'list_config');
-    for (unit of report_units){
+    for (let unit of report_units){
         let elem = $("<li>").text(unit.text).addClass('ui-state-default').data('value', unit.name);
         list_all.append(elem);
     }

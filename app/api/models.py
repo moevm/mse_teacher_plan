@@ -71,14 +71,14 @@ def get_models() -> List[Dict[str, str]]:
     Получить конвертированные модели. Может применятся, например, при составлении форм
     :return:
     """
-    def m(text, name, fields):
+    def gen_model_row(text, name, fields):
         return {'text': text, 'name': name, 'fields': fields}
     res = []
     for model in Model.objects:
         try:
             module = importlib.import_module(models_path + model.fileName, model.className)
             model_class = getattr(module, model.className)
-            res.append(m(model.text, model.name, convert_mongo_model(model_class)))
+            res.append(gen_model_row(model.text, model.name, convert_mongo_model(model_class)))
         except ModuleNotFoundError:
             logging.error(f'Модуль "{model.text}" не найден')
     return res
