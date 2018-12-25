@@ -18,7 +18,7 @@
 *  Презентация первого этапа: https://1drv.ms/p/s!AjKfyrV7j1k39l_SfFoDeUJkWbko
 *  Презентация второго этапа: https://1drv.ms/p/s!AjKfyrV7j1k39359DkfLfsQToHTp
 *  Презентация третьего этапа: https://1drv.ms/p/s!AjKfyrV7j1k3-GaBunuZpl40hVN9
-Презентации в формате PDF: https://1drv.ms/f/s!AjKfyrV7j1k3-GmuJY0n5fkmyBuo
+<br>Презентации в формате PDF: https://1drv.ms/f/s!AjKfyrV7j1k3-GmuJY0n5fkmyBuo
 
 ### Скринкасты:
 *  Второй этап: https://youtu.be/Laa5EKUrXpA
