@@ -22,6 +22,7 @@
 
 ### Скринкасты:
 *  Второй этап: https://youtu.be/Laa5EKUrXpA
+*  Третий этап: https://youtu.be/RASnpVA8Xd8
 
 ### Инструкция по запуску
 https://github.com/moevm/mse_teacher_plan/wiki/Инструкция-по-запуску-DEV-сервера
